@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对象模块</title> 
+    <!-- 无意义操作 -->
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+    }
+    .box{
+        width: 1000px;
+        height: 600px;
+        background-color: #eee;
+        box-shadow: -3px -3px 6px 3px rgba(181, 32, 32, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    .box-button{
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal{
+        width: 200px;
+        height: 80px;
+        background-color: #ead2d2;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    }
+</style>
+<body>
+    <div class="box">
+        <div class="box-button">
+            <button id="login">登入</button>
+            <button id="delete">删除</button>
+        </div>
+    </div>
+<script>
+    const box = document.querySelector('.box')
+
+
+    function Mudals({name, id, title, context}) {
+        this.title = title
+        this.context = context
+    }
+    // 最后才产生  解构  的结构化思路
+    // 比较不熟悉，对解构的实现
+
+    // 追加 方法函数
+    Mudals.prototype.open = function({id,closeid}) {
+        
+        const modal = document.createElement('div')
+        modal.className = 'modal'
+        
+        document.getElementById(`${id}`).addEventListener('click',()=>{
+
+            // 关键代码， 使  modal 只存在一个
+            if(document.querySelector('.modal'))   { document.querySelector('.modal').remove() }
+
+        
+            // 可以换位置
+            // const modal = document.createElement('div')
+            // modal.className = 'modal'
+            modal.innerHTML = `
+            <p>${this.title}</p><i id="${closeid}">x</i>
+            <p>${this.context}</p>
+            `
+            
+            box.appendChild(modal)
+
+            // 避免出现  未查询到元素 导致报错  的问题
+            this.close({closeid})  //放置位置(在确保元素存在的前提下，启动close模块)
+        })
+        
+
+
+    }
+    Mudals.prototype.close = function({closeid}) {
+        document.getElementById(`${closeid}`).addEventListener('click',()=>{
+            // 逻辑中断
+            document.querySelector('.modal') && document.querySelector('.modal').remove()
+            // 同理
+            // document.querySelector('.modal') ? document.querySelector('.modal').remove() : null
+            // if(document.querySelector('.modal'))   { document.querySelector('.modal').remove() }
+        })
+    }
+
+
+    // 模拟  结构化数据
+    const date = {
+        login: {
+            name: '登入',
+            id: 'login',
+            closeid: '1',
+            title: '登入',
+            context: '请输入用户名和密码'
+        },
+        delete: {
+            name: '删除',
+            id: 'delete',
+            closeid: '2',
+            title: '删除',
+            context: '确定删除吗？'
+        }
+    }
+
+    // const loginModal = new Mudals(date.login)
+    // loginModal.open(date.login)
+    
+    // const deleteModal = new Mudals(date.delete)
+    // deleteModal.close(date.delete)
+
+    Object.values(date).forEach(item => {
+        new Mudals(item).open(item)
+    })
+    
+</script>
+</body>
+</html>

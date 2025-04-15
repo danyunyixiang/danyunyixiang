@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .box,
+    .box2{
+        width: 400px;
+        height: 300px;
+        background-color: #eee;
+        display: flex;
+        justify-content: center;
+
+    }
+    .box .m{
+        height: 30px;
+        font-size: 16px;
+        font-weight: 400;
+        color: aqua;
+    }
+
+    .box2 {
+        justify-content: space-between;
+    }
+    .box2 p{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+
+</style>
+<body>
+    <div class="box">
+        <p class="m">111</p>
+    </div>
+    <div class="box2">
+
+    </div>
+<script>
+    const good1 = {
+        size: '40cm*40cm',
+        color: '褐色',
+        price: 100,
+    }
+    const p = document.querySelector('.box p')
+    // p.innerHTML = `商品尺寸:${good1.size} / 商品颜色:${good1.color} / 商品价格:${good1.price}`
+    p.innerHTML = Object.values(good1).join('/')
+    // const link = (item) => { Object.keys(item).join('/') }
+    // p.innerHTML = link(good1)   //封装函数 完成特定功能
+
+    // document.querySelector('.box p').innerHTML = Object.values(good1).join('/')
+
+    const gift = {
+        e1:'水果,苹果,香蕉,橘子',
+        e2:'蔬菜,白菜,萝卜,黄瓜',
+        e3:'零食,薯片,饼干,糖果',
+    }
+    // 值存数组
+    const e = Object.values(gift)
+
+    // 数组内元素拆分
+    const arr = e.map(item => item.split(','))
+
+    // 拼接,渲染
+const fn = (arr) => {
+    document.querySelector('.box2').innerHTML = ''
+    let i = 0
+    arr.forEach(item => {
+        i++
+        
+        // document.querySelector('.box2').innerHTML += 
+        // `<p class="p${i}">
+        //     <span class="tag">${item[0]}</span>
+        //     <span class="tag">${item[1]}</span>
+        //     <span class="tag">${item[2]}</span>
+        //     <span class="tag">${item[3]}</span>
+        // </p>`
+
+        document.querySelector('.box2').innerHTML += 
+        `<p class="p${i}">
+            ${item.map(m => `<span class="tag">${m}</span>`).join('')}
+        </p>`
+        // 优处:无需考虑二重数组内元素数量
+        // 可全部渲染
+    })
+}
+fn(arr)
+
+</script>
+</body>
+</html>

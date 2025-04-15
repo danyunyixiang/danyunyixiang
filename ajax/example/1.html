@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>axios</title>
+</head>
+<body>
+<button id="post">post请求</button>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    axios
+        .get('')
+        .then(res => {
+            console.log(res);
+            
+            console.log(res.data.province);
+            
+        })
+        .catch(err => console.log(err))
+document.getElementById('post').addEventListener('click',function(){
+
+    axios
+        .post('./2.json',{
+            uname: 'huwenqi',
+            age: '18'
+        })
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+})
+</script>
+</body>
+</html>

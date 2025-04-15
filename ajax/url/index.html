@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL工具函数演示</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+        }
+        .demo-section {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4fc;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 0;
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            font-size: 14px;
+        }
+        .error {
+            color: #e74c3c;
+            background-color: #fadbd8;
+        }
+    </style>
+</head>
+<body>
+    <h1>URL工具函数演示</h1>
+    <p>这个页面演示了各种URL处理函数的用法和效果。在下面的交互区域中体验这些函数。</p>
+
+    <!-- URL解析演示 -->
+    <div class="demo-section">
+        <h2>URL解析</h2>
+        <div class="input-group">
+            <label for="parseUrlInput">输入URL:</label>
+            <input type="text" id="parseUrlInput" value="https://example.com:8080/path/to/page?q=search&lang=zh-CN#section2">
+        </div>
+        <button onclick="demonstrateParseUrl()">解析URL</button>
+        <div class="result" id="parseUrlResult">
+            <pre><code>// 结果将显示在这里</code></pre>
+        </div>
+    </div>
+
+    <!-- 构建URL演示 -->
+    <div class="demo-section">
+        <h2>构建URL</h2>
+        <div class="input-group">
+            <label for="baseUrlInput">基础URL:</label>
+            <input type="text" id="baseUrlInput" value="https://example.com">
+        </div>
+        <div class="input-group">
+            <label for="pathInput">路径:</label>
+            <input type="text" id="pathInput" value="/api/users">
+        </div>
+        <div class="input-group">
+            <label for="paramsInput">查询参数 (JSON格式):</label>
+            <input type="text" id="paramsInput" value='{"id": 123, "sort": "asc", "tags": ["important", "new"]}'>
+        </div>
+        <button onclick="demonstrateBuildUrl()">构建URL</button>
+        <div class="result" id="buildUrlResult">
+            <pre><code>// 结果将显示在这里</code></pre>
+        </div>
+    </div>
+
+    <!-- 获取查询参数演示 -->
+    <div class="demo-section">
+        <h2>获取查询参数</h2>
+        <div class="input-group">
+            <label for="queryUrlInput">输入带查询参数的URL:</label>
+            <input type="text" id="queryUrlInput" value="https://example.com/search?q=javascript&page=2&sort=relevance">
+        </div>
+        <button onclick="demonstrateGetQueryParams()">获取所有查询参数</button>
+        <div class="result" id="queryParamsResult">
+            <pre><code>// 结果将显示在这里</code></pre>
+        </div>
+        
+        <div class="input-group" style="margin-top: 20px;">
+            <label for="paramNameInput">参数名:</label>
+            <input type="text" id="paramNameInput" value="q">
+        </div>
+        <button onclick="demonstrateGetQueryParam()">获取特定参数</button>
+        <div class="result" id="queryParamResult">
+            <pre><code>// 结果将显示在这里</code></pre>
+        </div>
+    </div>
+
+    <!-- 修改查询参数演示 -->
+    <div class="demo-section">
+        <h2>修改查询参数</h2>
+        <div class="input-group">
+            <label for="updateUrlInput">原始URL:</label>
+            <input type="text" id="updateUrlInput" value="https://example.com/products?category=books&page=1">
+        </div>
+        <div class="input-group">
+            <label for="updateParamsInput">要更新的参数 (JSON格式):</label>
+            <input type="text" id="updateParamsInput" value='{"page": 2, "sort": "price-asc"}'>
+        </div>
+        <div class="input-group">
+            <label for="removeParamsInput">要移除的参数 (逗号分隔):</label>
+            <input type="text" id="removeParamsInput" value="category">
+        </div>
+        <button onclick="demonstrateUpdateQueryParams()">更新URL</button>
+        <div class="result" id="updateParamsResult">
+            <pre><code>// 结果将显示在这里</code></pre>
+        </div>
+    </div>
+
+    <!-- 相对URL解析演示 -->
+    <div class="demo-section">
+        <h2>解析相对URL</h2>
+        <div class="input-group">
+            <label for="relativeUrlInput">相对URL:</label>
+            <input type="text" id="relativeUrlInput" value="../images/photo.jpg">
+        </div>
+        <div class="input-group">
+            <label for="baseUrlForRelative">基础URL:</label>
+            <input type="text" id="baseUrlForRelative" value="https://example.com/products/category/">
+        </div>
+        <button onclick="demonstrateResolveUrl()">解析相对URL</button>
+        <div class="result" id="resolveUrlResult">
+            <pre><code>// 结果将显示在这里</code></pre>
+        </div>
+    </div>
+
+    <!-- 路径参数提取演示 -->
+    <div class="demo-section">
+        <h2>提取路径参数</h2>
+        <div class="input-group">
+            <label for="pathPatternInput">路径模式:</label>
+            <input type="text" id="pathPatternInput" value="/users/:id/profile/:section">
+        </div>
+        <div class="input-group">
+            <label for="actualPathInput">实际路径:</label>
+            <input type="text" id="actualPathInput" value="/users/123/profile/settings">
+        </div>
+        <button onclick="demonstrateExtractPathParams()">提取参数</button>
+        <div class="result" id="extractParamsResult">
+            <pre><code>// 结果将显示在这里</code></pre>
+        </div>
+    </div>
+
+    <!-- 分页URL生成演示 -->
+    <div class="demo-section">
+        <h2>生成分页链接</h2>
+        <div class="input-group">
+            <label for="paginationBaseUrl">基础URL:</label>
+            <input type="text" id="paginationBaseUrl" value="https://example.com/products">
+        </div>
+        <div class="input-group">
+            <label for="currentPageInput">当前页码:</label>
+            <input type="number" id="currentPageInput" value="3" min="1">
+        </div>
+        <div class="input-group">
+            <label for="totalPagesInput">总页数:</label>
+            <input type="number" id="totalPagesInput" value="10" min="1">
+        </div>
+        <button onclick="demonstrateGeneratePaginationLinks()">生成分页链接</button>
+        <div class="result" id="paginationLinksResult">
+            <pre><code>// 结果将显示在这里</code></pre>
+        </div>
+    </div>
+
+    <script src="url_util.js"></script>
+    <script>
+        // URL解析演示
+        function demonstrateParseUrl() {
+            try {
+                const urlString = document.getElementById('parseUrlInput').value;
+                const parsed = parseUrl(urlString);
+                document.getElementById('parseUrlResult').innerHTML = `<pre><code>${JSON.stringify(parsed, null, 2)}</code></pre>`;
+            } catch (error) {
+                document.getElementById('parseUrlResult').innerHTML = `<pre class="error"><code>${error.message}</code></pre>`;
+            }
+        }
+
+        // 构建URL演示
+        function demonstrateBuildUrl() {
+            try {
+                const baseUrl = document.getElementById('baseUrlInput').value;
+                const path = document.getElementById('pathInput').value;
+                const paramsInput = document.getElementById('paramsInput').value;
+                const params = JSON.parse(paramsInput);
+                
+                const result = buildUrl(baseUrl, path, params);
+                document.getElementById('buildUrlResult').innerHTML = `<pre><code>${result}</code></pre>`;
+            } catch (error) {
+                document.getElementById('buildUrlResult').innerHTML = `<pre class="error"><code>${error.message}</code></pre>`;
+            }
+        }
+
+        // 获取查询参数演示
+        function demonstrateGetQueryParams() {
+            try {
+                const url = document.getElementById('queryUrlInput').value;
+                const params = getQueryParams(url);
+                document.getElementById('queryParamsResult').innerHTML = `<pre><code>${JSON.stringify(params, null, 2)}</code></pre>`;
+            } catch (error) {
+                document.getElementById('queryParamsResult').innerHTML = `<pre class="error"><code>${error.message}</code></pre>`;
+            }
+        }
+
+        // 获取特定查询参数演示
+        function demonstrateGetQueryParam() {
+            try {
+                const url = document.getElementById('queryUrlInput').value;
+                const paramName = document.getElementById('paramNameInput').value;
+                const value = getQueryParam(paramName, url);
+                document.getElementById('queryParamResult').innerHTML = `<pre><code>${paramName}: ${value !== null ? `"${value}"` : 'null'}</code></pre>`;
+            } catch (error) {
+                document.getElementById('queryParamResult').innerHTML = `<pre class="error"><code>${error.message}</code></pre>`;
+            }
+        }
+
+        // 修改查询参数演示
+        function demonstrateUpdateQueryParams() {
+            try {
+                const url = document.getElementById('updateUrlInput').value;
+                const updateParamsInput = document.getElementById('updateParamsInput').value;
+                const removeParamsInput = document.getElementById('removeParamsInput').value;
+                
+                const paramsToUpdate = JSON.parse(updateParamsInput);
+                const paramsToRemove = removeParamsInput ? removeParamsInput.split(',').map(p => p.trim()) : [];
+                
+                const result = updateQueryParams(url, paramsToUpdate, paramsToRemove);
+                document.getElementById('updateParamsResult').innerHTML = `<pre><code>${result}</code></pre>`;
+            } catch (error) {
+                document.getElementById('updateParamsResult').innerHTML = `<pre class="error"><code>${error.message}</code></pre>`;
+            }
+        }
+
+        // 解析相对URL演示
+        function demonstrateResolveUrl() {
+            try {
+                const relativeUrl = document.getElementById('relativeUrlInput').value;
+                const baseUrl = document.getElementById('baseUrlForRelative').value;
+                
+                const result = resolveUrl(relativeUrl, baseUrl);
+                document.getElementById('resolveUrlResult').innerHTML = `<pre><code>${result}</code></pre>`;
+            } catch (error) {
+                document.getElementById('resolveUrlResult').innerHTML = `<pre class="error"><code>${error.message}</code></pre>`;
+            }
+        }
+
+        // 提取路径参数演示
+        function demonstrateExtractPathParams() {
+            try {
+                const pattern = document.getElementById('pathPatternInput').value;
+                const path = document.getElementById('actualPathInput').value;
+                
+                const params = extractPathParams(pattern, path);
+                if (params) {
+                    document.getElementById('extractParamsResult').innerHTML = `<pre><code>${JSON.stringify(params, null, 2)}</code></pre>`;
+                } else {
+                    document.getElementById('extractParamsResult').innerHTML = `<pre class="error"><code>路径不匹配模式</code></pre>`;
+                }
+            } catch (error) {
+                document.getElementById('extractParamsResult').innerHTML = `<pre class="error"><code>${error.message}</code></pre>`;
+            }
+        }
+
+        // 生成分页链接演示
+        function demonstrateGeneratePaginationLinks() {
+            try {
+                const baseUrl = document.getElementById('paginationBaseUrl').value;
+                const currentPage = parseInt(document.getElementById('currentPageInput').value);
+                const totalPages = parseInt(document.getElementById('totalPagesInput').value);
+                
+                const links = generatePaginationLinks(baseUrl, currentPage, totalPages);
+                
+                let result = '';
+                links.forEach(link => {
+                    const style = link.current ? 'font-weight: bold; color: blue;' : '';
+                    result += `<div style="${style}">页码 ${link.page}: <a href="${link.url}" target="_blank">${link.url}</a>${link.current ? ' (当前页)' : ''}</div>`;
+                });
+                
+                document.getElementById('paginationLinksResult').innerHTML = result;
+            } catch (error) {
+                document.getElementById('paginationLinksResult').innerHTML = `<pre class="error"><code>${error.message}</code></pre>`;
+            }
+        }
+
+        // 初始化演示
+        window.onload = function() {
+            demonstrateParseUrl();
+            demonstrateBuildUrl();
+            demonstrateGetQueryParams();
+            demonstrateGetQueryParam();
+            demonstrateUpdateQueryParams();
+            demonstrateResolveUrl();
+            demonstrateExtractPathParams();
+            demonstrateGeneratePaginationLinks();
+        };
+    </script>
+</body>
+</html> 

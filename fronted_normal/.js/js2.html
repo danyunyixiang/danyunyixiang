@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老婆ヾ(≧▽≦*)o</title>
+    <style>
+        body{
+            background: url() no-repeat top center/cover;
+        }
+        .red{
+            color: rgb(218, 133, 170);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p></p>
+    </div>
+<script>
+    const picture=[
+    'https://c-ssl.duitang.com/uploads/item/202002/20/20200220075335_jwnhk.jpg',
+    'https://c-ssl.duitang.com/uploads/item/202007/04/20200704200719_mmzyq.png',
+    'https://c-ssl.duitang.com/uploads/item/202007/17/20200717174643_8zLMd.jpeg',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2021/05/19/11/20/77803276_p0_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p14_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p19_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://c-ssl.duitang.com/uploads/item/202003/10/20200310000840_yFexY.gif',
+    ]
+    const list=[
+    '艾米莉娅，我的名字是艾米莉娅，就只是艾米莉娅哦',
+    '与其说无数次的对不起，只要说一次『谢谢』就能让对方心满意足，因为别人不是因为想要你道歉才帮忙，而是想要这么做才帮忙的喔',
+    '请公平的看待我，看待没有家名的艾米莉娅，既不是冰结魔女,也不是银发的半Elf,请认真的看待我',
+    '——好高兴，真的好高兴，从来没想过有一天有人会说喜欢我。——谢谢你，昴，谢谢你救了我',
+    '……像今天，我失败了，可是，明天一定会不一样的。是这样，对吧',
+    '我的重要的心情……在我恢复、所有记忆之后……就会有吗？',
+    '我要大声的喊出我的梦想，大声的喊，让天上的妈妈能够听见———在妈妈所深爱的这个世界里，我幸福的生活着！'
+    ]
+    const active=function(){
+    let random=Math.floor(Math.random()*picture.length)
+    document.body.style.backgroundImage=`url(${picture[random]})`
+    // // document.title=`这是老婆${random+1}`       
+    // //                  <=> 
+    // const entitle=document.querySelector('title')
+    // entitle.innerText=`老婆ヾ(≧▽≦*)o`
+    setInterval(function(){
+    const love=document.querySelector('p')
+    love.classList.add('red')
+    love.innerText=`${list[random]}`
+    },4000)}
+    // const write=function(){
+    //     let random=Math.floor(Math.random()*picture.length)
+    //     const love=document.querySelector('p')
+    //     love.classList.add('red')
+    //     love.innerText=`${list[random]}`
+    // }
+    active()
+    // write()
+    let id1=setInterval(active,2500)
+    // let id2=setInterval(write,4000)
+    
+</script>
+</body>
+</body>
+</html>

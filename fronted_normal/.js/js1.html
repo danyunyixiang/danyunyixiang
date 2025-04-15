@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>javascript</title> 
+    <style>
+        h1{
+            color: aqua;
+            text-align: center;
+        }
+        table{
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        td,
+        th{
+            padding: 5px 25px;
+        }
+    </style>
+</head>
+<body>
+    <h1>评估</h1>
+    <script> 
+        let num1=+prompt('淡云依香的数量')
+        let num2=+prompt('化作红裳的数量')
+        num=num1*100+num2*200
+        document.write(`
+        <table border="3">
+            <tr class="a">
+                <th>商品</th><th>淡云依香</th><th>化作红裳</th><th>总价</th>
+            </tr>
+            <tr>
+                <td>价值</td><td>${num1}</td><td>${num2}</td><td>${num}元</td>
+            </tr>
+        </table>`)
+    </script>
+    <br><p style="color: rgb(56, 150, 218);text-align: center">淡云依香-->100元<br>化作红裳-->200元</p>
+    <input type="text" id="myInput" placeholder="输入一些内容">
+    <button onclick="getInputValue()">获取值</button>    
+    <script>
+            function getInputValue() {
+            const inputElement = document.getElementById("myInput");
+            // 获取输入框的值并赋给变量
+            const inputValue = inputElement.value;
+            // 在控制台打印变量值
+           document.write(inputValue)
+            }
+    </script>
+</body>
+</html>

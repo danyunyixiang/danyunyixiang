@@ -1,0 +1,155 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100vh;
+    /* font-size: 48px; */
+}
+
+body{
+    background: url(../image/爱蜜莉亚.png)
+    no-repeat top center ;
+    background-size: cover;
+    min-width: 1024px;
+    max-width: 1920px;
+}
+
+#nav{
+    min-height: 1rem;
+    max-height: 1.5rem;
+    background: #fff;
+    padding: .1rem;
+    display: flex;
+}
+
+.box{
+    font-size: .4rem;
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.box:nth-child(1){
+    justify-content: flex-start;
+    
+}
+.box:nth-child(2){
+    justify-content: center ;
+    flex:3
+}
+.box:nth-child(3){
+    justify-content: flex-end;
+
+}
+
+#nav .box a{
+    position: relative;
+    margin: 0 .4rem;
+    padding: 0 .3rem;
+    border-radius: 0 .25rem ;
+    /* 下划线 */
+    text-decoration: none; 
+    color: pink;
+    transition: all .2s;
+
+}
+/* 文字边框 */
+#nav .box a::before{
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: .15rem;
+    height: .15rem;
+    border-top: 2px solid #5fe7ee;
+    border-left: 2px solid #5fe7ee;
+}
+#nav .box a::after{
+    position: absolute;
+    content: "";
+    bottom: 0;
+    right: 0;
+    width: .15rem;
+    height: .15rem;
+    border-bottom: 2px solid #5fe7ee;
+    border-right: 2px solid #5fe7ee;
+}
+#nav .box a:hover{
+    background-color: rgba(135, 233, 220, 0.47);
+    animation: ahover .2s 1;
+}
+
+@keyframes ahover {
+    25%{
+        transform: translateX(15%);
+    }
+    50%{
+        transform: translateX(0);
+    }
+    75%{
+        transform: translateX(-15%);
+    }
+    to{
+        transform: translateX(0);
+    }
+  }
+
+
+
+
+
+/* body */
+#body{
+    display: flex;
+    justify-self: center;
+    align-items: center;
+
+}
+
+.chart{
+    width: 8rem;
+    height: 8rem;
+    background: rgba(228, 184, 213, 0.9);
+    opacity: .6;
+
+    transition: all .6s;
+}
+
+/* 练练写法 */
+#body:hover .chart:nth-child(1){
+    translate: -15% 15%;
+    transform: scale(1.2);
+}
+#body:hover .chart:nth-child(2){
+    translate: 15% 15%;
+    transform: scale(1.2);
+}
+#circle{
+    position: absolute;
+    content: "";
+    bottom: 2rem;
+    right: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #EF845D;
+    transition: all .5s;
+    opacity: .6;
+    font-size: .3rem;
+}
+#body:hover #circle{
+    animation: recircle 2s infinite;
+}
+@keyframes recircle{
+    0%{
+        transform: rotate(0) scale(.6);
+    }
+    50%{
+        transform: scale(1.2);
+    }
+    to{
+        transform: rotate(-180deg) scale(.3);
+    }
+}

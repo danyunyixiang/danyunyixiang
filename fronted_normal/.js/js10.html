@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .out img{
+        position: fixed;
+        width: 500px;
+        bottom: 0;
+        left: 0;
+    }    
+    .out a{
+        position: fixed;
+        bottom: 180px;
+        left: 180px;
+        color: rgb(70, 206, 213);
+    }
+</style>
+<body>
+    <div class="out">
+        <img src="https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p19_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000">
+
+    </div>
+    <div>
+        <p></p>
+    </div>
+<script>
+    const out = document.querySelector('.out')
+    const outImg = document.querySelector('.out img')
+    setTimeout(function(){
+        out.removeChild(outImg)
+    }, 3000)
+
+    setTimeout(function(){
+        // const a = document.createElement('a')
+        // out.appendChild(a)
+        // a.href = `https://mzh.moegirl.org.cn/%E7%88%B1%E8%9C%9C%E8%8E%89%E9%9B%85`
+        // a.innerHTML = `爱蜜莉亚`
+        //              <=>
+        out.innerHTML = `<a href="https://mzh.moegirl.org.cn/%E7%88%B1%E8%9C%9C%E8%8E%89%E9%9B%85">爱蜜莉亚</a>`
+        const a = document.querySelector('.out a')
+        a.addEventListener('click', function(){//点击跳转
+        location.href = a.href
+        }) 
+        const p = document.querySelector('div p')
+        let i = 5
+        p.innerHTML = `${i}秒后带你了解爱蜜莉亚o((>ω< ))o`
+        let id = setInterval(function(){//文字
+        i--
+        p.innerHTML = `${i}秒后带你了解爱蜜莉亚o((>ω< ))o`
+        if( i === 0 ){//停止并跳转
+            clearInterval(id)
+            location.href = a.href
+        }
+        }, 1000)
+    }, 3000)
+
+
+
+
+</script>
+</body>
+</html>

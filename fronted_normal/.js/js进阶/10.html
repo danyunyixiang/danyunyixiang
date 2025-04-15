@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<style>
+    button{
+        background-color:#eee;
+    }
+
+    .box{
+        height: 200px;
+        width: 300px;
+        background: #eee;
+        color: #da47dd;
+        font-size: 24px;
+        border: 2px solid #aaa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+<body>
+    <button id="button"">点击</button>
+
+    <div class="box"></div>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script>
+const first = () => {
+    // this 指向
+
+    // 普通函数/箭头函数
+    
+    // 普通函数this指向其调用者
+
+    // 箭头函数this指向其上层作用域(函数)的this
+    
+
+
+    // 改变this指向
+
+    // 1.call
+    // 语法：函数.call(thisArg, arg1, arg2, ...)
+    // 作用：调用函数，并改变this指向
+    // 参数：
+    //   - thisArg：指定函数执行时的this值
+    //   - arg1, arg2, ...：传递给函数的参数
+    // 返回值：调用函数的结果
+    const obj = {
+        name: '张三', 
+        say: function(age, gender) {
+            console.log(this.name, age, gender)
+        }
+    }
+    const obj2 = {
+        name: '李四'
+    }
+    obj.say.call(obj2, 18, '男') // 调用obj.say函数，并改变this指向为obj2，传递参数18和'男'
+
+
+    // 2.apply
+    // 语法：函数.apply(thisArg, [args])
+    // 作用：调用函数，并改变this指向
+    // 参数：
+    //   - thisArg：指定函数执行时的this值
+    //   - [args]：传递给函数的参数（数组）
+    // 返回值：调用函数的结果
+    obj.say.apply(obj2, [18, '男']) // 调用obj.say函数，并改变this指向为obj2，传递参数18和'男'
+
+    // [args]传递参数特点
+    function fn1(a) {
+        console.log(a)
+    }
+    fn1.apply(null, [1, 2]) //会对数组进行解构,将解构后的值传递给函数(一一对应,按量传递)
+    // 类似用了展开运算符
+
+    // 求数组最大值
+    const max = (arr) => Math.max.apply(null, arr)  //同于展开运算符
+    console.log(max([1, 2, 3, 4, 5])) // 5
+
+    console.log(Math.max(...[1, 2, 3, 4, 5])) // 5
+
+
+    // 3.bind       
+    // 语法：函数.bind(thisArg, arg1, arg2, ...)
+    // 作用：调用函数，并改变this指向
+    // 参数：
+    //   - thisArg：指定函数执行时的this值
+    //   - arg1, arg2, ...：传递给函数的参数
+    // 返回值：改变this指向的函数
+    const fn = obj.say.bind(obj2, 18, '男')    //bind方法不会调用函数
+    fn() // 调用fn函数，并改变this指向为obj2，传递参数18和'男'
+
+    // 示例
+    const close = function(){
+        this.disabled = true
+        setTimeout(function(){
+            this.disabled = false
+        // }.bind(button),2000)
+        }.bind(this),2000)
+    }  
+    document.getElementById('button').addEventListener('click',close)
+
+    // document.getElementById('button').addEventListener('click',function(){
+    //     this.disabled = true
+    //     setTimeout(() => this.disabled = false,2000)
+    // })
+
+
+}
+first()
+console.log('---------------first-----------------')
+const second = () => {
+
+    const box = document.querySelector('.box')
+    let num = 0 ;
+    
+    // 防抖
+    // 单位时间内，频繁触发事件，只执行最后一次
+
+    // 1.lodash库
+    // 用法： _.debounce(function,delay)
+    ;
+    (function(){
+        box.addEventListener("mousemove",_.debounce(function(){
+            this.innerHTML = ++num
+        },100))
+    }())
+
+    // 2.自定义防抖
+    ;
+    (function(){
+        function debounce(fn,delay){
+            let timer = null
+            return function(){
+                clearTimeout(timer)  //清除定时器
+                timer = setTimeout(()=>fn.apply(this,arguments),delay) //设置定时器
+            }
+        }  //addEventListener 的回调函数中，this指向的是事件源
+        box.addEventListener("mousemove",debounce(function(){
+            this.innerHTML = ++num
+        },100))
+    }) //未调用
+
+
+
+    
+
+    // 节流
+    // 单位时间内，频繁触发事件，只执行一次
+
+    // 1.lodash库
+    // 用法： _.throttle(function,delay)
+    ;
+    (function(){
+        box.addEventListener("mousemove",_.throttle(function(){
+            this.innerHTML = ++num
+        },500))
+    }()) 
+
+    // 2.自定义节流
+    ;
+    (function(){
+        function throttle(fn,delay){
+            let timer = null  
+            if(!timer){
+                timer = setTimeout(()=>{
+                    fn.apply(this,arguments)
+                    timer = null // 清除定时器
+                },delay)
+            }
+        }
+        box.addEventListener("mousemove",throttle(function(){
+            this.innerHTML = ++num
+        },500))
+    }) //未调用
+
+
+    
+}
+second()
+console.log('---------------second-----------------')
+    
+</script>
+</body>
+</html>

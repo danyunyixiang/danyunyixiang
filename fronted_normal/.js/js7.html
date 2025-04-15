@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电梯</title>
+</head>
+<style>
+    html{
+        scroll-behavior: smooth;
+    }
+    .rightnav{
+        position: fixed;
+        display: inline-block;
+        right: 80px;
+        top: 120px;
+        height: 200px;
+        width: 80px;
+        background-color: aqua;
+        opacity: 0;
+        transition: all .8s;
+    }
+    .rightnav ul li{
+        display: block;
+    }
+    .img{
+        border: 4px black double;
+        height: 3500px;
+        width: 80px;
+    }
+    .img img{
+        height: 400px;
+    }
+    .go{
+        position: fixed;
+        display: inline-block;
+        right: 200px;
+        top: -400px;
+        height: 450px;
+        width: 200px;
+        background-color: aquamarine;
+        transition: all .8s;
+    }
+</style>
+<body>
+<div class="rightnav">
+    <p>returnTop</p>
+    <ul>
+        <li data-id="0">1</li>
+        <li data-id="1">2</li>
+        <li data-id="2">3</li>
+        <li data-id="3">4</li>
+        <li data-id="4">5</li>
+        <li data-id="5">6</li>
+        <li data-id="6">7</li>
+    </ul>
+</div>
+<div class="img">
+    <div><img src="" ></div>
+    <div><img src="" ></div>
+    <div><img src="" ></div>
+    <div><img src="" ></div>
+    <div><img src="" ></div>
+    <div><img src="" ></div>
+    <div><img src="" ></div>
+</div>
+<div class="go">
+
+</div>
+<script>
+    const picture=[
+    'https://c-ssl.duitang.com/uploads/item/202002/20/20200220075335_jwnhk.jpg',
+    'https://c-ssl.duitang.com/uploads/item/202007/04/20200704200719_mmzyq.png',
+    'https://c-ssl.duitang.com/uploads/item/202007/17/20200717174643_8zLMd.jpeg',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2021/05/19/11/20/77803276_p0_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p14_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p19_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://c-ssl.duitang.com/uploads/item/202003/10/20200310000840_yFexY.gif',
+    ]
+    const rightnav = document.querySelector('.rightnav')
+    const img = document.querySelectorAll('.img img')
+
+    const imgDiv = document.querySelectorAll('.img div')
+
+    for (let i = 0 ;i < picture.length ;i++){
+        img[i].src = picture[i]
+    }
+        
+    const ul = document.querySelector('.rightnav ul')
+    ul.addEventListener('click',function(e){//伪数组,实现跳转
+        let id = e.target.dataset.id
+        document.documentElement.scrollTop = imgDiv[id].offsetTop
+    })
+
+    window.addEventListener('scroll',function(){
+        const num = document.documentElement.scrollTop
+        rightnav.style.opacity = num >= 200 ? 1 : 0 
+        //!!!  rightnav.style.opacity = (num >= 200 ? 1 : 0) 
+    })
+
+    const p = document.querySelector('.rightnav p')
+    p.addEventListener('click',function(){
+        document.documentElement.scrollTop = 0
+    })//返回顶部
+    
+    //下滑轮图
+    const go = document.querySelector('.go')
+    window.addEventListener('scroll',function(){
+        let n = document.documentElement.scrollTop
+        // if( n > 800){
+        //     go.style.top = '0'
+        // }else{
+        //     go.style.top = '-400px'
+        // }
+        go.style.top = n > 800 ? '0' : '-400px'
+        //用三元 改写if else
+    })
+</script>
+</body>
+</html>

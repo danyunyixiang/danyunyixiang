@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+<script>
+const first = () => {
+
+    // 三种方式创建对象
+    const obj1 = {}
+
+    const obj2 = new Object()
+
+    // ”构造函数“创建对象
+    const Objfn =  function(name, age)  {
+        this.name = name;
+        this.age = age;
+    } 
+    // function Objfn(name, age)  {
+    //     this.name = name;
+    //     this.age = age;
+    // } 
+    const obj3 = new Objfn('胡阌祺', 18)
+    console.log(obj3)
+    // 使用规范(习惯，约束)
+    // Objfn 首字母大写，表示这是一个构造函数
+    // 创建对象时，使用 new 关键字 
+
+
+    // 不用
+
+    const objfunction = (name, age) => ({
+        name: name,
+        age: age,
+    })
+    const obj4 = objfunction('胡阌祺', 18)
+    console.log(obj4)
+    
+    // 区别说明：
+    // 1. 构造函数（使用new关键字）:
+    // - 创建一个新的空对象
+    // - 将this绑定到新对象
+    // - 对象会继承构造函数的prototype
+    // - 自动返回this对象
+
+    // 2. 普通函数:
+    // - this指向调用环境（通常是window或undefined）
+    // - 需要手动返回对象
+    // - 不会自动创建原型链接
+
+    // 3. 箭头函数:
+    // - 不能作为构造函数使用（不能使用new）
+    // - 没有自己的this，继承外层作用域的this
+    // - 没有prototype属性
+
+
+
+
+    // 实例成员
+    // 实例成员：构造函数内部通过this添加的成员
+    // 实例属性
+    obj3.city = '河南'
+    // 实例方法
+    obj3.say = function() {
+        console.log('你好')
+    }
+    console.log(obj3)
+
+    // 静态成员
+    // 静态成员：构造函数本身添加的成员
+    // 静态属性
+    Objfn.city = '河南'
+    // 静态方法
+    Objfn.say = function() {
+        console.log('你好')
+    }
+    console.log(Objfn.city)
+    Objfn.say()
+
+
+}
+first()
+console.log('---------------first-----------------')
+
+
+const second = () => {
+    // 内置；“构造函数”
+    // 引用类型
+    // Object, Array, RegExp, Date 等
+
+
+    // Object.keys()
+    // Object.values()
+    const obj = {
+        name: '胡阌祺',
+        age: 18,
+    }
+    console.log(Object.keys(obj))
+    console.log(Object.values(obj))
+    // 获取对象的属性名/属性值  构成数组
+
+    // Object.assign()
+    // 对象拷贝
+    const obj1 = {
+        name: '胡阌祺',
+        age: 18,
+    }
+    const obj2 = {
+        name: '',
+        city: '河南',
+    }
+    // 用处:给obj2添加obj1的属性
+    console.log(Object.assign(obj2, obj1))
+    // 将   obj2 <= obj1   有则覆盖,无则添加,其余不变
+    // 返回被改变的obj2(能修改对象内容)
+
+    // 用于给已有对象添加属性
+    Object.assign(obj2, {gender: '男'})
+    console.log(obj2)
+    // 将{gender: '男'}添加到obj2中
+
+
+    // Array
+    // forEach  遍历数组 不返回数组，经常用于查找遍历数组元素
+    // fiter  过滤数组 返回新数组，返回的是筛选满足条件的数组元素
+    // map  迭代数组 返回新数组，返回的是处理之后的数组元素，想要使用返回的新数组
+    // reduce  累计器 返回累计处理的结果，经常用于求和等
+
+
+    // arr.reduce(function(上一次值,当前值){},初始值)
+    const arr = [1, 2, 3, 4, 5]
+    const sum = arr.reduce(function(prev, current){
+        return prev + current
+    }, 0)
+    // const sum = arr.reduce((prev, current) => prev + current, 0)
+    console.log(sum)
+    // 0 是初始值  可不设置初始值,则默认从数组第一个元素开始
+    // const sum = arr.reduce((prev, current) => prev + current)
+
+
+    const arr1 = [
+        {name: '胡阌祺', salary: 3000},
+        {name: '胡阌祺', salary: 3000},
+        {name: '胡阌祺', salary: 3000},
+    ]
+    const totalSalary = arr1.reduce((prev, current) => prev + current.salary, 0)
+    console.log(totalSalary)
+
+
+    //实例方法 join 数组元素拼接为字符串，返回字符串
+    // 实例方法 find 查找元素，返回符合测试条件的第一个数组元素值，如果没有符合条件的则返回 undefined
+    // 实例方法 every 检测数组所有元素是否都符合指定条件，如果所有元素都通过检测返回 true，否则返回 false
+    // 实例方法 some 检测数组中的元素是否满足指定条件如果数组中有元素满足条件返回true，否则返回 false
+
+
+    const arr2 = [
+        {
+            name: '小米',
+            price: 1000,
+        },
+        {
+            name: '华为',
+            price: 2000,
+        },
+    ]
+    const result = arr2.find(item => item.name === '小米') //当item.name === '小米'时(true)，返回item
+    // const result = arr2.find(function(item){
+    //     return item.name === '小米'  })
+    //reutrn后语句 为判定条件
+    // find 返回符合条件的第一个元素
+    console.log(result)  //查找特定对象
+
+
+
+    // 将伪数组转换为数组
+    // Array.from()
+    const fun = function(){
+        const arr = Array.from(arguments)
+        console.log(arr.find(item => item === 3))
+    }  //箭头函数没有arguments
+    fun(1,2,3,4,5)
+
+}
+second()
+console.log('---------------second-----------------')
+
+
+const third = () => {
+    // string实例方法
+
+    // length 返回字符串长度
+    
+    // split() 将字符串分割为数组
+    // join() 将数组元素拼接为字符串
+
+    let str = '123456789'
+    const ToArray = (item) => item.split('')
+    //split('分隔符')  分隔依据
+    // 储存为字符串
+    console.log(ToArray(str))
+
+    // 将数组元素拼接为字符串
+    const ToStr = (item) => item.join('')
+    //join('连接符')  连接符号
+    console.log(ToStr(ToArray(str)))
+
+
+    // substring() 截取字符串
+    // 返回从开始索引到结束索引之间的字符串，不包括结束索引
+    // 如果开始索引大于结束索引，则返回空字符串
+    // 如果开始索引小于0，则从0开始
+    // 如果结束索引大于字符串长度，则到字符串末尾
+    const sub = (item) => item.substring(0, 3)
+    console.log(sub(str))
+
+    // startWith() 判断字符串是否以指定字符串开头
+    // 返回布尔值
+    const startWith = (item) => item.startsWith('123')
+    console.log(startWith(str))
+
+    // endWith() 判断字符串是否以指定字符串结尾
+    // 返回布尔值
+    const endWith = (item) => item.endsWith('9')
+    console.log(endWith(str))
+
+    // includes() 判断字符串是否包含指定字符串
+    // 返回布尔值
+    const includes = (item) => item.includes('1')
+    console.log(includes(str))
+
+    // indexOf() 返回指定字符串在字符串中的位置
+    // 返回索引值 第一个字符串位置
+    // 如果指定字符串不在字符串中，则返回-1
+    const indexOf = (item) => item.indexOf('1')
+    console.log(indexOf(str))
+
+    // lastIndexOf() 返回指定字符串在字符串中的最后位置
+    // 返回索引值 最后一个字符串位置
+    const lastIndexOf = (item) => item.lastIndexOf('1')
+    console.log(lastIndexOf(str))
+
+    // replace() 替换字符串中的指定内容
+    // 参数1：字符串或正则表达式
+    // 参数2：替换的内容或回调函数
+    // 返回新字符串，原字符串不变
+    const replace = (item) => item.replace('12', '23')
+    console.log(replace(str))
+    
+    // 使用字符串作为第一个参数时，只替换第一个匹配项
+    console.log('126126789'.replace('12', '23'))  // '236126789'
+    
+    // 使用正则表达式可以替换所有匹配项
+    console.log('126126789'.replace(/12/g, '23'))  // '236236789'
+    
+    
+}
+third()
+console.log('---------------third-----------------')
+
+const fourth = () => {
+    // Number
+    
+    // toFixed() 将数字转换为指定小数位数的字符串
+    // 返回字符串
+    console.log(Number('123.456').toFixed(2)) // 123.46
+    console.log(Number('123.456').toFixed()) // 123
+    //  => console.log(num.toFixed(0))
+    console.log(Number('123').toFixed(2)) // 123.00
+    // Number() 将字符串转换为数字
+    
+
+}
+fourth()
+console.log('---------------fourth-----------------')
+</script>
+</body>
+</html>

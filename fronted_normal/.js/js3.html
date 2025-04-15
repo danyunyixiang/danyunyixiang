@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            display: inline-block;
+        }
+        .right{
+            border-color: aqua;
+            border-width: 5px;
+            border-style: double;
+            height: 20px;
+            width: 300px;
+
+        }
+    </style>
+</head>
+<body>
+    <input type="text" placeholder="胡阌祺">
+    <div>
+        <p data-name="宵宫" data-love="like">宵宫</p>
+        <p data-name="胡阌祺">胡阌祺</p>
+    </div>
+    <div class="right"></div>
+    <input type="submit" placeholder="">
+    <button>get</button>
+    <script>
+        const getput=document.querySelector('input')
+        getput.placeholder=''
+        const name=document.querySelector('p')
+        console.log(name.dataset.love)
+
+        const right=document.querySelector('.right')
+        let i=10
+        let close=setInterval(function(){
+            i--
+            right.innerHTML=i
+            if(i===1){
+                clearInterval(close)
+                right.innerHTML=`计时器已结束`
+            }
+        },400)
+        const btn=document.querySelector('button')
+        const input=document.querySelector('input')
+        btn.addEventListener('input',function(){
+            input.style.placeholder='guisgh'
+        })
+    </script>                                                                                                   
+</body>
+</html>

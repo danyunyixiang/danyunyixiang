@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浮动/定位</title>
+    <style>
+        .father{
+            background-color: aqua;
+            width: 500px;
+            height: 200px;
+            border-style: double;
+            border-color: black;
+            border-width: 5px;
+        }
+        .left-son{
+            background-color: rgb(255, 0, 0);
+            width: 100px;
+            height: 100px;
+            float: left;
+            border-style: double;
+            border-color: rgb(179, 255, 0);
+            border-width: 5px;
+        }
+        .right-son{
+            background-color: rgb(255, 0, 0);
+            width: 100px;
+            height: 100px;
+            float: right;
+            border-style: double;
+            border-color: rgb(179, 255, 0);
+            border-width: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="father">
+        <div class="left-son"></div>
+        <div class="left-son"></div>
+        <div class="right-son"></div>
+        <div class="right-son"></div>
+    </div><hr>
+    <div>
+        <p style="position: fixed;right: 10px;top: 40px;">
+            <!-- position:fixed  固定定位 -->
+            <input type="text" placeholder="(～﹃～)~zZ"><br>
+            <a href="https://media.9game.cn/gamebase/2021/11/25/229690591.jpg">
+                click here<br>o(*^▽^*)┛申鹤o((>ω< ))o<br>
+                <img src="https://media.9game.cn/gamebase/2021/11/25/229690591.jpg" alt="" width="250"></a>
+        </p>
+    </div>
+    <div style="display: inline-block; height: 1000px;width: 20px;background-color: brown;"></div>
+</body>
+</html>

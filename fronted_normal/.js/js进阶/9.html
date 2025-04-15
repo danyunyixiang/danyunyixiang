@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拷贝</title>
+</head>
+<body></body>
+<!-- 引入lodash -->
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script>
+const first = () => {
+    // 拷贝
+    // 针对引用数据类型
+
+    // 浅拷贝
+    // 指拷贝对象的引用地址，而不是拷贝对象的值
+    // 拷贝对象，拷贝数组
+
+
+    // 浅拷贝是按位拷贝对象，它会创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。
+    // 如果属性是基本类型，拷贝的就是基本类型的值；如果属性是内存地址（引用类型），拷贝的就是内存地址 ，
+    // 因此如果其中一个对象改变了这个地址，就会影响到另一个对象。
+
+    // 与直接赋值的区别
+    // 直接赋值是直接将对象的引用地址赋值给新的对象，所以会影响到原对象
+    // 浅拷贝是创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝，但是对于对象内的引用类型，拷贝的是内存地址
+
+    const obj = {
+        name: '胡阌祺',
+        age: 18,
+        info: {
+            city: '河南'
+        }
+    }
+    const obj2 = {}
+    Object.assign(obj2, obj)
+    obj2.name = '胡阌祺2'
+    obj2.info.city = '上海'  // 浅拷贝，拷贝的是引用地址，所以会影响到obj
+    console.log(obj) //胡阌祺,上海
+    console.log(obj2) //胡阌祺2,上海
+
+
+
+
+
+// 深拷贝
+// 拷贝对象的值，而不是拷贝对象的引用地址
+// 深拷贝的三种方式
+// 1. 递归拷贝
+// 2. 使用lodash的cloneDeep方法
+// 3. 使用JSON.parse(JSON.stringify(obj))
+const obj3 = {
+    name: '胡阌祺',
+    age: 18,
+}
+
+
+// let i = 0
+// setInterval(function(){
+//     console.log(i);
+//     i++
+// },500)
+// // setTimeout用递归实现setInterval效果
+// function fn(){
+//     console.log(i);
+//     i++
+//     setTimeout(fn,500)
+// }
+// fn()
+
+
+// 1.递归拷贝
+
+// const deepClone = (obj) => {
+//     if (typeof obj !== 'object' || obj === null) {
+//         return obj  //排除(主要针对递归部分)基本数据类型和null
+        
+//     }  //方法不会进行拷贝，而是复制内存地址
+
+
+//     // 针对引用数据类型
+//     const newObj = Array.isArray(obj) ? [] : {}  //判断引用数据类型，拷贝其内部的数组或对象
+//     for (let key in obj) {
+//         if (obj.hasOwnProperty(key)) {
+//             // 递归拷贝
+//             newObj[key] = deepClone(obj[key])
+//         }
+//     }
+//     return newObj
+// }
+
+const deepClone = (obj) => {
+    // 非对象类型（包括基本类型、null、函数）直接返回原值
+    if (typeof obj !== 'object' || obj === null) {
+        return obj
+    }
+
+    // 处理数组和对象，仅遍历自身可枚举属性
+    const newObj = Array.isArray(obj) ? [] : {}
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            // 递归深拷贝，无法处理循环引用和特殊对象（如Date/RegExp）
+            newObj[key] = deepClone(obj[key])
+        }
+    }
+    return newObj
+}
+
+// 2.应用loddash的cloneDeep方法
+const obj4 = _.cloneDeep(obj3)
+
+
+
+// 3.应用JSON.parse(JSON.stringify(obj))
+
+// JSON.stringify 用于将JavaScript对象转换为JSON字符串。
+// JSON.parse 用于将JSON字符串转换为JavaScript对象。
+const obj5 = JSON.parse(JSON.stringify(obj3))
+console.log(obj5)
+}
+first()
+console.log('---------------first-----------------')
+
+const second = () => {
+// 异常处理
+// throw抛异常
+// try/catch 捕获异常
+// debugger
+
+
+function fn(x,y){
+    if (!x || !y){
+        //throw'没有参数传递进来'
+        throw new Error('没有参数传递过来')
+        // throw会中断程序
+    }
+    return x+y
+}
+
+
+try{
+    // 可能会出现异常的代码
+    const p = document.querySelector('.p')
+    p.innerHTML = '123'
+}catch(error){
+    // 如果出现异常，则执行catch中的代码
+    // 不中断程序，只会提示浏览器提供的错误信息
+    console.log(error.message) // 获取异常信息
+
+    return 0
+}finally{
+    // 无论是否出现异常,都会执行finally中的代码
+    console.log('无论是否出现异常,都会执行finally中的代码')
+}
+
+debugger // 断点调试
+// 程序运行到此处会暂停
+
+
+}
+second()
+console.log('---------------second-----------------')
+</script>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>放大镜</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        background-color: #eee;
+    }
+    .container{
+        width: 600px;
+        height: 800px;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+    }
+    .small{
+        width: 600px;
+        height: 200px;
+        display: flex;
+    }
+    .small div{
+        height: 200px;
+        width: auto;
+        margin: 10px;
+    }
+    .small div img{
+        height: 180px;
+        width: auto;
+    }
+    .middle{
+        width: 600px;
+        height: 600px;
+        margin: 10px;
+    }
+    .middle img{
+        height: 580px;
+        width: auto;
+    }
+    .big{
+        display: none;
+        height: 600px;
+        width: 800px;
+        margin: 10px;
+        background-color: #fff;
+    }
+    .big img{
+        height: 580px;
+        width: auto;
+        margin: 10px;
+    }
+</style>
+<body>
+
+<div class="container">
+    <div class="small">
+        <div><img src="../pictures/4.jpeg"></div>
+        <div><img src="../pictures/2.JPG"></div>
+        <div><img src="../pictures/1.jpg"></div>
+    </div>
+    <div class="middle"><img src="" ></div>
+</div>
+<div class="big"><img src=""></div>
+
+</body>
+<script>
+    const small = document.querySelector('.small')
+    const smallImg = document.querySelectorAll('.small div img')
+    const middle = document.querySelector('.middle')
+    const big = document.querySelector('.big')
+
+    small.addEventListener('mouseover',function(e){
+        if(e.target.tagName === 'IMG'){
+            for(let i = 0; i < smallImg.length; i++){
+                smallImg[i].style.border = 'none'
+            }
+            middle.querySelector('img').src = e.target.src
+            e.target.style.border = '2px solid aqua'
+        }
+    })
+
+    middle.addEventListener('mouseenter', show)
+    middle.addEventListener('mouseleave', hide)
+    let timeId = null
+
+    function show(){
+        //离开时清除定时器，防止出现定时器id的bug
+        clearTimeout(timeId)
+        // 注意逻辑
+        big.style.display = 'block'
+        big.querySelector('img').src = middle.querySelector('img').src
+    }
+    function hide(){
+        timeId = setTimeout(() => {
+            big.style.display = 'none'
+        }, 300);
+    }
+
+    big.addEventListener('mouseenter', show)
+    big.addEventListener('mouseleave', hide)    
+</script>
+</html>

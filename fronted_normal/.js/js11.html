@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 800px;
+            height: 500px;
+            border: 4px double #fd7def;
+            margin: 50px auto;
+            background-color: rgb(252, 238, 255);
+        }
+        .box .abox{
+            text-align: center;
+            padding: 10px;
+        }
+        .box .mainbox .nav table{
+            margin: 0 auto;
+        }
+        .box .mainbox .nav table th a{
+            padding: 0 100px;
+            font-size:larger;
+        }
+        .box .innerbox .captcha{
+            text-align: end;
+        }
+        .box .innerbox .captcha a{
+            color: #35d0d8;
+        }
+        .box .innerbox .input{
+            text-align: center;
+        }
+        .box .innerbox .input input{
+            text-align: center;
+            border: 0;
+            outline: 0;
+            color: #35d0d8;
+            background-color: rgb(150, 0, 153);
+            height: 30px;
+            width: 500px;
+            margin: 15px;
+        }
+        .box .innerbox .input input::placeholder{
+            color: #fd7def;
+        }
+        .box .innerbox .code{
+            text-align: center;
+        }
+        .box .innerbox .code img{
+            width: 300px;
+        }
+        a{
+            color: #d548ad;
+            /* 清除下划线 */
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <input type="text">
+    <input type="button" onclick="out()" value="开始认证">
+    <div class="box">
+        <div class="abox"><a href="#">加载ing</a></div>
+        <div class="mainbox">
+            <div class="nav">
+                <table>
+                    <th><a href="#" data-id="0">用户登入</a></th>
+                    <th><a href="#" data-id="1">二维码扫描</a></th>
+                </table>
+            </div>
+            <div class="innerbox">
+                <div class="input" >
+                    <div class="captcha" ><a href="#">手机验证码登入</a></div>
+                    <input type="text" placeholder="用户名或手机号">
+                    <input type="text" placeholder="密码">
+                </div>
+                <div class="code" style="display: none;">
+                    <img src="https://c-ssl.duitang.com/uploads/item/202002/20/20200220075335_jwnhk.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    console.log(eval(arr.join('+')))
+
+    function out(){
+    const love = /[淡云依香,化作红裳]+/
+    const input = document.querySelector('input')
+    if ( love.test(input.value) ){
+        alert('认证成功')
+    } else {
+        alert('傻逼')
+    }
+    input.value = ''
+}
+
+    //倒计时效果
+    function loading(){
+        let flag = true
+        //flag 控制可否点击
+        const a =document.querySelector('.box .abox a')
+        a.addEventListener('click', function(){
+        if(flag){
+            flag = false
+            let i = 3
+            a.innerHTML = `还剩${i}秒载入`
+            let id = setInterval(function(){
+                i--
+                a.innerHTML = `还剩${i}秒载入`
+                if( ! i ){
+                    clearInterval(id)
+                    a.innerHTML = `载入失败惹`
+                    flag = true
+                }
+            }, 1000)}
+        })
+    }
+    loading();
+
+    //立即执行
+    (function(){
+        let flag = true
+        //flag 控制可否点击
+        const a =document.querySelector('.box .innerbox .captcha a')
+        a.addEventListener('click', function(){
+        if(flag){
+            flag = false
+            let i = 10
+            a.innerHTML = `${i}秒后可重新发送`
+            a.style.color = '#3092b8'
+            let id = setInterval(function(){
+                i--
+                a.innerHTML = `${i}秒后可重新发送`
+                if( ! i ){
+                    clearInterval(id)
+                    a.style.color = '#35d0d8'
+                    a.innerHTML = `重新发送`
+                    flag = true
+                }
+            }, 1000)}
+        })
+    })();
+
+    (function(){
+        const table = document.querySelector('.box .mainbox .nav table')
+        const content = document.querySelector('.box .innerbox')
+        table.addEventListener('click',function(e){
+            if( e.target.tagName === 'A'){
+                for( let i = 0; i < content.children.length; i++){
+                    content.children[i].classList.add('display')
+                    content.children[i].style.display = 'none'
+                }
+                // !!!!!!  display = 'block'
+                // content.children[e.target.dataset.id].style.display = 'block'
+                content.children[e.target.dataset.id].style.display = 'block'
+            }
+        })
+    }())
+</script>
+</body>
+</html>

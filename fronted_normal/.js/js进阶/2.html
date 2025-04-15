@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <script>
+//闭包:防止变量污染
+const num = function(){
+    let num = 0
+    return function(){
+        return ++num
+    }
+}()
+console.log(num()); //1
+console.log(num()); //2
+console.log(num()); //3
+
+
+// (function(){
+//     let num = 0
+//     return function add(){
+//         return ++num
+//     }
+// })
+// console.log(add());
+// console.log(add());
+// console.log(add());
+
+// 由于局部作用域的问题，无法访问内层函数
+// 逻辑类似，结果不行
+
+
+
+//变量，函数提升
+// var声明的变量提升声明(不提升赋值)  
+// 函数 提升声明，不调用
+fu()
+function fu(){
+    console.log('不报错')
+}
+// fun()
+// let fun = function(){
+//     console.log('报错')
+// }
+// 报错，优先级问题
+
+
+
+//函数参数
+//形参，实参，动态参数，剩余参数
+
+// 动态参数 ,arrguments(声明的函数中自带的伪数组)(由传入参数构成)
+function getsum(){
+    const list = Array.from(arguments)
+    // 将伪数组arguments转化为数组
+    return eval(list.join('+'))
+    // 求和
+
+    // 遍历，一样
+    // let sum = 0
+    // for(let i = 0; i < arguments.length; i++){
+    //     sum += arguments[i]
+    // }
+    // return sum
+}
+console.log(getsum(1, 2, 3))
+
+// 剩余参数
+function getsum(...arr){} //arr为任意数组变量名
+function getsum(a, b, ...arr){}
+//  (arr) == (arguments)    (arr) !== (arguments)
+// 多用剩余参数 => arr为数组,argumets为伪数组
+
+// 展开运算符 ...
+let list = [1, 2, 3, 4, 5, 6]
+function ex(a){
+    return  Math.max(...a)
+}
+console.log(ex(list))
+            // 
+// ...list === 1,2,3,4,5,6  //
+            // 
+function jo(){
+    const arr1 = [1, 2, 3]
+    const arr2 = [4, 5, 6]
+    console.log([...arr1, ...arr2]) //拼接
+}
+jo()
+
+
+
+// 箭头函数  函数本体必定匿名
+const arrow = () => {console.log('这是箭头函数')}
+arrow()
+const ex1 = (a) => {console.log(Math.max(...a))}
+ex1(list)  //改写
+const getname = (uname) => ({ name : uname })  //  const getname = (uname) => ({ name })
+console.log(getname('huwenqi'));  //传入属性值，构成对象 => { name : huwenqi}
+
+
+
+// 解构 -> 一一对应
+// 数组解构  按索引号对应
+(function(arr){
+    let [a, b, ...c] = arr
+    // let [a, b, ...c] = [1, 2, 3, 4, 5, 6]
+    // const arr = [1, 2, 3, 4, 5 ,6]
+    // let [a, b, ...c] = list
+    console.log(a);console.log(b);console.log(c)
+
+    // 交换变量
+    ;  //加 ; 才不报错
+    [a, b] = [b, a]
+    console.log(a, b)
+
+    const get =
+    () => [60, 100];
+    // function(){ return [60, 100] };
+    const [min, max] = get()  //函数不必要加 ; ?
+    console.log(min, max);
+
+    // 默认参数
+    const [x = 0,y = 0] = [ 1 ]
+    console.log(x, y);  //x = 1; y = 0
+
+    // 按需导入，跳过参数
+    const [n, , m] = [1, 2, 3]
+    console.log(n, m)
+    
+    // 多维数组解构
+    const list = [1, 2, [3, 4]]
+    const [q, w, [e, r]] = list
+    console.log(q, w, e, r);
+    console.log( list[2][0] ); // 多维数组取值
+    
+
+}(list));  //传入 list 实参
+
+
+
+// 对象解构  按{属性名:属性值}对应
+(function(){
+    const obj = {
+        name: '胡阌祺',
+        age: 18,
+        gender: '男'
+    }
+    const {name, age, gender} = obj  //必须用与属性名相同的变量名来接收 对应属性值
+    // => const name = obj.name; const age = obj.age; const gender = obj.gender;
+    console.log(name, age, gender)
+    // 或者
+    const {name: uname, age: uage, gender: ugender} = obj //对应位置赋值
+    // => const uname = obj.name; const uage = obj.age; const ugender = obj.gender;
+    console.log(uname, uage, ugender)
+
+    // 数组对象
+    const list = [
+        {name: '胡阌祺', 
+        age: 18, 
+        gender: '男'
+        }
+    ]
+    const [{name: username, age: userage, gender: usergender}] = list
+    console.log(username, userage, usergender)
+    // 用对应结构模式 替换 即可
+
+    // 多级对象解构
+    const object = {
+        name: '胡阌祺',
+        age: 18,
+        gender: '男',
+        info: {
+            city: '河南',
+            school: '河南理工大学'
+        }
+    }   
+    const {name: oname, age: oage, gender: ogender, info: {city: ocity, school: oschool}} = object
+    console.log(oname, oage, ogender, ocity, oschool)
+
+    // 可以选择性接受参数
+    const {gender: onegender, info: {city: onecity, school: oneschool}} = object
+    console.log(onegender, onecity, oneschool)
+    // 需选择带有 : 的模式接受参数,否则报错 undefined
+
+
+    //解构用于函数参数  接收数据
+    const render1 = ({info:myInfo}) => {
+        console.log(myInfo)
+    }
+    render1(object)
+    const render2 = ({info:{city:city, school:school}}) => {
+        console.log(city, school)
+    }  
+    render2(object)
+
+})();
+
+
+    </script>
+</body>
+</html>

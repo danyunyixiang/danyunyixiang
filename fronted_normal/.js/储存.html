@@ -1,0 +1,166 @@
+<input type="text" id="myInput" placeholder="输入一些内容">
+<button onclick="getInputValue()">获取值</button>    
+<script>
+        function getInputValue() {
+        const inputElement = document.getElementById("myInput");
+        // 获取输入框的值并赋给变量
+        const inputValue = inputElement.value;
+        // 在控制台打印变量值
+        document.write(inputValue)
+        }
+    </script>
+
+<script>
+    let num01 =prompt()
+    Number(num01)<10 ? document.write(0+num01) : document.write(num01)
+    let num02 =prompt()
+    num02 = num02 <10 ? 0+num02 : num02
+    document.write(num02)
+</script>
+
+<script>
+    let num11=+prompt('数字1')
+    let num12=+prompt('数字2')
+    let op=prompt('+ - * /')
+    switch(op){
+        case '+':
+            document.write(num11+num12)
+            break
+        case '-':
+            document.write(num11-num12)
+            break
+        case '*':
+            document.write(num11*num12)
+            break}
+    if (num12===0){
+        document.write('在/中,num12!=0')
+    }else{document.write(num21/num12)}
+</script>
+
+<script>
+    let iii=1;let m=0
+    while (iii++<101){
+        if(iii%2===0){
+        m+=iii}iii++}
+    document.write(m)
+</script>
+
+<script>
+let all=0;let ii=true
+while(ii){let option=+prompt('1.存钱\n2.取钱\n3.查看余额\n4.退出')    
+    switch(option){
+        case 1:let add=+prompt(`存入`);all+=add;break
+        case 2:if(all===0){alert('您的余额是0元');break}
+            let minus=+prompt(`取出`)
+            if(minus<all){all-=minus}
+            else{alert(`您的余额是${all},无法取出${ minus}元`)}break
+        case 3:alert(`您的余额是${all}元`);break
+        case 4:ii=false;break
+        default:alert('请进行正确操作')}}
+</script>
+
+<script>
+    let i=+prompt('(⌐■_■)的行数')
+    let j=+prompt('(⌐■_■)的列数')
+    for(let i0=0;i0<i;i0++){
+        for(let j0=0;j0<j;j0++){
+            document.write('(⌐■_■)')
+        }document.write('<br>')}
+</script>
+
+<script>
+    list=[2,6,1,77,52,25,7]
+    let max=list[0];let min=list[0];let newList=[]
+    for(let re=1;re<list.length;re++){
+        if(max<list[re]){max=list[re]}
+        if(min>list[re]){min=list[re]}
+        if(list[re]>5){newList.push(list[re])}}
+        document.write(`${max}<br>${min}<br>${newList}`) 
+</script>
+
+<script>
+    let arr=[5,3,7,15,4,9,2,21,17]
+    let num=[]
+    for(let i=0;i<arr.length;i++){num.push(null)}
+    let ar=[]
+    for(let i=0;i<arr.length;i++){
+        if(i===0){for(let j=0;j<arr.length;j++){
+            if(num[0]<arr[j]){num[0]=arr[j]}}
+            ar[0]=num[0]}
+        else{
+        for(let j=0;j<arr.length;j++){
+            if(num[i]<arr[j] && arr[j]<num[i-1]){num[i]=arr[j]}
+            }ar[i]=num [i]}}
+    document.write(ar)
+</script>
+
+<script>
+    let b=0
+    function inTotal(a=null){
+        for(let i=1;i<a+1;i++){b+=i}
+        document.write(b)}
+    a=+prompt()
+    inTotal(a)
+</script>
+
+<script>
+    let students =[{name:'小明',age:18,gender:'男',hometown:'河北省'},
+    {name:'小红',age:19,gender:'女',hometown:'河南省'},
+    {name:'小附',age:17,gender:'男',hometown:'山西省'},
+    {name:'小丽',age:18,gender:'女',hometown:'山东省'},]
+    for(let i=0;i<students.length;i++){document.write(`<n>${i+1}:</n>`)
+        for(let k in students[i]){document.write(`<tr><td>${k}:</td><td>
+        ${students[i][k]}</td></tr>`)}document.write(`<br>`)}
+</script>
+
+<script>
+    arr=['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    n=arr.length
+    for(let i=0;i<n;i++){
+        random=Math.floor(Math.random()*(arr.length))
+        m=arr[random]
+        document.write(`${m}<br>`)
+        arr.splice(random,1)
+    }
+</script>
+
+<script>
+    function color(a){
+        if(a){
+            arr=['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f']
+            let str=`#`
+            for(let i =0;i<6;i++){
+                let num=Math.floor(Math.random()*arr.length)
+                str+=arr[num]
+            }
+            return str
+        }else{
+            let r=Math.floor(Math.random()*256)
+            let g=Math.floor(Math.random()*256)
+            let b=Math.floor(Math.random()*256)
+            return `rgb(${r},${g},${b})`
+        }}
+</script>
+
+<div>胡阌祺</div>
+<p></p>
+<script>
+    const example=document.querySelector('div')
+    example.innerHTML='<br><h1>纯文本</h1>'
+    console.log(example.innerHTML)
+    const q=document.querySelector('p')
+    q.innerText='<br><h1>纯文本</h1>'
+    console.log(q.innerText)
+</script>
+
+<script>
+    let arr1=[1,2,3,4,5,6,7,8,9]
+    first=[]
+    for(let i=0;i<3;i++){
+        let random=Math.floor(Math.random()*arr1.length)
+        let a=arr1.splice(random,1)
+        first.push(a)}
+        first.sort()
+        document.write(first)
+        document.write(`<br>${arr1}`) 
+</script>

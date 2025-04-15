@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        scroll-behavior: smooth;
+    }
+    input[placeholder]{
+        color: aqua;
+    }
+    input[type=password]{
+        background-color: rgb(243, 166, 166);
+        color: rgb(218, 215, 49);
+    }
+    /* 属性选择器 */
+    .father{
+        display: block;
+        width: 800px;
+        /* height: 800px; */
+        overflow: scroll;
+        /* !!! */
+        height: 1200px;
+        border: 2px solid #000;
+        margin: 0 auto ;
+        background-color: aqua;
+    }
+    .father::-webkit-scrollbar{
+        width: 15px;
+    }    
+    .father::-webkit-scrollbar-thumb{
+        background-color: brown;
+        border-radius: 5px
+    }
+    .father::-webkit-scrollbar-track {
+        background: rgb(61, 221, 128);
+        border-radius: 2px;
+    }
+    .son{
+        height: 200px;
+        width: 400px;
+        margin: 100px auto ;
+        border: 2px solid #000;
+    }
+</style>
+<body>
+    <div>
+        <input type="text" placeholder="爱蜜莉亚">
+        <input type="password">
+    </div>
+    <div class="father">
+        <div class="son">
+            
+        </div>
+    </div>    
+<script>
+    //获取指定时间戳
+    let date = +new Date('2024-11-15 13:14:52')
+    console.dir(date)
+    const dateNow = new Date()
+    console.log(dateNow.toLocaleString())
+    //*********************
+    //创造节点,追加节点
+    const newNode = document.createElement('div')
+    newNode.innerHTML = `<h1 style="margin: 0 auto;color: red;">Hello World</h1>`
+    const div = document.querySelector('.father')
+    div.insertBefore(newNode, div.children[0])
+
+    //克隆节点
+    const divSon = document.querySelector('.father .son')
+    div.appendChild(divSon.cloneNode())
+    for (let i  = 0; i < 6; i++){
+        const cloneNode = document.createElement('h1')
+        const clone = div.children[div.children.length - 1].cloneNode()
+        //克隆最后一个子节点
+        cloneNode.innerHTML = `<span style="color: rgb(64, 104, 106);">${i + 1}</span>`
+        clone.appendChild(cloneNode)
+        div.appendChild(clone)
+    }
+    
+    //存储复杂数据类型
+    const obj = {
+        name : '胡阌祺',
+        age : 18,
+        gender : '未知'
+    }
+    console.dir(JSON.stringify(obj))
+    localStorage.setItem('obj' ,JSON.stringify(obj))
+    //存入的是字符串
+    console.log(localStorage.getItem('obj'))
+    //
+    console.log(typeof JSON.parse(localStorage.getItem('obj')))
+    console.log(JSON.parse(localStorage.getItem('obj')).name)
+    
+     
+</script>
+</body>
+</html>

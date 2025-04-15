@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    textarea { 
+        position: relative;
+        top:50px;
+        left: 80px;
+        transition: all .2s;
+        border-color: rgb(198, 47, 47);
+        border-width: 1.5px;
+        background-color: rgb(255, 241, 241);
+    }
+    button{
+        border-color: rgb(222, 106, 243);
+        background-color: rgb(210, 237, 179);
+        color: rgb(67, 132, 211);
+    }
+    .box{
+        border-style: double;
+        border-color: aqua;
+        border-width: 5px;
+        width: 1500px;
+        height: 300px;
+    }
+    #nav{
+        position: relative;
+        top: 40px;
+    }
+    #nav ul{
+        margin-left: 40px
+    }
+    #nav li{
+        display: inline;
+        background-color:aqua;
+        color: rgb(213, 62, 77);
+    }
+</style>
+<body>
+<div class="box">
+    <button>发送</button>
+    <p style="color:rgb(88, 217, 200);"></p>
+    <span></span>
+    <textarea placeholder="ヾ(≧▽≦*)o"></textarea>
+</div>
+<div id="nav">
+    <ul>
+        <li></li><li>:</li><li></li>
+    </ul>
+</div>
+<script>
+    const input =document.querySelector('input')
+    const span =document.querySelector('span')
+    const textarea =document.querySelector('textarea')
+    const li =document.querySelectorAll('li')
+    const p =document.querySelector('p')
+    const btn = document.querySelector('button')
+
+    textarea.addEventListener('keyup',function (e){
+        li[2].innerHTML=textarea.value
+        li[0].innerHTML=textarea.value.length
+        if(e.key==='Enter'){
+            p.innerHTML=p.innerHTML+textarea.value.trim()
+            //连续文本,去除空格(文本两端)
+            textarea.value=''
+            li[2].innerHTML=textarea.value
+            li[0].innerHTML=textarea.value.length
+        }//按下Enter后,刷新所有
+    })
+    btn.addEventListener('click',function(){
+        p.innerHTML=p.innerHTML+textarea.value.trim()
+        textarea.value='' 
+        li[2].innerHTML=textarea.value
+        li[0].innerHTML=textarea.value.length
+    })//按钮发送
+
+    
+
+</script>
+</body>
+</html>

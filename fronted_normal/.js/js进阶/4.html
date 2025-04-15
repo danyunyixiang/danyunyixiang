@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+<script>
+    const data = [1,2,3,4,5,6,7,8,9,10]
+    const list = [
+        {name: 'java', price: 300, img:'java.png'},
+        {name: 'python', price: 100, img:'python.png'},
+        {name: 'c++', price: 80, img:'c++.png'},
+        {name: 'c', price: 70, img:'c.png'},
+        {name: 'javascript', price: 200, img:'javascript.png'},
+    ]
+
+    // item 元素
+    // index 索引
+    // arr 数组
+
+    // filter 数组过滤
+    const dataResult = data.filter(
+        (item, index, arr)=> item>6 && index>6
+        // (item, index, arr) => {return item>6 && index>6}
+    )
+    console.log(dataResult)
+    
+    const listResult = list.filter(
+        (listObj)=>{
+            const {name, price, img} = listObj
+            return price>100
+        }  //return 符合条件的元素，并构成一个新数组
+        // <=>
+        // ({name, price, img})=>{
+        //     return price>100
+        // }
+    )
+    console.log(listResult)
+    // 基于return后语句的布尔值判断 T/F 筛选构成新数组的元素
+
+
+    // // map 数组映射
+    // const result = data.map(
+    //     (item, index, arr)=>{
+    //         console.log(item, index, arr)
+    //         return item*2
+    //     }
+    // )
+    // console.log(result2)
+
+
+    // // reduce 累加
+    // const result3 = data.reduce((prev, curr)=>{
+    //     console.log(prev, curr)
+    //     return prev+curr
+    // }, 0)
+    // console.log(result3)
+
+</script>
+</body>
+</html>

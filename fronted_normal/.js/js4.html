@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老婆ヾ(≧▽≦*)o</title>
+    <style>
+    body{
+        height: 3000px;
+    }    
+    div{
+        width:450px;
+        height: 650px;
+        margin: 30px;
+        background: #50cdb866;
+        border-style: solid double ;
+        border-width: 8px;
+    }
+    button{
+        color: rgb(224, 87, 192);
+    }
+    .buttom{
+        position:relative;
+        top: 700px;
+        width: 99%;
+        height: 80px;
+        color: rgb(173, 91, 231);
+    }
+    p{
+        display: block;
+        color: rgb(224, 87, 192);
+    }
+    .left{
+        color: rgb(71, 211, 239);
+        position: relative;
+        float: left;
+ 
+    }
+    .right{
+        color: rgb(248, 115, 66);
+        position: relative;
+        float: right;
+
+
+    }
+    .center{
+        color: rgb(231, 85, 85);
+        position: fixed;
+        top: -680px;
+        left:505px;
+        transition: all .8s;
+    }
+    </style>
+</head>
+<body>
+    <div class="left">
+        <button >开始</button>
+        <button style="float: right;">暂停</button>
+        <nav style="color: rgb(224, 87, 192);"></nav>
+        <p></p>
+        <img src="" alt="" title="暂停了－O－" width="400px">
+    </div>
+    <div class="right">
+        <button >语录</button>
+        <button style=" float: right;">关闭页面</button>
+        <p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+    </div>
+    <div class="center">
+        <h1></h1>
+    </div>
+    <div class="buttom" style="position:relative; margin: auto; width: 99%; height: 80px;color: rgb(173, 91, 231);">
+        <button style="position:absolute;top: 0;left: 0;">随机语录</button>
+        <button style="position:absolute;top: 0;right: 0;">关闭页面</button>
+        <p style="position:absolute;top:13px"></p>
+        <button style="position:absolute;bottom: 0;right: 0;">&gt;</button>
+        <button style="position:absolute;bottom: 0;right: 25px;">&lt;</button>
+        <button style="position:absolute;bottom: 0;left: 0">轮播语录</button>
+        <button style="position:absolute;bottom: 0;left: 70px">暂停轮播</button>
+    </div>
+<script>
+    const picture=[
+    'https://c-ssl.duitang.com/uploads/item/202002/20/20200220075335_jwnhk.jpg',
+    'https://c-ssl.duitang.com/uploads/item/202007/04/20200704200719_mmzyq.png',
+    'https://c-ssl.duitang.com/uploads/item/202007/17/20200717174643_8zLMd.jpeg',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2021/05/19/11/20/77803276_p0_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p14_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p19_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://c-ssl.duitang.com/uploads/item/202003/10/20200310000840_yFexY.gif',
+    ]
+    const list=[
+    '艾米莉娅，我的名字是艾米莉娅，就只是艾米莉娅哦。',
+    '与其说无数次的对不起，只要说一次『谢谢』就能让对方心满意足，因为别人不是因为想要你道歉才帮忙，而是想要这么做才帮忙的喔。',
+    '请公平的看待我，看待没有家名的艾米莉娅，既不是冰结魔女,也不是银发的半Elf,请认真的看待我。',
+    '——好高兴，真的好高兴，从来没想过有一天有人会说喜欢我。——谢谢你，昴，谢谢你救了我。',
+    '……像今天，我失败了，可是，明天一定会不一样的。是这样，对吧。',
+    '我的重要的心情……在我恢复、所有记忆之后……就会有吗？',
+    '我要大声的喊出我的梦想，大声的喊，让天上的妈妈能够听见———在妈妈所深爱的这个世界里，我幸福的生活着！'
+    ]
+    const right=document.querySelector('.right')
+    const buttom=document.querySelector('.buttom')
+    const img=document.querySelector('img')
+    const p=document.querySelectorAll('p')
+    const btn=document.querySelectorAll('button')
+    const nav=document.querySelector('nav')
+    const center = document.querySelector('.center')
+
+    let active=0
+    let i=-1
+    btn[0].addEventListener('click',function(){
+        i++;i=i%(list.length)
+        img.src=picture[i]
+        p[0].innerHTML=list[i]
+        //点击瞬间展示图片
+        nav.innerHTML='(移上图片暂停,移开图片继续)'
+        //开始显示
+        btn[0].disabled=true
+        //禁用开始按钮
+        active=setInterval(function(){
+            i++;i=i%(list.length)
+            img.src=picture[i]
+            p[0].innerHTML=list[i]
+        //轮播图
+    },2000)
+    })
+    btn[1].addEventListener('click',function(){
+        clearInterval(active)
+        btn[0].disabled=false
+        //启用开始按钮
+    })//关闭id为active的定时器
+
+    img.addEventListener('mouseenter',function(){
+        clearInterval(active)
+    })//暂停
+    img.addEventListener('mouseleave',function(){
+        i++;i=i%(list.length)
+        img.src=picture[i]
+        p[0].innerHTML=list[i]
+        active=setInterval(function(){
+            i++;i=i%(list.length)
+            img.src=picture[i]
+            p[0].innerHTML=list[i]
+    },2000)
+    })//继续
+
+
+    btn[2].addEventListener('click',function(){
+        if(p[1].innerHTML){//p[i]为空时p[i].innerHTML为false
+            for(let i=1;i<8;i++){
+                p[i].innerHTML=``
+            }
+        }else{//分语句按块,展示内容
+            for(let i=1;i<8;i++){
+                p[i].innerHTML=`${list[i-1]}`
+            }
+        }
+    })
+
+
+    btn[3].addEventListener('click',function(){
+        right.style.display='none'
+    })
+    btn[5].addEventListener('click',function(){
+        buttom.style.display='none' 
+    })
+    //关闭页面
+
+    let num=0
+    let relist=list.toSorted()//防止改变原数组
+    btn[4].addEventListener('click',function(){
+        const random=Math.floor(Math.random()*relist.length)
+        p[8].innerHTML=relist[random]
+        if(relist.length<1){
+            p[8].innerHTML=`没有惹(っ °Д °;)っ,还剩${5-num}次机会`
+            num++
+        }if(num>5){
+            p[8].innerHTML='不让选惹o(≧口≦)o'
+            btn[4].disabled=true//关闭按钮
+        }
+        relist.splice(random,1)
+    })
+
+    let n=-1
+    btn[6].addEventListener('click',function(){
+        n++//向右
+        p[8].innerHTML=list[n]
+        if(n>=list.length-1){btn[6].disabled=true}
+        if(n>0){btn[7].disabled=false}
+    })
+    btn[7].disabled=true
+    btn[7].addEventListener('click',function(){
+        n--//向左
+        p[8].innerHTML=list[n]
+        if(n<=0){btn[7].disabled=true}
+        //针对特殊情况,选择 >  <=
+        if(n<=list.length-1){btn[6].disabled=false}
+    })
+    
+    let m=-1
+    let zanting=0
+    btn[8].addEventListener('click',function(){
+        m++;m=m%list.length
+        p[8].innerHTML=list[m]
+        zanting=setInterval(function(){
+            m++;m=m%list.length
+            p[8].innerHTML=list[m]
+        },2000)
+        btn[8].disabled=true
+    })
+    btn[9].addEventListener('click',function(){
+        clearInterval(zanting)
+        btn[8].disabled=false
+    })
+
+    window.addEventListener('scroll',function(){
+        let n = document.documentElement.scrollTop
+        center.style.top = n > 100 ? '0' : '-680px'
+    })
+</script>
+</body>
+</html>

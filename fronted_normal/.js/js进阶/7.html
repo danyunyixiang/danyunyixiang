@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+<script>
+
+console.log('---------------first-----------------')
+const first = () => {
+    // "构造函数"实现面向对象
+    
+    // 构造函数 首字母大写
+    function List(name, fans){
+        this.name = name
+        this.fans = fans
+        this.getFans = () => this.name + '有' + this.fans + '个粉丝'
+    }
+
+
+    // 实例化   new关键字创建实例对象
+    const person1 = new List('张三', 1000)
+    console.log(person1)
+    console.log(person1.getFans())
+
+    // 构造函数创建对象的  内存占用(浪费)问题
+    const person2 = new List('张三', 1000)
+    console.log(person1.getFans === person2.getFans) // false
+
+
+    // 解决内存占用问题      在创建实例对象之前定义(最佳实践)
+    List.prototype.example = function(){
+        console.log('example')
+    }
+    console.log(person1.example === person2.example); // true
+
+
+    // 原型(对象) prototype
+    // 公共属性 写在构造函数中
+    // 共有 ‘方法 ’，定义在prototype上
+
+    
+}
+first()
+console.log('---------------first-----------------')
+
+const second = () => {
+
+    function List(name, fans){
+        this.name = name
+        this.fans = fans
+        that1 = this
+    }
+    // List.prototype.example = (item) => {
+    //     console.log(item)
+    //     that2 = this
+    // }
+    // console.log( that2 === person ) // 箭头函数没有this属性，会指向它的上一级作用域(此处为window，全局)    false
+    // 通过原型链构造方法，不能使用箭头函数
+
+    List.prototype.example = function(item){
+        console.log(item)
+        that2 = this
+     }
+    const person = new List('张三', 1000)
+    person.example('好')
+
+    console.log( that1 === person ) // true
+    console.log( that2 === person ) // true
+    
+    // 构造函数 实例化对象
+    // this 指向实例化对象  
+    // 其prototype  方法中的this 也指向实例化对象
+    
+       
+    
+    // prototype.constructor 
+    // 指向原型对象的构造函数
+
+
+    //  __photo__对象原型
+
+    // 构造函数  ==>  本身为
+    // 实例对象  __photo__.constructor 
+    // 原型对象  prototype.constructor
+
+
+    // 试一下  assign(拷贝)  
+}
+second()
+
+const third = () => {
+    // 原型链
+
+    const person = {
+        eyes : 2,
+        hands : 2,
+    }
+    const Man = function(){
+            console.log('男人')
+        }
+
+    Man.prototype.constructor = person  //修改原本构造函数(Man)
+    // 修改后，所有 Man 的实例通过原型链查找到的 constructor 属性将不再指向 Man，而是指向 person 对象
+    // 不等价
+    // Object.assign(Man.prototype , person)
+
+    console.log(Man.prototype);
+  
+    //原型链 
+    // 实例对象  __photo__.constructor 
+    // 原型对象  prototype.constructor
+    
+    // instanceof 
+    // 判断实例对象是否属于某个构造函数
+
+    console.log(person instanceof Man) // true
+    console.log(person instanceof Object) // true
+    
+    
+    
+    
+    
+}
+third()
+</script>
+</body>
+</html>

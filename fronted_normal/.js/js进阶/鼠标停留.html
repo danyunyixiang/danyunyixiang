@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鼠标停留小挑战</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    h3{
+        color: #E4B8D5;
+        margin-bottom: 10px;
+    }
+    .box{
+        width: 800px;
+        height: 600px;
+        background-color: #eee;
+        border: 1px solid #000;
+    }
+</style>
+<body>
+    <h3>鼠标不要在灰色区域停留1秒</h3>
+    <h5 id="last">上次停留时间:0毫秒</h5>
+    <h5 id="long">最长停留时间:0毫秒</h5>
+    <div class="box"></div>
+</body>
+<script>
+
+    const box = document.querySelector('.box')
+    const last = document.querySelector('#last')
+    const long = document.querySelector('#long')
+    let star = null
+    box.addEventListener('mouseenter',function(){ star = +new Date() })  // 记录时间戳
+    // 外部变量，用于记录停留时间
+    let longtime = 0
+    let timeout = 0
+
+    function debounce(fn, delay) {
+        let timer = null
+        let timeCounter = null
+        return function() {
+            // 更新停留时间
+            clearTimeout(timeCounter)
+            timeCounter = setTimeout(() => {
+                //解决方案 并不完善 
+                timeout = (+new Date) - star < 1000 ? (+new Date) - star : timeout  // 无法处理鼠标一直移动的情况，故给此解
+                longtime = timeout > longtime && timeout < 1000 ? timeout : longtime  
+                
+                last.innerHTML = `上次停留时间:${timeout}毫秒`
+                long.innerHTML = `最长停留时间:${longtime}毫秒`
+                star = +new Date()
+            }, 100)
+            
+            // 处理主要的防抖逻辑
+            clearTimeout(timer)
+            timer = setTimeout(() => fn.apply(this, arguments), delay)
+
+            //处理移出box的情况,以防弹出alert/时间记录
+            box.addEventListener('mouseleave',() => {clearTimeout(timer),clearTimeout(timeCounter)})
+        }
+    }
+
+    box.addEventListener('mousemove', debounce(function() {
+        alert('失败惹!')
+    }, 1000))
+
+
+
+</script>
+</html>

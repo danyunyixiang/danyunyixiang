@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    html{
+        scroll-behavior: smooth;
+    }/* 滚动条增加滑动效果 */
+    .time{
+        display: inline-block;
+        width: 200px;
+        height: 40px;
+        border: 2px solid aqua;
+        margin: 0 auto;
+    }
+    .time h3{
+        text-align: center;
+        color: cadetblue;
+    }
+    .retime{
+        display: inline-block;
+        width: 800px;
+        height: 40px;
+    }
+    .retime h2{
+        text-align: right;
+        color: aqua;
+    }
+    .rightnav{
+        position: fixed;
+        width: 80px;
+        height: 200px;
+        right: 50px;
+        top: 100px;
+        background-color: rgb(173, 196, 196);
+    }
+    .rightnav ul{
+        display: inline;
+        list-style: none;
+    }
+    .bigBox .first{
+        margin: 0 auto;
+        width: 800px;
+        height: 1000px;
+        border: 2px solid #000;
+        background-color: rgb(245, 209, 209);
+    }
+    .bigBox .first ul{/* 无点 */
+        list-style: none;
+    }
+    .bigBox .first ul li{/* 行内 */
+        display: inline;
+    }
+    .bigBox .second{
+        margin: 0 auto;
+        width: 800px;
+        height: 1000px;
+        border: 2px solid #000;
+        background-color: rgb(155, 21, 21);
+    }
+    .bigBox .second table{
+        background-color: aqua;
+        border: 3px double #000;
+        margin: 100px auto;
+        padding: 20px;
+        height: 800px;
+        width: 600px;
+    }
+    .bigBox .second table thead button{
+        width: 170px;
+    }
+    .bigBox .second table thead input{
+        text-align: center;
+    }
+    .bigBox .second table tbody{
+        text-align: center;
+    }
+    .bigBox .third{
+        margin: 0 auto;
+        width: 800px;
+        height: 1000px;
+        border: 2px solid #000;
+        background-color: rgb(89, 15, 15);
+    }
+
+</style>
+<body>
+    <div class="rightnav">
+        <ul>
+            <li>top</li>
+            <li data-id="first">first</li>
+            <li data-id="second">second</li>
+            <li data-id="third">third</li>
+        </ul>
+    </div>
+    <div class="retime">
+        <h2></h2>
+    </div>
+    <div class="time">
+        <h3></h3>
+    </div>
+    <div class="bigBox">
+        <div class="first">
+            <ul></ul>
+        </div>
+        <div class="second">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="text" placeholder="想法"></th>
+                        <th><button>记录时间</button></th>
+                    </tr>
+                </thead>                
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="third"></div>
+    </div>
+<script>
+    const h3 = document.querySelector('div h3')
+
+    const getNowdate = function(){
+        const date = new Date()
+        const m = date.getMinutes()
+        const s = date.getSeconds()
+        const Minutes = m < 10 ? '0' + m : m
+        const Seconds = s < 10 ? '0' + s : s
+        //数字补零
+        h3.innerHTML = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}
+        ${date.getHours()}:${Minutes}:${Seconds}`
+    }
+    getNowdate()
+    setInterval(function(){ getNowdate() },500)
+    //  ==>    
+    // setInterval(function(){const date = new Date()
+    // p.innerHTML = date.toLocaleString()  },500) 
+
+    
+    const ul = document.querySelector('.rightnav ul')
+    const li = document.querySelectorAll('.rightnav ul li')
+    function tran() {//立即执行,隔离变量污染
+    ul.addEventListener('click',function(e){//利用自定义属性,跳转
+        if (e.target.dataset.id){
+            const id = e.target.dataset.id
+            const top = document.querySelector(`.bigBox .${id}`)
+            document.documentElement.scrollTop = top.offsetTop
+        //=>document.documentElement.scrollTop = document.querySelector(`.bigBox .${e.target.dataset.id}`).offsetTop
+        }else{
+            document.documentElement.scrollTop = 0
+        }//通过判断是否含有date-id,决定是否跳转
+    })
+    for ( let i = 0; i<li.length; i++){//鼠标移入移出,显示颜色变化
+        li[i].addEventListener('mouseenter',function(e){
+        e.target.style.color = 'aqua'
+    })
+        li[i].addEventListener('mouseleave',function(e){
+            e.target.style.color = ''
+        })
+    }
+}
+    tran()
+
+    window.addEventListener('scroll',function(){//(页面滚动)_到相应位置,右栏显示
+        const top = document.documentElement.scrollTop
+        for (let i = 1; i < li.length; i++){
+            if( top >= 500*(i-1) && top < 500*i){
+                for (let i = 1; i < li.length; i++){
+                li[i].style.color = '' 
+                }
+                li[i].style.color = 'aqua'
+            }
+        }
+        // if( top < 300 ){
+        //     li[1].style.color = 'aqua'
+        //     li[2].style.color = ''
+        //     li[3].style.color = ''
+        // }else if( top > 300 && top < 600){
+        //     li[1].style.color = ''
+        //     li[2].style.color = 'aqua'
+        //     li[3].style.color = ''
+        // }else{
+        //     li[1].style.color = ''
+        //     li[2].style.color = ''
+        //     li[3].style.color = 'aqua'
+        // }
+    })
+
+    function timeDown(){//倒计时函数
+        const timeDown = document.querySelector('.retime h2')
+        const nowTime = +new Date()
+        const targetTime = +new Date('2025-1-1 00:00:00')
+        const getRetime = parseInt((targetTime - nowTime) / 1000) 
+        //时间戳得到的是毫秒
+        const hours = parseInt(getRetime / 3600)
+        const minutes = parseInt(getRetime / 60 % 60) < 10 ? '0' + parseInt(getRetime / 60 % 60) : parseInt(getRetime / 60 % 60)
+        const second = parseInt(getRetime % 60) < 10 ? '0' + parseInt(getRetime % 60) : parseInt(getRetime % 60)
+        timeDown.innerHTML = `距元旦还有${hours}:${minutes}:${second}`
+    }
+    timeDown()//立即调用
+    setInterval(timeDown, 500)
+
+
+    const picture=[
+    'https://c-ssl.duitang.com/uploads/item/202002/20/20200220075335_jwnhk.jpg',
+    'https://c-ssl.duitang.com/uploads/item/202007/04/20200704200719_mmzyq.png',
+    'https://c-ssl.duitang.com/uploads/item/202007/17/20200717174643_8zLMd.jpeg',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2021/05/19/11/20/77803276_p0_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p14_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://img.hongyoubizhi.com/picture/pages/regular/2022/12/22/21/103180388_p19_master1200.jpg?x-oss-process=image/resize,m_fill,w_1000',
+    'https://c-ssl.duitang.com/uploads/item/202003/10/20200310000840_yFexY.gif',
+    ]
+    const fillPicture = function(){//通过节点,增加内容
+    const ul = document.querySelector('.bigBox .first ul')
+    for(let i = 0; i < picture.length; i++){
+        const li = document.createElement('li')
+        li.innerHTML = `<img src=${picture[i]} style="height: 250px;padding: 1px">`
+        ul.appendChild(li)
+    }}
+    fillPicture()
+
+    //记录时间
+    //1.追加
+    const cord = function(a){
+        const tb = document.querySelector('.bigBox .second table tbody')
+        const trclone = document.createElement('tr')
+        const time = new Date().toLocaleString()
+        trclone.innerHTML = `
+        <tr>
+            <td>${a}</td>
+            <td>${time}</td>
+        </tr>`
+        //加在开头'
+        tb.insertBefore(trclone, tb.children[0])
+}   
+    // 2.记录
+    const button = document.querySelector('.bigBox .second table thead button')
+    button.addEventListener('click',function(){
+        const input = document.querySelector('.bigBox .second table thead input')
+        if (input.value){
+            cord(input.value)
+            input.value = ''
+        } else {
+            alert('不要瞎搞')
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #eee;
+    }
+    .container{
+        width: 1000px;
+        height: 800px;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+    }
+    .nav{
+        width: 100%;
+        height: 100px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .low,
+    .high{
+        width: 100px;
+        height: 30px;
+        color: aqua;
+        font-size: 20px;
+        text-align: center;
+    }
+    .low:hover,
+    .high:hover{
+        background-color: aqua;
+        color: #fff;
+    }
+
+    .content{
+        width: 100%;
+        height: 750px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .item{
+        width: 200px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .item img{
+        width: 200px;
+    }
+    .item .text{
+        width: 100px;
+        height: 20px;
+        text-align: center;
+        font-size: 24px;
+        color: aqua;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="nav">
+            <div class="low">150以下</div>
+            <div class="high">150以上</div>
+        </div>
+
+        <div class="content">
+
+        </div>
+    </div>
+</body>
+<script>
+const low = document.querySelector('.low');
+const high = document.querySelector('.high');
+const content = document.querySelector('.content');
+
+const data = [
+    { name: 'java', price: 300, img:'java.png'},
+    { name: 'python', price: 100, img:'python.png' },
+    { name: 'c++', price: 80, img:'c++.png' },
+    { name: 'c', price: 70, img:'c.png' },
+    { name: 'javascript', price: 200, img:'javascript.png' },
+]
+
+
+
+
+const example = ()=>{
+
+const render = (data)=>{
+    data.forEach(({name, price, img})=>{
+    content.innerHTML += `
+        <div class="item">
+            <img src="${img}">
+        <div class="text">${name}:${price}</div>
+        </div>`
+    })
+}
+render(data);
+
+// 不加 ; 有bug
+// ＞︿＜
+
+[low, high].forEach(item=>{
+    item.addEventListener('click',()=>{
+
+        // 颜色切换
+        // 可以封装为函数
+
+        if(item.style.backgroundColor === 'aqua'){   
+            item.style.backgroundColor = '#fff';
+            item.style.color = 'aqua';
+        }else{
+            item.style.backgroundColor = 'aqua';
+            item.style.color = '#fff';
+            if(item.className === 'low'){
+                high.style.backgroundColor = '#fff';
+                high.style.color = 'aqua';
+            }else{
+                low.style.backgroundColor = '#fff';
+                low.style.color = 'aqua';
+            }
+        }
+
+        content.innerHTML = '';
+        render(data)
+
+        // 图片筛选切换
+        if(item.style.backgroundColor === 'aqua'){
+            content.innerHTML = '';
+            data.forEach(({name, price, img})=>{
+                // 可以封装为函数
+            if(item.className === 'high'){
+                if(price >= 150){
+                    content.innerHTML += `
+                    <div class="item">
+                        <img src="${img}">
+                        <div class="text">${name}:${price}</div>
+                    </div>
+                    `;
+                }}
+            else{
+                if(price <= 150){
+                    content.innerHTML += `
+                    <div class="item">
+                        <img src="${img}">
+                        <div class="text">${name}:${price}</div>
+                    </div>
+                `;
+                }}
+            })
+        }
+    })
+})
+
+}
+
+
+
+
+//       <<<<<<<<<<<<====================================>>>>>>>>>>
+
+
+
+
+
+// low.addEventListener('click',()=>{  
+//         if(low.style.backgroundColor === 'aqua'){
+//             low.style.backgroundColor = '#fff';
+//             low.style.color = 'aqua';
+//         }else{
+//             low.style.backgroundColor = 'aqua';
+//             low.style.color = '#fff';
+//             high.style.backgroundColor = '#fff';
+//             high.style.color = 'aqua';
+//         }
+
+//         content.innerHTML = '';
+//         render(data)
+        
+
+//         if(low.style.backgroundColor === 'aqua'){
+//         content.innerHTML = '';
+//         data.forEach(({name, price, img})=>{
+//         if(price <= 150){
+//             content.innerHTML += `
+//             <div class="item">
+//                 <img src="${img}">
+//                 <div class="text">${name}:${price}</div>
+//             </div>
+//         `;
+//         }})
+//     }
+// })
+
+// high.addEventListener('click',()=>{
+//         if(high.style.backgroundColor === 'aqua'){   
+//             high.style.backgroundColor = '#fff';
+//             high.style.color = 'aqua';
+//         }else{
+//             high.style.backgroundColor = 'aqua';
+//             high.style.color = '#fff';
+//             low.style.backgroundColor = '#fff';
+//             low.style.color = 'aqua';
+//         }
+
+//         content.innerHTML = '';
+//         render(data)
+
+
+//         if(high.style.backgroundColor === 'aqua'){
+//         content.innerHTML = '';
+//         data.forEach(({name, price, img})=>{
+//         if(price >= 150){
+//             content.innerHTML += `
+//             <div class="item">
+//                 <img src="${img}">
+//                 <div class="text">${name}:${price}</div>
+//             </div>
+//         `;
+//         }})
+//     }
+// })
+
+// ===============================================我是分割线================================================
+
+// 优化
+
+
+// 1. 将渲染逻辑抽离成独立函数
+const renderItem = ({name, price, img}) => `
+    <div class="item">
+        <img src="${img}">
+        <div class="text">${name}:${price}</div>
+    </div>`;
+
+// 2. 优化筛选逻辑
+const filterData = (data, type) => {
+    const priceLimit = 150;
+    return data.filter(item => 
+        type === 'high' ? item.price >= priceLimit : item.price < priceLimit
+    );
+};
+
+// 3. 优化样式切换逻辑
+const toggleStyle = (activeElement, inactiveElement) => {
+    activeElement.style.backgroundColor = 'aqua';
+    activeElement.style.color = '#fff';
+    inactiveElement.style.backgroundColor = '#fff';
+    inactiveElement.style.color = 'aqua';
+};
+
+// 4. 主要渲染函数
+const render = (data) => {
+    content.innerHTML = data.map(renderItem).join('');
+};
+
+// 5. 事件处理优化
+[low, high].forEach(item => {
+    item.addEventListener('click', () => {
+        const isHigh = item.className === 'high';
+        const otherItem = isHigh ? low : high;
+        
+        if(item.style.backgroundColor === 'aqua') {
+            // 重置状态
+            item.style.backgroundColor = '#fff';
+            item.style.color = 'aqua';
+            render(data);
+        } else {
+            // 切换状态并筛选
+            toggleStyle(item, otherItem);
+            const filteredData = filterData(data, item.className);
+            render(filteredData);
+        }
+    });
+});
+
+
+
+</script>
+</html>
