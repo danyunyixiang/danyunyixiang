@@ -24,19 +24,61 @@ app.get('/save-data', (req, res) => {
     });
 });
 
+
+function ensureFileExists() {
+    //注意同步与异步操作
+    try {
+      // 如果文件不存在，则创建默认数据
+      if (!fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, JSON.stringify({ users: []}, null, 2));
+      }
+    } catch (err) {
+      console.error('文件初始化失败:', err);
+    }
+  }
+
 // POST 请求：写入文件内容
 app.post('/save-data', (req, res) => {
-    const newData = req.body;
+    ensureFileExists()
 
-    // 将数据写入文件
-    fs.writeFile(filePath, JSON.stringify(newData, null, 2), (err) => {
-        if (err) {
-            console.error('写入失败:', err);
-            return res.status(500).send('写入文件失败');
-        }
-        res.send('数据已写入 2.json');
-    });
+    fs.readFile(filePath, (err, data) => {
+        if (err) { console.log(err)}
+
+        // data为buffter流,二进制
+        // console.log(JSON.parse(data.toString()));
+        // console.log(JSON.parse(data.toString()).users);
+
+        const Data = JSON.parse(data.toString())
+        const id = Data.users.length + 1
+
+
+        Data.users.push({...req.body, id: id})
+        // console.log(Data);
+
+        // 需在读取文件后，其内部 使用Date,以防Date未赋值问题
+
+        // 将数据写入文件
+        fs.writeFile(filePath,JSON.stringify(Data, null, 2), (err) => {
+            if (err) {
+                console.error('写入失败:', err);
+                return res.status(500).send('写入文件失败');
+            }
+            res.send('数据已写入 2.json');
+        });
+        
+    })
+
 });
+// DELETE请求 删除文件
+app.delete('/save-data', (req, res) => {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error('删除失败:', err.message);
+        return res.status(500).json({ error: '删除文件失败' });
+      }
+      res.status(200).json({ message: '文件已删除' });
+    });
+  });
 
 // 启动服务器
 const PORT = 3000;

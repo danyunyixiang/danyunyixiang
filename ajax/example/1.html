@@ -5,34 +5,209 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>axios</title>
 </head>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .bd{
+    width: 600px;
+    height: 450px;
+    margin: 20px;
+    background:#eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .add,
+  .login{
+    width: 400px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(237, 130, 239, 0.15);
+    border-radius: 10px;
+    margin: 10px;
+    position: relative;
+  }
+  .add h3,
+  .login h3{
+    color: violet;
+    margin: 10px;
+  }
+  .bd input{
+    width: 200px;
+    height: 30px;
+    margin: 10px;
+    border: none;
+    border: 1px solid violet;
+    outline: none;
+    text-align: center;
+  }
+  .bd button{
+    width: 100px;
+    height: 30px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+  .result{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    content: '';
+    width: 120px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+</style>
 <body>
 <button id="get">get请求</button>
-<button id="post">post请求</button>
+<!-- 已知问题:进行post和delete请求后无法阻止页面刷新 -->
+<div class="bd">
+  <div class="add">
+    <h3>录入数据</h3>
+    <input type="text" placeholder="姓名" class="uname">
+    <input type="text" placeholder="年龄" class="age">
+
+    <button id="post">post请求</button>
+  </div>
+
+  <div class="login">
+    <h3>登入检测</h3>
+    <input type="text" placeholder="姓名" class="uname">
+    <input type="text" placeholder="年龄" class="age">
+    <button id="login">登入</button>
+  </div>
+</div>
+<button id="delete">delete请求</button>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
 
-
+// 创建结果函数
+const CreateResult = (text,color,id) => {
+  const result = document.getElementById(`${id}`).appendChild(document.createElement('div'))
+  result.className = 'result'
+  result.style.backgroundColor = color
+  result.textContent = text
+  setTimeout(() => {
+    result.remove()
+  }, 2000)
+}
 
 document.getElementById('get').addEventListener('click', function(e) {
     e.preventDefault()
 
     axios.get('http://localhost:3000/save-data')
     .then(res => console.log('读取成功:', res.data))
-    .catch(err => console.error('读取失败:', err));
+    .catch(err => console.error('读取失败:', err.response.data));
 })
 
 
 document.getElementById('post').addEventListener('click', function(e) {
-    
     e.preventDefault()
+    const uname = document.querySelector('.add .uname')
+    const age = document.querySelector('.add .age')
+    if(uname.value === '' || age.value === ''){
+      CreateResult('请输入完整信息！','red','post')
+      return
+    }
     
     axios.post('http://localhost:3000/save-data', { // 替换为后端接口地址
-        uname: 'huwenqi',
-        age: '18'
+        uname: uname.value,
+        age: age.value
     })
-    .then(res => console.log('写入成功:', res.data))
-    .catch(err => console.error('写入失败:', err));
+    .then(res => {
+      console.log('写入成功:', res.data)
+    })
+    .catch(err => {
+      console.error('写入失败:', err)
+    });
+
+
+    uname.value = ''
+    age.value = ''
 });
+
+document.getElementById('login').addEventListener('click', function(e) {
+  e.preventDefault()
+  const uname = document.querySelector('.login .uname')
+  const age = document.querySelector('.login .age')
+  if(uname.value === '' || age.value === ''){
+    CreateResult('请输入完整信息！','red','login')
+    return
+  }
+
+  axios.get('http://localhost:3000/save-data')
+  .then(res => {
+
+    let flag = false
+    const users = res.data.users
+
+    // console.log(uname.value);
+    // console.log(age.value);
+    
+    users.forEach(item => {
+      if(item.uname === uname.value && item.age === age.value){
+        flag = true
+      }
+    })
+
+    if(flag){
+      CreateResult('登入成功','green','login')
+    } else{
+      CreateResult('登入失败','red','login') 
+      //注意同步异步操作(清空操作放置位置)
+      uname.value = ''
+      age.value = ''
+    }
+
+  })
+  .catch(err => {
+    console.error('读取失败:', err)
+    CreateResult('读取失败','red','login')
+  })
+
+})
+
+
+
+document.getElementById('delete').addEventListener('click', function(e) {
+  e.preventDefault();
+
+  axios.delete('http://localhost:3000/save-data')
+    .then(response => {
+      console.log(response.data.message); // 输出: "文件已删除"
+      CreateResult('数据删除成功','green','delete')
+    })
+    .catch(error => {
+      console.error('删除失败:', error.response?.data?.error || error.message);
+      CreateResult('数据删除失败','red','delete')
+    });
+});
+
+
+// http请求报文和响应报文
+// 请求报文:
+// 请求行: 请求方法 请求地址 请求协议/版本
+// 请求头: 请求头名称: 请求头值
+// 请求体: 请求体名称: 请求体值
+// 响应报文:
+// 响应行: 响应协议/版本 响应状态码 响应状态消息
+// 响应头: 响应头名称: 响应头值
+// 响应体: 响应体名称: 响应体值
+
 </script>
 </body>
 </html>
