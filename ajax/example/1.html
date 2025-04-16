@@ -6,28 +6,33 @@
     <title>axios</title>
 </head>
 <body>
+<button id="get">get请求</button>
 <button id="post">post请求</button>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    axios
-        .get('')
-        .then(res => {
-            console.log(res);
-            
-            console.log(res.data.province);
-            
-        })
-        .catch(err => console.log(err))
-document.getElementById('post').addEventListener('click',function(){
 
-    axios
-        .post('./2.json',{
-            uname: 'huwenqi',
-            age: '18'
-        })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+
+
+document.getElementById('get').addEventListener('click', function(e) {
+    e.preventDefault()
+
+    axios.get('http://localhost:3000/save-data')
+    .then(res => console.log('读取成功:', res.data))
+    .catch(err => console.error('读取失败:', err));
 })
+
+
+document.getElementById('post').addEventListener('click', function(e) {
+    
+    e.preventDefault()
+    
+    axios.post('http://localhost:3000/save-data', { // 替换为后端接口地址
+        uname: 'huwenqi',
+        age: '18'
+    })
+    .then(res => console.log('写入成功:', res.data))
+    .catch(err => console.error('写入失败:', err));
+});
 </script>
 </body>
 </html>
