@@ -119,9 +119,10 @@ document.getElementById('post').addEventListener('click', function(e) {
     e.preventDefault()
     const uname = document.querySelector('.add .uname')
     const age = document.querySelector('.add .age')
+    // 检验输入
     if(uname.value === '' || age.value === ''){
       CreateResult('请输入完整信息！','red','post')
-      return
+      return  //截断
     }
     
     axios.post('http://localhost:3000/save-data', { // 替换为后端接口地址
@@ -144,9 +145,10 @@ document.getElementById('login').addEventListener('click', function(e) {
   e.preventDefault()
   const uname = document.querySelector('.login .uname')
   const age = document.querySelector('.login .age')
+  //
   if(uname.value === '' || age.value === ''){
     CreateResult('请输入完整信息！','red','login')
-    return
+    return //
   }
 
   axios.get('http://localhost:3000/save-data')
