@@ -42,9 +42,19 @@ fs.stat(path.join(__dirname, '../要点.md'),(err,file) => {
   console.log(`修改时间: ${file.mtime}`);
 })
 
-fs.mkdir(path.join(__dirname, '../fs', 'nihao.txt'), e => {if(e) console.log(e.message)})
+//创建单层目录
+fs.mkdir(path.join(__dirname, '../fs', 'makingdir'), e => {if(e) console.log(e.message)})
 
+//读取目录内容
 fs.readdir(path.join(__dirname, '../'), (e,files) => {
   if(e) console.log(e.message)
-  console.log(files);
+  console.log(files); //files为数组
 })
+
+//检查文件存在
+if(fs.existsSync(path.join(__dirname, '../files', '1.txt'))){
+//复制文件
+fs.copyFile(path.join(__dirname, '../files', 'copy.txt'), path.join(__dirname, '../files', '1.txt'), err => {
+  console.log(err.message);
+})
+}

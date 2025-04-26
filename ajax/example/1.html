@@ -11,15 +11,20 @@
     padding: 0;
     box-sizing: border-box;
   }
+  :root{
+    --main-bg-color: rgba(237, 130, 239, 0.15);
+  }
   body{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
   }
-  .bd{
+  #show,
+  #bd{
     width: 600px;
-    height: 450px;
-    margin: 20px;
+    height: 420px;
+    margin: 10px;
     background:#eee;
     display: flex;
     flex-direction: column;
@@ -34,7 +39,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(237, 130, 239, 0.15);
+    background-color: var(--main-bg-color);
     border-radius: 10px;
     margin: 10px;
     position: relative;
@@ -44,7 +49,7 @@
     color: violet;
     margin: 10px;
   }
-  .bd input{
+  #bd input{
     width: 200px;
     height: 30px;
     margin: 10px;
@@ -53,7 +58,7 @@
     outline: none;
     text-align: center;
   }
-  .bd button{
+  #bd button{
     width: 100px;
     height: 30px;
     margin: 10px;
@@ -71,11 +76,41 @@
     border-radius: 5px;
     text-align: center;
   }
+  #show .content{
+    height: 360px;
+    width: 540px;
+    padding: 10px;
+    background-color: var(--main-bg-color);
+    font-size: 16px;
+  }
+  #show button{
+    border: none;
+    /* 666背景颜色叠加问题 */
+    background-color: rgba(237, 130, 239, 0);
+    /* 666button文字大小继承问题 */
+    font-size: inherit;
+  }
+  #show .content ul{
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    margin: 5px;
+    padding: 5px;
+    border: 1.4px solid violet;
+    
+  }
+  #show .content ul li{
+    width: 100px;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+  }
 </style>
 <body>
-<button id="get">get请求</button>
+
+<!-- <button id="get">get请求</button> -->
 <!-- 已知问题:进行post和delete请求后无法阻止页面刷新 -->
-<div class="bd">
+<div id="bd">
   <div class="add">
     <h3>录入数据</h3>
     <input type="text" placeholder="姓名" class="uname">
@@ -91,9 +126,78 @@
     <button id="login">登入</button>
   </div>
 </div>
-<button id="delete">delete请求</button>
+<!-- <button id="delete">delete请求</button> -->
+
+<div id="show">
+  <h3 style="color: violet;padding: 10px;">数据展示</h3>
+  <div class="content">
+    <ul style="background-color: rgba(237, 130, 239, .3);">
+      <li>id</li>
+      <li>姓名</li>
+      <li>年龄</li>
+      <li>操作</li>
+    </ul>
+    <!-- 动态渲染数据 -->
+    <!-- <ul date-id="">
+      <li>id</li>
+      <li>姓名</li>
+      <li>年龄</li>
+      <li>
+        <button class="edit">编辑</button>
+        <button class="delete">删除</button>
+      </li>
+    </ul> -->
+  </div>
+
+</div>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+
+const RenderDate = ({users}) => {
+  const content = document.querySelector('#show .content')
+
+  users.forEach(({id, uname, age}) => {
+    const render = document.createElement('ul')
+    content.appendChild(render)
+    render.dataset.id = id  //自定义id
+
+    [id, uname, age].forEach(item => {
+      const element = document.createElement('li')
+      element.textContent = item
+      render.appendChild(element)
+    })
+
+    // edit按钮
+    const edit = document.createElement('button')
+    edit.textContent = '编辑'
+    edit.addEventListener('click', () => editbutton(id))
+
+    //delete按钮
+    const deletebutton = document.createElement('button')
+    deletebutton.textContent = '编辑'
+    deletebutton.addEventListener('click', () => deletebutton(id))
+  })
+}
+
+
+//编辑按钮
+const editbutton = id => {
+  // const button = document.querySelector(`[data-id=${id}]`)
+  axios.post('http://localhost:3000/edit',{id})
+    .then(res => {
+      const {id, uname, age} = res.date
+      //弹出编辑框
+    })
+
+
+}
+
+//删除按钮
+const deletebutton = id => {
+
+
+}
+
 
 // 创建结果函数
 const CreateResult = (text,color,id) => {
@@ -106,6 +210,7 @@ const CreateResult = (text,color,id) => {
   }, 2000)
 }
 
+/*
 document.getElementById('get').addEventListener('click', function(e) {
     e.preventDefault()
 
@@ -113,7 +218,7 @@ document.getElementById('get').addEventListener('click', function(e) {
     .then(res => console.log('读取成功:', res.data))
     .catch(err => console.error('读取失败:', err.response.data));
 })
-
+*/
 
 document.getElementById('post').addEventListener('click', function(e) {
     e.preventDefault()
@@ -184,7 +289,7 @@ document.getElementById('login').addEventListener('click', function(e) {
 })
 
 
-
+/*
 document.getElementById('delete').addEventListener('click', function(e) {
   e.preventDefault();
 
@@ -198,6 +303,8 @@ document.getElementById('delete').addEventListener('click', function(e) {
       CreateResult('数据删除失败','red','delete')
     });
 });
+*/
+
 
 
 // http请求报文和响应报文

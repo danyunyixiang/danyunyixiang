@@ -1,3 +1,4 @@
+// axios示例
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -12,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // 定义文件路径
-const filePath = path.join(__dirname, '2.json');
+const filePath = path.join(__dirname, '../json', '1.json');
 
 // GET 请求：读取文件内容
 app.get('/save-data', (req, res) => {
@@ -23,6 +24,20 @@ app.get('/save-data', (req, res) => {
         res.send(data); // 返回文件内容
     });
 });
+
+//POST1   获取编辑信息
+app.post('/edit', (req, res) => {
+  fs.readFile(filePath, (err, data) => {
+    if(err) console.log(err.message);
+
+    data.users.foreach(item => {
+      if(req.id === item.id){
+        //res.send(item)
+      }
+    })
+  })
+})
+// POST2   提交编辑信息
 
 
 function ensureFileExists() {

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易图书管理</title>
+    <style>
+        /* 基础样式，保持界面整洁 */
+        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        ul { list-style: none; padding: 0; }
+        li { background-color: #f9f9f9; border: 1px solid #ddd; margin-bottom: 8px; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; }
+        button { margin-left: 10px; padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 3px; background-color: #eee; }
+        button:hover { background-color: #ddd; }
+        .delete-button { background-color: #fdd; border-color: #fbb; color: #c00; }
+        .delete-button:hover { background-color: #fbb; }
+        form { margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f0f0f0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px; }
+        #add-book-button { padding: 10px 15px; cursor: pointer; background-color: #4CAF50; color: white; border: none; border-radius: 3px; }
+        #add-book-button:hover { background-color: #45a049; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+        .error-message { color: red; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>图书列表</h1>
+    <ul id="book-list">
+        <!-- 图书列表将在这里动态生成 -->
+        <li>加载中...</li>
+    </ul>
+    <div id="list-error" class="error-message"></div>
+
+    <hr>
+
+    <h2>添加新书</h2>
+    <form id="add-book-form">
+        <div>
+            <label for="title">书名:</label>
+            <input type="text" id="title" required>
+        </div>
+        <div>
+            <label for="author">作者:</label>
+            <input type="text" id="author" required>
+        </div>
+        <button type="submit" id="add-book-button">添加图书</button>
+        <div id="add-error" class="error-message"></div>
+    </form>
+
+    <script>
+        // 后端 API 的基础 URL (确保这里的端口号与 2.js 中启动的端口一致)
+        const API_URL = 'http://localhost:3000/books';
+
+        // 获取 DOM 元素
+        // 知识点: document.getElementById(id) 用于获取具有指定 ID 的 HTML 元素。
+        const bookList = document.getElementById('book-list');
+        const listError = document.getElementById('list-error');
+        const addBookForm = document.getElementById('add-book-form');
+        const titleInput = document.getElementById('title');
+        const authorInput = document.getElementById('author');
+        const addError = document.getElementById('add-error');
+
+        // --- 功能函数 ---
+
+        // 1. 获取并显示所有图书
+        // 知识点: async/await 用于处理异步操作 (如 fetch 请求)。
+        // fetch(url, options) 发起网络请求。默认是 GET 请求。
+        // response.ok 检查 HTTP 状态码是否在 200-299 范围内。
+        // response.json() 解析响应体为 JSON 对象。
+        // DOM 操作: createElement 创建新元素, textContent 设置文本, appendChild 添加子元素, innerHTML 设置元素内容。
+        async function fetchAndDisplayBooks() {
+            console.log('获取图书...');
+            bookList.innerHTML = '<li>加载中...</li>'; // 显示加载提示
+            listError.textContent = ''; // 清除之前的错误信息
+            try {
+                // //TODO: 使用 fetch 发送 GET 请求到 API_URL
+                // 知识点: `await fetch(API_URL)` 发送一个 GET 请求到指定的 URL。
+                // `await` 会暂停函数执行，直到 Promise (fetch 返回的) 被解决。
+                const response = await fetch(API_URL);
+
+                // 知识点: 检查响应是否成功。如果 !response.ok (状态码不是 2xx)，则抛出错误。
+                if (!response.ok) {
+                    throw new Error(`HTTP错误! 状态: ${response.status}`);
+                }
+                // 知识点: `await response.json()` 解析响应体中的 JSON 数据。
+                const books = await response.json();
+                // //END
+
+                bookList.innerHTML = ''; // 清空加载提示
+
+                // //TODO: 遍历图书数据，为每本书创建并添加列表项到 bookList
+                // 知识点: Array.prototype.forEach 遍历数组。
+                // document.createElement(tagName) 创建指定类型的 HTML 元素。
+                // element.textContent 设置或获取元素的文本内容。
+                // element.dataset.propertyName 允许在 HTML 元素上存储自定义数据 (这里存储 book.id)。
+                // element.addEventListener(type, listener) 为元素添加事件监听器。
+                // listElement.appendChild(childElement) 将子元素添加到列表元素中。
+                if (books.length === 0) {
+                    bookList.innerHTML = '<li>暂无图书</li>';
+                } else {
+                    books.forEach(book => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `书名: ${book.title}, 作者: ${book.author}`;
+                        listItem.dataset.id = book.id; // 将 id 存储在 data 属性中，方便删除时获取
+
+                        // 创建删除按钮
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = '删除';
+                        deleteButton.classList.add('delete-button'); // 添加样式类
+                        // 为删除按钮添加点击事件监听器
+                        deleteButton.addEventListener('click', () => {
+                            // 调用删除图书的函数，传入图书 ID
+                            deleteBook(book.id);
+                        });
+
+                        // 将删除按钮添加到列表项
+                        listItem.appendChild(deleteButton);
+
+                        // 将列表项添加到图书列表 (ul)
+                        bookList.appendChild(listItem);
+                    });
+                }
+                // //END
+            } catch (error) {
+                console.error("获取图书失败:", error);
+                bookList.innerHTML = ''; // 清空加载提示
+                listError.textContent = `加载图书列表失败: ${error.message}`;
+            }
+        }
+
+        // 2. 添加新书
+        // 知识点: event.preventDefault() 阻止表单的默认提交行为 (页面刷新)。
+        // inputElement.value 获取输入框的值。
+        // String.prototype.trim() 移除字符串两端的空白字符。
+        // fetch 发送 POST 请求需要指定 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)。
+        // JSON.stringify(object) 将 JavaScript 对象转换为 JSON 字符串。
+        async function addBook(event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+            addError.textContent = ''; // 清除之前的错误信息
+
+            // //TODO: 获取表单输入值
+            // 知识点: 从输入框元素 (titleInput, authorInput) 的 value 属性获取用户输入。
+            // trim() 用于去除可能存在的前后空格。
+            const title = titleInput.value.trim();
+            const author = authorInput.value.trim();
+            // //END
+
+            // //TODO: 进行基本的客户端验证
+            // 知识点: 在发送请求前进行简单验证可以提高用户体验。
+            if (!title || !author) {
+                addError.textContent = '请输入书名和作者!';
+                return;
+            }
+            // //END
+            console.log(`添加图书: ${title}, ${author}`);
+
+            try {
+                // //TODO: 使用 fetch 发送 POST 请求到 API_URL
+                // 知识点: 发送 POST 请求时，需要配置 fetch 的第二个参数 (一个对象)。
+                // method: 'POST' 指定请求方法。
+                // headers: { 'Content-Type': 'application/json' } 告诉服务器请求体是 JSON 格式。
+                // body: JSON.stringify({ title, author }) 将要发送的数据转换为 JSON 字符串。
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title: title, author: author })
+                });
+                // //END
+
+                // //TODO: 处理响应状态和可能的错误
+                // 知识点: 检查 response.ok。如果不 OK，尝试解析服务器返回的 JSON 错误信息。
+                if (!response.ok) {
+                    let errorData = { message: '未知错误' };
+                    try {
+                        // 尝试解析后端返回的 JSON 错误详情
+                        errorData = await response.json();
+                    } catch (e) { /* 如果响应体不是 JSON 或为空，则忽略解析错误 */ }
+                    throw new Error(`HTTP错误! 状态: ${response.status} - ${errorData.message || '服务器未提供详细信息'}`);
+                }
+                // //END
+
+                // //TODO: 清空表单并重新加载图书列表
+                // 知识点: 操作成功后，清空输入框并将焦点移回第一个输入框，然后调用 fetchAndDisplayBooks 刷新列表。
+                titleInput.value = '';
+                authorInput.value = '';
+                titleInput.focus(); // 将焦点设置回书名输入框，方便连续添加
+                fetchAndDisplayBooks();
+                // //END
+
+            } catch (error) {
+                console.error("添加图书失败:", error);
+                addError.textContent = `添加图书失败: ${error.message}`;
+            }
+        }
+
+        // 3. 删除图书
+        // 知识点: confirm(message) 显示一个确认对话框。
+        // fetch 发送 DELETE 请求需要指定 method: 'DELETE'。URL 通常包含要删除资源的 ID。
+        // 模板字符串 (`${API_URL}/${bookId}`) 用于构建包含变量的 URL。
+        async function deleteBook(bookId) {
+            console.log(`删除图书 ID: ${bookId}`);
+            listError.textContent = ''; // 清除列表区域的错误信息
+
+            // //TODO: 弹出确认框
+            // 知识点: confirm() 返回 true (用户点击确定) 或 false (用户点击取消)。
+            if (!confirm(`确定要删除 ID 为 ${bookId} 的这本书吗?`)) {
+                return; // 如果用户取消，则不执行删除操作
+            }
+            // //END
+
+            try {
+                // //TODO: 使用 fetch 发送 DELETE 请求到 API_URL/{bookId}
+                // 知识点: 发送 DELETE 请求。URL 中包含要删除的图书的 ID。
+                const response = await fetch(`${API_URL}/${bookId}`, {
+                    method: 'DELETE'
+                });
+                // //END
+
+                // //TODO: 处理响应状态和可能的错误
+                // 知识点: DELETE 成功通常返回 204 No Content，此时 response.ok 为 true，但没有响应体。
+                // 如果状态码不是 200-299 范围，则认为出错。
+                if (!response.ok) { // 注意: 204 也是 ok 的
+                   let errorData = { message: '未知错误' };
+                    try {
+                        errorData = await response.json();
+                    } catch (e) { /* 忽略解析错误 */ }
+                     throw new Error(`HTTP错误! 状态: ${response.status} - ${errorData.message || '服务器未提供详细信息'}`);
+                }
+                // //END
+
+                console.log(`图书 ${bookId} 删除成功`);
+                // //TODO: 重新加载图书列表
+                // 知识点: 删除成功后调用 fetchAndDisplayBooks 刷新列表。
+                fetchAndDisplayBooks();
+                // //END
+            } catch (error) {
+                console.error(`删除图书 ${bookId} 失败:`, error);
+                // 将错误信息显示在列表区域，因为删除操作影响的是列表
+                listError.textContent = `删除图书失败: ${error.message}`;
+            }
+        }
+
+        // --- 事件监听器 ---
+
+        // 页面加载完成后，获取并显示图书列表
+        // 知识点: document.addEventListener('DOMContentLoaded', handler) 在 HTML 文档完全加载和解析完成后触发，无需等待样式表、图像和子框架完成加载。
+        // 这是执行初始化代码（如下载初始数据）的常用时机。
+        document.addEventListener('DOMContentLoaded', fetchAndDisplayBooks);
+
+        // 为添加图书表单添加提交事件监听器
+        // 知识点: formElement.addEventListener('submit', handler) 监听表单的提交事件。
+        // 在 handler 中调用 event.preventDefault() 可以阻止表单的默认提交行为。
+        addBookForm.addEventListener('submit', addBook);
+
+        //TODO: (可选) 添加编辑功能
+        // 1. 在 fetchAndDisplayBooks 中为每本书添加"编辑"按钮。
+        // 2. 点击"编辑"按钮时：
+        //    a. 可以将数据显示在添加表单中，并将"添加"按钮变为"更新"。
+        //    b. 或者弹出一个模态框进行编辑。
+        // 3. 实现 updateBook(bookId, updatedData) 函数，发送 PUT 请求到 /books/:id。
+        // 4. 更新成功后刷新列表。
+        //END
+
+    </script>
+
+</body>
+</html>
