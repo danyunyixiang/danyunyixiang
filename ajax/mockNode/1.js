@@ -18,7 +18,7 @@ const filePath = path.join(__dirname, '../json', '1.json');
 
 // 访问地址,返回html页面
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../example', '1.html'))
+  res.sendFile(path.join(__dirname, '../example', '1图书管理CURD.html'))
 })
 
 // GET 请求：读取文件内容

@@ -1,0 +1,112 @@
+/*
+  可通过多种方式使用less
+  创建less文件，保存时会自动在同级目录下生成css文件
+  在html文件引入css文件即可
+*/
+// 1.定义变量，便于同一风格
+// 同一属性变量
+@bgcolor: rgba(238, 130, 238, 0.445);
+@color: violet;
+//文件路径变量
+@images: '../image';
+img {
+  background: url('@{images}/1.png');
+}
+// 1.1 定义常用规则集,用于4  复用，
+@nomal: {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+};
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+  @nomal();
+}
+/*创建一个无用的css样式,以便于演示  混合*/
+// .body() {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+// }
+//4.1默认参数方法
+// 带()的规则集不会直接匹配对应元素
+.wh(@w:0,@h:0) {
+  //:0为默认参数
+  width: @w;
+  height: @h;
+}
+.box {
+  // height: 500px;
+  // width: 500px;
+  //  <=>
+  .wh(500px,500px);
+  background-color: #eee;
+  // 4.混合:复用其他css样式
+  // .body();
+  @nomal();
+
+  h3 {
+    color: @color;
+    padding: 20px;
+    text-align: center;
+  }
+  // 2.嵌套
+  .content {
+    position: relative;
+    height: 300px;
+    width: 350px;
+    @nomal();
+    // 3.同级伪类和伪元素
+    &:hover {
+      background-color: @bgcolor;
+    }
+    &::before {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      content: '';
+      height: 10px;
+      width: 10px;
+      border-bottom: 4px double @color;
+      border-right: 4px double @color;
+    }
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: '';
+      height: 10px;
+      width: 10px;
+      border-top: 4px double @color;
+      border-left: 4px double @color;
+    }
+    .nav {
+      height: 30px;
+      width: inherit - 50px;
+      @nomal();
+      flex-direction: row;
+      li {
+        cursor: pointer;
+        margin: 5px;
+        padding: 0 5px;
+        background: rgba(238, 130, 238, 0.7);
+      }
+    }
+    .div {
+      height: 200px;
+      width: inherit - 50px;
+      background-color: rgba(238, 130, 238, 0.7);
+    }
+  }
+}

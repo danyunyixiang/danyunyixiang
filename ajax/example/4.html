@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人信息设置 (前后端分离版)</title>
+  <!-- 复用 3.html 的样式，稍作调整 -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding-top: 100px;
+      font-family: sans-serif;
+    }
+
+    #box {
+      width: 600px;
+      min-height: 600px;
+      /* 使用 min-height 保证内容足够时能撑开 */
+      display: flex;
+      border: 1px solid #eee;
+      /* 添加边框 */
+      border-radius: 8px;
+      /* 圆角 */
+      overflow: hidden;
+      /* 防止内容溢出圆角 */
+    }
+
+    #nav {
+      width: 150px;
+      background-color: rgba(205, 205, 205, 0.1);
+      padding: 10px 0;
+    }
+
+    #nav ul {
+      list-style: none;
+    }
+
+    #nav ul li {
+      list-style: none;
+      line-height: 20px;
+      cursor: pointer;
+      padding: 12px 15px;
+      border-radius: 0 5px 5px 0;
+      /* 右侧圆角 */
+      margin-bottom: 5px;
+      transition: background-color 0.2s, border-right 0.2s, color 0.2s;
+      border-right: 5px solid transparent;
+      /* 预留激活边框位置 */
+    }
+
+    #nav li.active,
+    #nav li:hover {
+      background-color: rgba(130, 208, 239, 0.15);
+      border-right-color: rgb(130, 208, 239);
+      color: rgb(96, 198, 239);
+    }
+
+    #con {
+      flex-grow: 1;
+      /* 占据剩余空间 */
+      padding: 20px;
+      /* 内容区域内边距 */
+    }
+
+    /* 控制内容面板显示/隐藏 */
+    #con>div {
+      display: none;
+      /* 默认隐藏所有面板 */
+    }
+
+    #con>div.active {
+      display: block;
+      /* 显示激活的面板 */
+    }
+
+    /* 特殊处理 #basic 面板，因为它是 flex 布局 */
+    #con>div#basic.active {
+      display: flex;
+      gap: 20px;
+      /* 信息和头像区域的间距 */
+    }
+
+    .basic-info {
+      flex-grow: 1;
+      /* 基本信息区域占据更多空间 */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .basic-info h3,
+    .avatar h4 {
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    /* 表单样式 (沿用 3.html) */
+    .user-form div {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+      /* 表单项间距 */
+    }
+
+    .user-form label {
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .user-form input[type="email"],
+    .user-form input[type="text"],
+    .user-form textarea {
+      line-height: 1.5;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 8px 12px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .user-form input[type="email"]:focus,
+    .user-form input[type="text"]:focus,
+    .user-form textarea:focus {
+      border-color: rgb(130, 208, 239);
+      box-shadow: 0 0 0 3px rgba(130, 208, 239, 0.2);
+    }
+
+    .gender label {
+      display: inline-block;
+      margin-right: 15px;
+      font-weight: normal;
+    }
+
+    .gender input[type="radio"] {
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    .submit button {
+      width: 120px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      background-color: rgb(130, 208, 239);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .submit button:hover {
+      background-color: rgb(110, 190, 220);
+    }
+
+    .submit button:active {
+      transform: scale(0.98);
+    }
+
+    .submit button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .intro textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* 头像区域样式 (沿用 3.html) */
+    .avatar {
+      width: 150px;
+      padding-top: 10px;
+      /* 微调内边距 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .avatar img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #eee;
+      display: block;
+      margin: 0 auto 15px auto;
+      /* 调整头像下方间距 */
+    }
+
+    .avatar-label {
+      margin-top: 0;
+      /* 移除原有间距，让它紧跟标题 */
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      display: inline-block;
+      background-color: #f8f8f8;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .avatar-label:hover {
+      background-color: rgba(130, 208, 239, 0.1);
+      color: rgb(96, 198, 239);
+      border-color: rgb(130, 208, 239);
+    }
+
+    #avatar {
+      display: none;
+      /* 隐藏原始的文件输入框 */
+    }
+
+    /* 反馈消息样式 */
+    .message {
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+      display: none;
+      /* 默认隐藏 */
+    }
+
+    .message.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box">
+    <!-- 左侧导航 -->
+    <div id="nav">
+      <ul>
+        <!-- 使用 data-target 属性指定要切换到的内容面板 ID -->
+        <li class="basic active" data-target="basic">基本设置</li>
+        <li class="security" data-target="security">安全设置</li>
+        <li class="band" data-target="band">账号绑定</li>
+        <li class="info" data-target="info">新消息通知</li>
+      </ul>
+    </div>
+    <!-- 右侧内容区域 -->
+    <div id="con">
+      <!-- 基本设置 面板 -->
+      <div id="basic" class="active"> <!-- 默认显示 basic 面板 -->
+        <!-- 基本信息表单 -->
+        <div class="basic-info">
+          <h3>基本设置</h3>
+          <!-- 使用 3.html 的表单结构，注意 ID 和 name 的匹配 -->
+          <form class="user-form" id="user-form" action="javascript:;" method="post">
+            <div class="email">
+              <label for="email">邮箱</label>
+              <input id="email" name="email" type="email" placeholder="请输入邮箱" autocomplete="off" required>
+            </div>
+            <div class="name"> <!-- 注意 3.html 这里是 name，JS中用 nickname 变量 -->
+              <label for="nickname">昵称</label> <!-- label for 应该匹配 input id -->
+              <input id="nickname" name="nickname" type="text" placeholder="请输入昵称" required>
+            </div>
+            <div class="gender">
+              <label>性别</label>
+              <!-- 确保 value 值与后端对应 (0:男, 1:女, 2:保密) -->
+              <label><input type="radio" name="gender" value="0"> 男性</label>
+              <label><input type="radio" name="gender" value="1"> 女性</label>
+              <label><input type="radio" name="gender" value="2" checked> 保密</label>
+            </div>
+            <div class="intro">
+              <label for="intro">个人介绍</label> <!-- label for 应该匹配 textarea id -->
+              <textarea name="intro" id="intro" placeholder="请输入个人简介" rows="5" maxlength="100"></textarea>
+            </div>
+            <div class="submit">
+              <button type="submit">更新信息</button>
+            </div>
+            <!-- 表单提交反馈信息区域 -->
+            <div id="form-message" class="message"></div>
+          </form>
+        </div>
+        <!-- 头像设置 -->
+        <div class="avatar">
+          <h4>头像</h4>
+          <!-- 头像预览，src 会由 JS 更新 -->
+          <img id="avatar-preview" src="../uploads/avatar.png" alt="用户头像">
+          <!-- 这个 label 用于触发隐藏的文件输入框 -->
+          <label for="avatar" class="avatar-label">更换头像</label>
+          <!-- 隐藏的文件输入框，ID 与 3.html 保持一致 -->
+          <input type="file" name="avatar" id="avatar" accept="image/*">
+          <!-- 头像上传反馈信息区域 -->
+          <div id="avatar-message" class="message"></div>
+        </div>
+      </div>
+
+      <!-- 其他设置面板 (示例，内容可自行填充) -->
+      <div id="security">
+        <h3>安全设置</h3>
+        <p>此部分内容待添加...</p>
+      </div>
+      <div id="band">
+        <h3>账号绑定</h3>
+        <p>此部分内容待添加...</p>
+      </div>
+      <div id="info">
+        <h3>新消息通知</h3>
+        <p>此部分内容待添加...</p>
+      </div>
+
+    </div> <!-- 结束 #con -->
+  </div> <!-- 结束 #box -->
+
+  <!-- 引入 Axios 库 -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    // 定义后端 API 的基础 URL (确保 4.js 在此端口运行)
+    const API_BASE_URL = 'http://localhost:3001';
+
+    // --- 获取 DOM 元素 ---
+    // 导航项
+    const navItems = document.querySelectorAll('#nav li');
+    // 内容面板
+    const contentPanels = document.querySelectorAll('#con > div');
+    // 用户信息表单
+    const userForm = document.getElementById('user-form');
+    const emailInput = document.getElementById('email');
+    const nicknameInput = document.getElementById('nickname'); // 注意 ID 对应 HTML
+    const genderInputs = document.querySelectorAll('input[name="gender"]');
+    const introTextarea = document.getElementById('intro');
+    const formMessageDiv = document.getElementById('form-message'); // 表单消息提示框
+    const submitButton = userForm.querySelector('button[type="submit"]'); // 提交按钮
+    // 头像相关元素
+    const avatarPreview = document.getElementById('avatar-preview'); // 头像预览图片
+    const avatarInput = document.getElementById('avatar'); // 文件输入框 (ID 来自 3.html)
+    const avatarMessageDiv = document.getElementById('avatar-message'); // 头像消息提示框
+
+    // --- 辅助函数：显示/隐藏反馈消息 ---
+    /**
+     * 显示反馈消息
+     * @param {HTMLElement} element - 显示消息的 DOM 元素
+     * @param {string} text - 要显示的消息文本
+     * @param {'success'|'error'} type - 消息类型 ('success' 或 'error')
+     */
+    function showMessage(element, text, type = 'success') {
+      element.textContent = text;
+      element.className = `message ${type}`; // 设置类名以应用样式
+      element.style.display = 'block'; // 显示元素
+      // 可选: 设置延时自动隐藏
+      // setTimeout(() => { hideMessage(element); }, 5000);
+    }
+    /**
+     * 隐藏反馈消息
+     * @param {HTMLElement} element - 要隐藏的 DOM 元素
+     */
+    function hideMessage(element) {
+      element.style.display = 'none'; // 隐藏元素
+      element.textContent = ''; // 清空内容
+      element.className = 'message'; // 恢复默认类名
+    }
+
+    // --- 左侧导航切换逻辑 ---
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const targetId = item.getAttribute('data-target'); // 获取目标面板 ID
+        if (!targetId) return; // 如果没有 data-target 属性，则忽略
+
+        // 更新导航项激活状态
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        // 更新内容面板显示状态
+        contentPanels.forEach(panel => {
+          if (panel.id === targetId) {
+            panel.classList.add('active');
+          } else {
+            panel.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // --- 加载初始用户信息 ---
+    async function loadUserInfo() {
+      // 清空可能存在的旧消息
+      hideMessage(formMessageDiv);
+      hideMessage(avatarMessageDiv);
+      console.log('正在加载用户信息...');
+      try {
+        // 发送 GET 请求到后端获取用户信息
+        const response = await axios.get(`${API_BASE_URL}/user-info`);
+        const user = response.data; // 获取响应数据
+        console.log('用户信息加载成功:', user);
+
+        // 使用获取到的数据填充表单
+        emailInput.value = user.email || '';
+        nicknameInput.value = user.nickname || '';
+        introTextarea.value = user.intro || '';
+
+        // 设置性别单选按钮的选中状态
+        genderInputs.forEach(input => {
+          // 注意后端返回的 gender 是数字，input value 是字符串，需要比较
+          if (parseInt(input.value) === user.gender) {
+            input.checked = true;
+          }
+        });
+
+        // 更新头像预览
+        if (user.avatar) {
+          // 检查头像路径是否是完整的 URL，如果不是，则拼接基础 URL
+          // (因为后端返回的是相对路径 /uploads/..., 前端需要完整 URL 才能显示)
+          avatarPreview.src = user.avatar.startsWith('http') ? user.avatar : `${API_BASE_URL}${user.avatar}`;
+        } else {
+          // 如果没有头像信息，显示默认头像
+          avatarPreview.src = '../uploads/avatar.png';
+        }
+
+      } catch (error) {
+        console.error('加载用户信息失败:', error);
+        // 构造更详细的错误信息
+        let errMsg = '加载用户信息失败';
+        if (error.response) {
+          // 服务器返回了错误响应 (例如 4xx, 5xx)
+          errMsg += `: ${error.response.data.message || error.response.statusText}`;
+        } else if (error.request) {
+          // 请求已发出，但没有收到响应 (例如网络问题)
+          errMsg += ': 服务器无响应，请检查后端服务是否运行';
+        } else {
+          // 其他错误 (例如请求设置错误)
+          errMsg += `: ${error.message}`;
+        }
+        // 在表单消息区域显示错误
+        showMessage(formMessageDiv, errMsg, 'error');
+      }
+    }
+
+    // --- 处理用户信息表单提交 ---
+    userForm.addEventListener('submit', async (event) => {
+      // action="javascript:;" 已经阻止了默认提交行为
+      hideMessage(formMessageDiv); // 清除旧消息
+      submitButton.disabled = true; // 禁用按钮防止重复提交
+      submitButton.textContent = '正在提交...'; // 更新按钮文本提示
+
+      // 获取选中的性别值
+      let selectedGender = '2'; // 默认为 '保密'
+      for (const input of genderInputs) {
+        if (input.checked) {
+          selectedGender = input.value;
+          break;
+        }
+      }
+
+      // 收集表单数据
+      const formData = {
+        email: emailInput.value.trim(),
+        nickname: nicknameInput.value.trim(),
+        gender: selectedGender, // 使用上面获取的值
+        intro: introTextarea.value.trim()
+      };
+
+      console.log('提交用户信息:', formData);
+
+      try {
+        // 发送 POST 请求到后端更新用户信息
+        const response = await axios.post(`${API_BASE_URL}/user-info`, formData);
+        console.log('用户信息更新成功:', response.data);
+        // 显示成功消息
+        showMessage(formMessageDiv, response.data.message || '用户信息更新成功!', 'success');
+      } catch (error) {
+        console.error('更新用户信息失败:', error);
+        // 构造错误信息
+        let errMsg = '更新用户信息失败';
+        if (error.response) {
+          errMsg += `: ${error.response.data.message || error.response.statusText}`;
+        } else if (error.request) {
+          errMsg += ': 服务器无响应';
+        } else {
+          errMsg += `: ${error.message}`;
+        }
+        // 显示错误消息
+        showMessage(formMessageDiv, errMsg, 'error');
+      } finally {
+        // 无论成功或失败，最后都恢复按钮状态
+        submitButton.disabled = false;
+        submitButton.textContent = '更新信息';
+      }
+    });
+
+    // --- 处理头像文件选择和上传 ---
+    avatarInput.addEventListener('change', async (event) => {
+      hideMessage(avatarMessageDiv); // 清除旧消息
+      const file = event.target.files[0]; // 获取选中的文件
+
+      if (!file) {
+        return; // 没有选择文件则不处理
+      }
+
+      console.log('选择的头像文件:', file);
+
+      // --- 前端文件校验 (可选但推荐) ---
+      // 检查文件类型
+      if (!file.type.startsWith('image/')) {
+        showMessage(avatarMessageDiv, '请选择图片文件!', 'error');
+        avatarInput.value = ''; // 清空文件选择，以便用户可以重新选择
+        return;
+      }
+      // 检查文件大小 (示例：限制 5MB)
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        showMessage(avatarMessageDiv, `图片文件过大 (最大 ${maxSize / 1024 / 1024}MB)!`, 'error');
+        avatarInput.value = ''; // 清空文件选择
+        return;
+      }
+
+      // --- 上传文件 ---
+      // 创建 FormData 对象来包装文件数据
+      const formData = new FormData();
+      // 添加文件，字段名 'avatar' 必须与后端 Multer 配置的 .single('avatar') 匹配
+      formData.append('avatar', file);
+
+      console.log('正在上传头像...');
+
+      try {
+        // 发送 POST 请求到后端的头像上传接口
+        const response = await axios.post(`${API_BASE_URL}/avatar-img`, formData, {
+          // 注意：使用 FormData 时，浏览器会自动设置正确的 Content-Type (multipart/form-data)
+          // 通常不需要手动设置 headers，但如果遇到问题可以尝试添加
+          // headers: {
+          //     'Content-Type': 'multipart/form-data'
+          // }
+        });
+        console.log('头像上传成功:', response.data);
+        // 显示成功消息
+        showMessage(avatarMessageDiv, response.data.message || '头像上传成功!', 'success');
+
+        // 使用后端返回的新头像路径更新预览图
+        if (response.data.avatarPath) {
+          avatarPreview.src = `${API_BASE_URL}${response.data.avatarPath}`;
+        }
+
+      } catch (error) {
+        console.error('上传头像失败:', error);
+        // 构造错误信息
+        let errMsg = '上传头像失败';
+        if (error.response) {
+          errMsg += `: ${error.response.data.message || error.response.statusText}`;
+        } else if (error.request) {
+          errMsg += ': 服务器无响应';
+        } else {
+          errMsg += `: ${error.message}`;
+        }
+        // 显示错误消息
+        showMessage(avatarMessageDiv, errMsg, 'error');
+      } finally {
+        // 上传尝试后清空文件输入框，以便可以再次选择同一个文件（如果需要）
+        avatarInput.value = '';
+      }
+    });
+
+    // --- 页面加载完成后执行初始化操作 ---
+    document.addEventListener('DOMContentLoaded', loadUserInfo);
+
+  </script>
+
+</body>
+
+</html>

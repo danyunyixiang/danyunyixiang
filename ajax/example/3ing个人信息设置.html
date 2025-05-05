@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人信息设置</title>
+</head>
+<style>
+  /* 本人html和css代码都非常菜 */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+  }
+
+  #box {
+    width: 600px;
+    height: 600px;
+    display: flex;
+  }
+
+  #nav {
+    width: 150px;
+    height: 600px;
+    margin: 10px;
+    background-color: rgba(205, 205, 205, 0.15);
+    border-radius: 5px;
+
+  }
+
+  #nav ul li {
+    list-style: none;
+    line-height: 20px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  #nav li.active,
+  #nav li:hover {
+    background-color: rgba(130, 208, 239, 0.3);
+    border-right: 5px solid rgb(130, 208, 239);
+    color: rgb(96, 198, 239);
+  }
+
+  #basic {
+    display: flex;
+  }
+
+  .basic-info {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 600px;
+
+  }
+
+  .basic-info h3 {
+    padding: 10px;
+  }
+
+  .basic-info .user-form div {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  #email,
+  #name {
+    line-height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    margin-top: 10px;
+
+  }
+
+  #email:focus,
+  #name:focus {
+    border-color: rgb(130, 208, 239);
+    box-shadow: 0 0 5px rgb(130, 208, 239);
+  }
+
+  .gender input {
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+
+  .submit button {
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: rgba(130, 208, 239, 0.7);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  .submit button:hover {
+    color: rgb(130, 208, 239);
+    background-color: rgba(130, 208, 239, 0.5);
+    border: 1px solid rgb(130, 208, 239);
+    box-shadow: 0 0 5px rgb(130, 208, 239);
+  }
+
+
+  .intro textarea {
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    margin-top: 10px;
+  }
+
+  .intro textarea:focus {
+    border-color: rgb(130, 208, 239);
+    box-shadow: 0 0 5px rgb(130, 208, 239);
+  }
+
+  .avatar {
+    width: 150px;
+    height: 600px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatar-label {
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+  }
+
+  .avatar-label:hover {
+    background-color: rgba(130, 208, 239, 0.3);
+    color: rgb(130, 208, 239);
+  }
+
+  .avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  #avatar {
+    display: none;
+  }
+</style>
+
+<body>
+  <div id="box">
+    <div id="nav">
+      <ul>
+        <li class="basic active">基本设置</li>
+        <li class="security">安全设置</li>
+        <li class="band">账号绑定</li>
+        <li class="info">新消息通知</li>
+      </ul>
+    </div>
+    <div id="con">
+      <!-- 默认为第一个页面 -->
+      <div id="basic">
+        <div class="basic-info">
+          <h3>基本设置</h3>
+          <form class="user-form" action="javascript:;" method="post">
+            <!-- 
+              action 属性 ：
+                指定表单提交的目标地址,可以使用绝对路径和相对路径
+                如果省略 action，表单会默认提交到当前页面的 URL
+              method 属性 ：
+                定义表单数据的提交方式，常见的值有：(默认GET)
+                  GET：通过 URL 查询字符串传递数据
+                  POST：通过 HTTP 请求体传递数据
+              action="javascript:;" 是一种占位符，表示表单不会实际提交到服务器。
+              配合 JavaScript 监听表单的 submit 事件，手动处理数据
+              可通过js动态生成提交地址,手动提交
+            -->
+            <div class="email">
+              <label for="email">邮箱</label>
+              <input id="email" name="email" type="email" placeholder="请输入邮箱" autocomplete="off">
+            </div>
+            <div class="name">
+              <label for="name">昵称</label>
+              <input id="name" name="name" type="text" placeholder="请输入昵称">
+            </div>
+            <div class="gender">
+              <label>性别</label>
+              <label class="male-label"><input type="radio" name="gender" value="0">男性</label>
+              <label class="male-label"><input type="radio" name="gender" value="1">女性</label>
+            </div>
+            <div class="intro">
+              <label>个人介绍</label>
+              <textarea name="intro" id="intro" placeholder="请输入个人简介" cols="20" rows="10" maxlength="100"></textarea>
+            </div>
+            <div class="submit">
+              <button type="submit">提交</button>
+            </div>
+          </form>
+        </div>
+        <div class="avatar">
+          <h4>头像</h4>
+          <label for="avatar"><img src="../img/avatar.png" alt="用户头像"></label>
+          <label class="avatar-label">更换头像<input type="file" name="img" id="avatar" accept="image/*"></label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const url = 'http://localhost/3000'
+
+  // 头像功能
+  document.querySelector('.avatar').addEventListener('change', (e) => {
+    e.preventDefault()
+    const fd = new FormData()
+
+    // console.log(e.target.files[0]);
+    fd.append('img', e.target.files[0])
+    axios.post(`${url}/avatar-img`, fd)
+      .then(res => {
+        // console.log(res);
+
+
+      })
+      .catch(err => console.log(err.mmessage))
+
+
+  })
+</script>
+
+</html>

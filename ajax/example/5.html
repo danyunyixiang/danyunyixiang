@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .imgContent {
+      width: 500px;
+      height: 300px;
+      display: none;
+    }
+
+    .button1,
+    .button2 {
+      height: 30px;
+      width: 50px;
+    }
+  </style>
+
+  <body>
+    <!-- accept限制接受格式 -->
+    <input type="file" id="img" accept="image/*,.jpg,.png,.gif,.pdf" />
+
+    <img src="" alt="" class="imgContent" />
+    <br />
+    <input type="checkbox" class="button1" />
+    <br />
+    <input type="checkbox" class="button2" />
+    <br />
+    <div class="cityContent"></div>
+  </body>
+  <script>
+    document.getElementById('img').addEventListener('change', (event) => {
+      // console.log(e);
+      // 打印e.target不显示
+      // console.log(e.target.files[0]);
+      const fd = new FormData();
+      fd.append('img', event.target.files[0]);
+      // console.log(fd);
+
+      const reader = new FileReader(); // 创建 FileReader 对象
+
+      // 当文件读取完成时触发
+      reader.onload = function (e) {
+        const Image = document.querySelector('.imgContent');
+        Image.src = e.target.result; // 设置图片的 src 为读取结果
+        Image.style.display = 'block'; // 显示图片
+      };
+
+      reader.readAsDataURL(event.target.files[0]);
+    });
+    (function () {
+      // 1.创建xhr对象
+      // 2.设置请求方式和请求地址 xhr.open(请求方式, 请求地址, [是否异步])
+      // 3.监听请求状态 xhr.addEventListner('loadend', function () {
+      //   if (xhr.readyState === 4 && xhr.status === 200) {
+      //     处理请求结果
+      //     console.log(xhr.responseText);
+      //   }
+      // })
+      // 4.发送请求 xhr.send(请求体)
+      // const API_URL = 'http://localhost:3000';
+
+      const xhr = new XMLHttpRequest();
+
+      // xhr.open('get', `${API_URL}/xhr`);
+      xhr.open('get', 'http://hmajax.itheima.net/api/province');
+
+      xhr.addEventListener('loadend', function () {
+        document
+          .querySelector('.button1')
+          .addEventListener('click', function () {
+            console.log(xhr.response);
+            // xhr.response.message  xhr.response.list
+            // JSON.stringify()  JSON.parse()
+
+            const data = JSON.parse(xhr.response);
+          });
+      });
+
+      xhr.send();
+    })();
+
+    (function () {
+      //xhr携带查询参数
+      const API_URL = 'http://hmajax.itheima.net/api/city?pname=河南省';
+      const xhr = new XMLHttpRequest();
+
+      xhr.open('get', API_URL);
+
+      xhr.addEventListener('loadend', function () {
+        document
+          .querySelector('.button2')
+          .addEventListener('click', function () {
+            const data = JSON.parse(xhr.response);
+            console.log(data.list);
+            // 将data.list数组中的每个元素拼接成一个字符串
+            const str = data.list.join(',');
+            // 将字符串写入到页面中
+            document.querySelector('.cityContent').innerHTML = str;
+          });
+      });
+
+      xhr.send();
+
+
+
+      const obj = {
+        name: 'huwenqi',
+        age: 18
+      }
+      const paramsObj = new URLSearchParams(obj)
+      console.log(paramsObj);
+      // 将paramsObj对象转换为字符串
+      const paramsStr = paramsObj.toString();
+      console.log(paramsStr);
+       
+    })();
+  </script>
+</html>
