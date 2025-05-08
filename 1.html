@@ -5,6 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+  <script>
+    class Axios {
+      constructor(config = {}) {
+        this.defaults = config;
+      }
+
+      // 处理完整URL
+      getFullUrl(url) {
+        const { baseURL } = this.defaults;
+        if (baseURL && !url.startsWith('http')) {
+          return baseURL.replace(/\/$/, '') + '/' + url.replace(/^\//, '');
+        }
+        return url;
+      }
+
+      // 序列化参数
+      serializeParams(params) {
+        return Object.keys(params || {})
+          .map(
+            (k) => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])
+          )
+          .join('&');
+      }
+
+      // 核心请求方法
+      request(config) {
+        return new Promise((resolve, reject) => {
+          const { method = 'GET', url, params, data, headers } = config;
+          const xhr = new XMLHttpRequest();
+
+          // 处理URL和查询参数
+          const fullUrl = this.getFullUrl(url);
+          const queryString = this.serializeParams(params);
+          const finalUrl = [fullUrl, queryString].filter(Boolean).join('?');
+
+          xhr.open(method.toUpperCase(), finalUrl, true);
+
+          // 设置请求头
+          if (headers) {
+            Object.keys(headers).forEach((key) => {
+              xhr.setRequestHeader(key, headers[key]);
+            });
+          }
+
+          // 处理响应
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              try {
+                const response = JSON.parse(xhr.responseText);
+                resolve(response);
+              } catch (e) {
+                resolve(xhr.responseText);
+              }
+            } else {
+              reject(new Error(`HTTP error! status: ${xhr.status}`));
+            }
+          };
+
+          // 处理错误
+          xhr.onerror = () => reject(new Error('Network Error'));
+          xhr.ontimeout = () => reject(new Error('Request timeout'));
+
+          // 发送数据
+          const sendData = data ? JSON.stringify(data) : null;
+          xhr.send(sendData);
+        });
+      }
+
+      // GET方法
+      get(url, config = {}) {
+        return this.request({ ...config, method: 'GET', url });
+      }
+
+      // POST方法
+      post(url, data = {}, config = {}) {
+        return this.request({ ...config, method: 'POST', url, data });
+      }
+    }
+
+    // 创建实例的工厂函数
+    const createInstance = (config) => {
+      const instance = new Axios(config);
+      return instance;
+    };
+
+    // 默认实例
+    const myAxios = createInstance();
+
+    // 暴露创建实例的方法
+    myAxios.create = createInstance;
+
+    export default myAxios;
+
+    // 创建实例
+    const apiClient = myAxios.create({
+      baseURL: 'https://api.example.com/v1',
+      timeout: 5000,
+    });
+
+    // GET请求
+    apiClient
+      .get('/users', {
+        params: { page: 1 },
+        headers: { Authorization: 'Bearer token' },
+      })
+      .then((data) => console.log('GET response:', data))
+      .catch((err) => console.error('GET error:', err));
+
+    // POST请求
+    apiClient
+      .post('/login', {
+        username: 'user123',
+        password: 'pass123',
+      })
+      .then((data) => console.log('POST response:', data))
+      .catch((err) => console.error('POST error:', err));
+  </script>
   <body>
     <style>
       body {

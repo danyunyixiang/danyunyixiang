@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>异步代码/回调函数</title>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+  <script>
+    (function () {
+      // promise链式调用,解决异步回调地狱
+      const p = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('huwenqi');
+        }, 1000);
+      });
+      const box = document.querySelector('.box');
+
+      p.then((res) => {
+        box.innerHTML += `<p>${res}</p>...一秒后<br>`;
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(res + '+');
+          }, 1000);
+        });
+      })
+        .then((res) => {
+          box.innerHTML += `<p>${res}</p>...一秒后<br>`;
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve(res + '+');
+            }, 1000);
+          });
+        })
+        .then((res) => {
+          box.innerHTML += `<p>${res}</p>...一秒后<br>`;
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve(res + '+');
+            }, 1000);
+          });
+        })
+        .then((res) => {
+          box.innerHTML += `<p>${res}</p>...`;
+          return res + '+';
+        });
+    })();
+  </script>
+</html>
