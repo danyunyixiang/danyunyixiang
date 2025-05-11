@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fetch api</title>
+  </head>
+  <body></body>
+  <script>
+    (function () {
+      // MDN网址链接: https://developer.mozilla.org/zh-CN/docs/Web/API/Window/fetch
+      // fetch会返回一个 Promise 对象 其包含 response
+      /*
+      当请求失败（例如，因为请求 URL 的格式错误或网络错误）时，fetch() 的 promise 才会被拒绝。
+      fetch() 的 promise 不会因为服务器响应表示错误的 HTTP 状态码（404、504，等）而被拒绝。
+      因此，then() 处理器必须检查 Response.ok 和/或 Response.status 属性
+      */
+      document.addEventListener('click', function () {
+        alert('不让点!!!');
+      });
+    })();
+  </script>
+</html>

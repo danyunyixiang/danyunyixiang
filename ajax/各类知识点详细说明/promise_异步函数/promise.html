@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>异步代码/回调函数</title>
+  </head>
+  <body>
+    <div class="again">
+      <p style="display: inline-block"></p>
+      <button style="outline: 0; background-color: rgba(238, 130, 238, 0.5)">
+        again
+      </button>
+    </div>
+    <div class="box"></div>
+  </body>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    (function () {
+      // promise链式调用,解决异步回调地狱
+      const p = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('huwenqi');
+        }, 1000);
+      });
+      const box = document.querySelector('.box');
+
+      p.then((res) => {
+        box.innerHTML += `<p>${res}</p>...一秒后<br>`;
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(res + '+');
+          }, 1000);
+        });
+      })
+        .then((res) => {
+          box.innerHTML += `<p>${res}</p>...一秒后<br>`;
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve(res + '+');
+            }, 1000);
+          });
+        })
+        .then((res) => {
+          box.innerHTML += `<p>${res}</p>...一秒后<br>`;
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve(res + '+');
+            }, 1000);
+          });
+        })
+        .then((res) => {
+          box.innerHTML += `<p>${res}</p>...`;
+          return res + '+';
+        });
+    })();
+
+    (function () {
+      // axios与promise
+      // axios基于xhr和promise封装,可以采用promise链式调用
+
+      const again = () => {
+        let pname, cname;
+        axios
+          .get('http://hmajax.itheima.net/api/province')
+          .then((res) => {
+            // console.log(res);
+            pname = getRandom(res);
+            // console.log(pname);
+
+            return axios.get('http://hmajax.itheima.net/api/city', {
+              params: { pname },
+            });
+          })
+          .then((res) => {
+            // console.log(res);
+            cname = getRandom(res);
+            // console.log(cname);
+
+            return axios.get('http://hmajax.itheima.net/api/area', {
+              params: { pname, cname },
+            });
+          })
+          .then((res) => {
+            // console.log(res);
+
+            const p = document.querySelector('.again').querySelector('p');
+            p.innerHTML = `抽中了${pname} ${cname} ${getRandom(res)}!`;
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+
+        const getRandom = (res) => {
+          const random = parseInt(res.data.list.length * Math.random());
+          return res.data.list[random];
+        };
+      };
+      again();
+
+      const btn = document.querySelector('.again').querySelector('button');
+      btn.addEventListener('click', again);
+    })();
+
+    (function () {
+      // async和await
+      async function fn() {
+        const province = await axios.get(
+          'http://hmajax.itheima.net/api/province'
+        );
+        console.log(province);
+
+        const res = await fetch('http://hmajax.itheima.net/api/province');
+        console.log('都为对象');
+        console.log('fetch请求回复:', res);
+        const json = await res.json();
+        console.log('请求回复.json()', json);
+
+        // try / catch(err) 处理错误
+
+        return json;
+      }
+      const data = fn();
+      //异步函数总是返回一个 Promise
+      console.log(data);
+
+      /*
+      异步函数总是返回一个 Promise
+      new Promise 创建一个新Promise对象
+      Promise.then() .catch() 是对一个promise对象的操作
+      自然
+      对于异步函数返回的 以及 Promise.then() return的
+      需用对待 promise 对象 的方法进行处理
+      */
+    })();
+
+    (function () {
+      // 基于async/await 与 Promise 处理回调函数
+      const promiseCallback = function () {
+        return new Promise((resolve, reject) => {
+          setTimeout(function () {
+            resolve('promiseCallback');
+          }, 1000);
+        });
+      };
+
+      async function fn() {
+        const callback = await promiseCallback();
+        console.log('Promise返回', callback);
+      }
+      fn();
+
+      // Promise.all()
+
+      // 基本使用
+      function someAsyncFunction1() {}
+      function someAsyncFunction2() {}
+      const task1 = someAsyncFunction1();
+      const task2 = someAsyncFunction2();
+      // 返回Promise对象
+      // 等待所有promise对象不为待定（pending）状态时进行处理
+      Promise.all([task1, task2])
+        .then((res) => {
+          // res === [对象返回结果 * n]
+          //等待all()数组中所有Promise 对象为fulfilled时,进行then中操作
+          console.log('已通过promise.all验证promise对象已对现');
+        })
+        .catch((err) => {
+          // err === 第一个失败的promise返回的错误
+          // 任一promise对象未rejected状态时,进行catch错误处理
+          console.log('promise.all中存在promise对象已拒绝 ');
+        });
+
+      // async/await 与 promise.all()结合
+      async function pa() {
+        // http://hmajax.itheima.net/api/weather
+        // 同时进行多个异步操作, 节省时间, 结束后统一操作
+        const weaPromise = [110100, 310100, 440100, 440300].map((item) => {
+          return axios.get('http://hmajax.itheima.net/api/weather', {
+            params: { city: item },
+          });
+        });
+        const weather = await Promise.all(weaPromise);
+        // 使用 Promise.all 等待所有任务完成
+        console.log('promise.all()执行结果:', weather);
+      }
+      pa();
+    })();
+  </script>
+</html>
