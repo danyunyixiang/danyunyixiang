@@ -1,11 +1,169 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fetch api</title>
+    <!-- 初始化样式 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reset.css@2.0.2/reset.min.css"
+    />
+    <!-- 引入bootstrap.css -->
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- 核心样式 -->
+    <style>
+      .container {
+        width: 1000px;
+        padding-top: 20px;
+        margin: 0 auto 0;
+        position: relative;
+      }
+
+      .container .stu-title {
+        font-weight: 900;
+        font-size: 36px;
+      }
+
+      .container .bg {
+        display: block;
+        width: 100%;
+      }
+
+      .item-wrap .hot-area {
+        display: flex;
+        margin-bottom: 20px;
+      }
+
+      .item-wrap .hot-area .hot {
+        color: #c32f32;
+        font-weight: 600;
+        margin-right: 20px;
+      }
+
+      .item-wrap .nav {
+        display: flex;
+      }
+
+      .item-wrap .nav li {
+        margin-right: 10px;
+      }
+
+      .item-wrap .nav li a {
+        text-decoration: none;
+        color: black;
+      }
+
+      .item-wrap .title {
+        font-weight: 600;
+        white-space: nowrap;
+        margin-right: 20px;
+      }
+
+      .item-wrap select {
+        width: 150px;
+        height: 40px;
+        font-size: 14px;
+        color: black;
+        letter-spacing: 0;
+        font-weight: 400;
+        background: #ffffff;
+        border: 1px solid rgba(232, 232, 233, 1);
+        border-radius: 4px;
+        padding: 10px;
+        outline: none;
+        margin-right: 10px;
+      }
+
+      .item-wrap select option {
+        font-weight: normal;
+        display: block;
+        white-space: nowrap;
+        min-height: 1.2em;
+        padding: 0px 2px 1px;
+        font-size: 16px;
+      }
+
+      .item-wrap input {
+        font-weight: normal;
+        display: block;
+        white-space: nowrap;
+        min-height: 1.2em;
+        padding: 0px 2px 1px;
+        height: 40px;
+        font-size: 16px;
+        border: 1px solid rgba(232, 232, 233, 0.682);
+        color: black;
+      }
+
+      .item-wrap .feedback {
+        width: 400px;
+        height: 150px;
+        border: 1px solid rgba(232, 232, 233, 0.682);
+      }
+
+      .item-wrap .area-box {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+    </style>
+    <title>学习反馈</title>
   </head>
-  <body></body>
+
+  <body>
+    <div class="container">
+      <h4 class="stu-title">学习反馈</h4>
+      <div class="item-wrap">
+        <div class="hot-area">
+          <span class="hot">热门校区</span>
+          <ul class="nav">
+            <li><a target="_blank" href="http://bjcp.itheima.com/">北京</a></li>
+            <li><a target="_blank" href="http://sh.itheima.com/">上海</a></li>
+            <li><a target="_blank" href="http://gz.itheima.com/">广州</a></li>
+            <li><a target="_blank" href="http://sz.itheima.com/">深圳</a></li>
+          </ul>
+        </div>
+        <form class="info-form">
+          <div class="area-box">
+            <span class="title">地区选择</span>
+            <select name="province" class="province">
+              <option value="">省份</option>
+            </select>
+            <select name="city" class="city">
+              <option value="">城市</option>
+            </select>
+            <select name="area" class="area">
+              <option value="">地区</option>
+            </select>
+          </div>
+          <div class="area-box">
+            <span class="title">您的称呼</span>
+            <input type="text" name="nickname" class="nickname" value="播仔" />
+          </div>
+          <div class="area-box">
+            <span class="title">宝贵建议</span>
+            <textarea
+              type="text"
+              name="feedback"
+              class="feedback"
+              placeholder="您对AJAX阶段课程宝贵的建议"
+            ></textarea>
+          </div>
+          <div class="area-box">
+            <button type="button" class="btn btn-secondary submit">
+              确定提交
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.2.0/axios.min.js"></script>
+    <!-- 核心代码 -->
+  </body>
   <script>
     (function () {
       // MDN网址链接: https://developer.mozilla.org/zh-CN/docs/Web/API/Window/fetch
@@ -15,9 +173,298 @@
       fetch() 的 promise 不会因为服务器响应表示错误的 HTTP 状态码（404、504，等）而被拒绝。
       因此，then() 处理器必须检查 Response.ok 和/或 Response.status 属性
       */
-      document.addEventListener('click', function () {
-        alert('不让点!!!');
-      });
+      // document.addEventListener('click', function () {
+      //   alert('不让点!!!');
+      // });
+      // 某一未知索引的元素在arr中,对其后元素进行操作
+      // const arr = ['a', 'b', 'c', 'd', 'e', 'f'];
+      // const target = arr.indexOf('c');
+      // let index;
+      // arr.forEach((item) => {
+      //   const cur = arr.indexOf(item);
+      //   cur === target ? (index = cur + 1) : null;
+      // });
+      // for (let i = index; i < arr.length; i++) {
+      //   console.log(arr[i]);
+      // }
+      // console.log(arr.slice(arr.indexOf('c') + 1));
     })();
+
+    //获取元素
+    const getPosition = (arr) =>
+      arr.map((item) => document.querySelector(`.${item}`));
+    const arr = getPosition(['province', 'city', 'area']);
+    // console.log(arr);
+    const [province, city, area] = arr;
+    const positonArr = ['省份', '城市', '地区'];
+    let [pname, cname, aname] = ['', '', ''];
+
+    //33333333333333333333333333333333333
+    // 1与2最大问题是
+    // ！！！！！！！return Promise位置不对
+    // 致使 ajax 请求不为事件监听控制,重新渲染困难
+
+    //自定义事件
+    // const reRenderArea = new Event('reRenderArea');
+    async function select() {
+      try {
+        const provinceData = await axios.get(
+          'http://hmajax.itheima.net/api/province'
+        );
+
+        render(province, '省份', provinceData);
+        province.addEventListener('change', async function (e) {
+          console.log(e.target.value);
+          pname = e.target.value;
+
+          const cityData = await axios.get(
+            'http://hmajax.itheima.net/api/city',
+            {
+              params: { pname },
+            }
+          );
+
+          render(city, '城市', cityData);
+          //触发自定义事件
+          // document.dispatchEvent(reRenderArea);
+          cname = '';
+          area.innerHTML = '<option value="">地区</option>';
+        });
+
+        city.addEventListener('change', async function (e) {
+          console.log(e.target.value);
+          cname = e.target.value;
+
+          const areaData = await axios.get(
+            'http://hmajax.itheima.net/api/area',
+            {
+              params: { pname, cname },
+            }
+          );
+          render(area, '地区', areaData);
+          // document.addEventListener('reRenderArea', () => {
+          //   cname = '';
+          //   area.innerHTML = '<option value="">地区</option>';
+          // });
+        });
+
+        area.addEventListener('change', function (e) {
+          console.log(e.target.value);
+          aname = e.target.value;
+        });
+      } catch (err) {
+        console.dir(err);
+      }
+    }
+    const render = (place, str, res) => {
+      // console.log(res.data);
+      const placeHtml = `<option value="">${str}</option>`;
+
+      place.innerHTML =
+        placeHtml +
+        res.data.list
+          .map((item) => `<option value="${item}">${item}</option>`)
+          .join('');
+    };
+    //调用
+    select();
+
+    document.querySelector('.submit').addEventListener('click', function () {
+      const nickname = document.querySelector('.nickname').value;
+      const feedback = document.querySelector('.feedback').value;
+      let index = 0;
+      const newarr = [...positonArr, '称呼', '建议'];
+      for (const item of [pname, cname, aname, nickname, feedback]) {
+        if (item === '') {
+          alert(`请填写${newarr[index]}`);
+          break;
+        }
+        index++;
+      }
+
+      const data = {
+        province: pname,
+        city: cname,
+        area: aname,
+        nickname,
+        feedback,
+      };
+      axios
+        .post('http://hmajax.itheima.net/api/feedback', data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+
+    //111111111111111111111111111111111111
+    //主要是Promise中的逻辑无法写入render中，pname需同步获取
+    //可将链式调用改为async/await 解决问题
+
+    // // 渲染列表函数
+    // const render = (place, str, res) => {
+    //   // console.log(res.data);
+    //   const placeHtml = `<option value="">${str}</option>`;
+
+    //   console.log(place);
+    //   console.log(res.data);
+
+    //   place.innerHTML =
+    //     placeHtml +
+    //     res.data.list
+    //       .map((item) => `<option value="${item}">${item}</option>`)
+    //       .join('');
+
+    //   //最后进程
+    //   if (place === area) {
+    //     area.addEventListener('change', function (e) {
+    //       aname = e.target.value;
+    //     });
+    //     //结束逻辑
+    //     return;
+    //   }
+
+    //   return new Promise((resolve, rejected) => {
+    //     console.log('province:', place === province);
+    //     console.log('city:', place === city);
+
+    //     if (place === province) {
+    //       place.addEventListener('change', function (e) {
+    //         console.log(e.target.value);
+    //         pname = e.target.value;
+
+    //         resolve(
+    //           axios.get('http://hmajax.itheima.net/api/city', {
+    //             params: { pname },
+    //           })
+    //         );
+    //       });
+    //     }
+    //     if (place === city) {
+    //       place.addEventListener('change', function (e) {
+    //         console.log(e.target.value);
+    //         cname = e.target.value;
+
+    //         resolve(
+    //           axios.get('http://hmajax.itheima.net/api/area', {
+    //             params: { pname, cname },
+    //           })
+    //         );
+    //       });
+    //     }
+    //   });
+    // };
+
+    // // 细节处理函数
+    // const deal = (option) => {
+    //   let index = arr.indexOf(option) + 1;
+    //   arr.slice(index).forEach((item) => {
+    //     item.innerHTML = `<option value="">${positonArr[index]}</option>`;
+    //     index++;
+    //   });
+    // };
+
+    // // 处理主体.链式调用
+    // axios
+    //   .get('http://hmajax.itheima.net/api/province')
+    //   .then((res) => render(province, '省份', res))
+    //   .then((res) => render(city, '城市', res))
+    //   .then((res) => render(area, '地区', res))
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
+
+    //222222222222222222222222222222222
+    //为了链式调用,写出了很多难以处理的逻辑
+    //为了语法糖,代码可复用性高,  致使不必要操作多,可读性差
+
+    // 渲染列表函数
+    // const render = (place, str, res) => {
+    //   // console.log(res.data);
+    //   const placeHtml = `<option value="">${str}</option>`;
+
+    //   place.innerHTML =
+    //     placeHtml +
+    //     res.data.list
+    //       .map((item) => `<option value="${item}">${item}</option>`)
+    //       .join('');
+    // };
+
+    // // 细节处理函数
+    // const deal = (option) => {
+    //   let index = arr.indexOf(option) + 1;
+    //   arr.slice(index).forEach((item) => {
+    //     console.log('执行替换:', item.innerText !== positonArr[index]);
+
+    //     if (item.innerText !== positonArr[index]) {
+    //       item.innerHTML = `<option value="">${positonArr[index]}</option>`;
+    //       position[index] = '';
+    //     }
+    //     index++;
+    //   });
+    // };
+
+    // const reRenderCity = new Event('reRenderCity');
+    // const reRenderArea = new Event('reRenderArea');
+    // // 处理主体.链式调用
+    // axios
+    //   .get('http://hmajax.itheima.net/api/province')
+    //   .then((res) => {
+    //     render(province, '省份', res);
+    //     return new Promise((resolve, rejected) => {
+    //       province.addEventListener('change', function (e) {
+    //         pname = e.target.value;
+    //         console.log(pname);
+    //         deal(province);
+    //         // 自定义DOM事件,实现事件监听器外部触发代码
+    //         document.dispatchEvent(reRenderCity);
+
+    //         resolve(
+    //           axios.get('http://hmajax.itheima.net/api/city', {
+    //             params: { pname },
+    //           })
+    //         );
+    //       });
+    //     });
+    //   })
+    //   .then((res) => {
+    //     render(city, '城市', res);
+    //     document.addEventListener('reRenderCity', () =>
+    //       render(city, '地区', res)
+    //     );
+
+    //     return new Promise((resolve, rejected) => {
+    //       city.addEventListener('change', function (e) {
+    //         cname = e.target.value;
+    //         console.log(cname);
+    //         deal(city);
+    //         // 自定义DOM事件,实现事件监听器外部触发代码
+    //         document.dispatchEvent(reRenderArea);
+
+    //         resolve(
+    //           axios.get('http://hmajax.itheima.net/api/area', {
+    //             params: { pname, cname },
+    //           })
+    //         );
+    //       });
+    //     });
+    //   })
+    //   .then((res) => {
+    //     render(area, '地区', res);
+
+    //     document.addEventListener('reRenderArea', () =>
+    //       render(area, '地区', res)
+    //     );
+    //     area.addEventListener('change', function (e) {
+    //       aname = e.target.value;
+    //     });
+    //     //结束逻辑
+    //     return;
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   </script>
 </html>

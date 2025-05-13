@@ -174,7 +174,7 @@
       // async/await 与 promise.all()结合
       async function pa() {
         // http://hmajax.itheima.net/api/weather
-        // 同时进行多个异步操作, 节省时间, 结束后统一操作
+        // 同时进行多个异步操作(而不是await等待逐步完成), 节省时间, 结束后统一操作
         const weaPromise = [110100, 310100, 440100, 440300].map((item) => {
           return axios.get('http://hmajax.itheima.net/api/weather', {
             params: { city: item },
