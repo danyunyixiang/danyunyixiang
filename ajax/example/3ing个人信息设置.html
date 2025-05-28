@@ -243,10 +243,13 @@
       </div>
     </div>
   </body>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script>
-    //需有打包工具
-    // import axios from '/node_modules/axios/dist/axios.min.js';
+  <!-- 以全局变量的方式导入 -->
+  <script src="/node_modules/axios/dist/axios.min.js"></script>
+  <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+  <script type="module">
+    // * as 创建模块对象
+    // import * as axios from '/node_modules/axios/dist/axios.min.js';
+
     const url = 'http://localhost/3000';
     // 全局axios默认值
     axios.defaults.baseURL = url;
