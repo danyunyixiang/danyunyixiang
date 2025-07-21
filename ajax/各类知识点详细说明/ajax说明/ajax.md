@@ -22,22 +22,22 @@ AJAX（Asynchronous JavaScript and XML）是一种在不重新加载整个页面
 ### 使用 Fetch API（现代方法）
 
 ```javascript
-fetch("https://api.example.com/data")
+fetch('https://api.example.com/data')
   .then((response) => {
     // 检查响应状态
     if (!response.ok) {
-      throw new Error("网络响应不正常");
+      throw new Error('网络响应不正常');
     }
     return response.json(); // 解析 JSON 响应
   })
   .then((data) => {
     // 处理数据
     console.log(data);
-    document.getElementById("result").textContent = data.message;
+    document.getElementById('result').textContent = data.message;
   })
   .catch((error) => {
     // 处理错误
-    console.error("获取数据出错:", error);
+    console.error('获取数据出错:', error);
   });
 ```
 
@@ -58,13 +58,13 @@ async function fetchData(url) {
     const data = await response.json();
 
     // 处理数据
-    console.log("获取的数据:", data);
-    document.getElementById("result").textContent = data.message;
+    console.log('获取的数据:', data);
+    document.getElementById('result').textContent = data.message;
     return data;
   } catch (error) {
     // 使用 try/catch 结构处理错误
-    console.error("获取数据时出错:", error.message);
-    document.getElementById("error").textContent = error.message;
+    console.error('获取数据时出错:', error.message);
+    document.getElementById('error').textContent = error.message;
     throw error;
   }
 }
@@ -79,24 +79,24 @@ async function fetchData(url) {
 
 ```javascript
 const data = {
-  name: "John",
-  email: "john@example.com",
-  message: "这是一个测试消息",
+  name: 'John',
+  email: 'john@example.com',
+  message: '这是一个测试消息',
 };
 
-fetch("https://api.example.com/submit", {
-  method: "POST",
+fetch('https://api.example.com/submit', {
+  method: 'POST',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify(data),
 })
   .then((response) => response.json())
   .then((data) => {
-    console.log("提交成功:", data);
+    console.log('提交成功:', data);
   })
   .catch((error) => {
-    console.error("提交错误:", error);
+    console.error('提交错误:', error);
   });
 ```
 
@@ -106,9 +106,9 @@ fetch("https://api.example.com/submit", {
 async function postData(url, data) {
   try {
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -118,10 +118,10 @@ async function postData(url, data) {
     }
 
     const responseData = await response.json();
-    console.log("提交成功:", responseData);
+    console.log('提交成功:', responseData);
     return responseData;
   } catch (error) {
-    console.error("提交出错:", error.message);
+    console.error('提交出错:', error.message);
     throw error;
   }
 }
@@ -245,11 +245,11 @@ async function fetchWithRetry(
 
     <script>
       document
-        .getElementById("loadUsers")
-        .addEventListener("click", function () {
+        .getElementById('loadUsers')
+        .addEventListener('click', function () {
           loadDataWithIndicator(
-            "https://jsonplaceholder.typicode.com/users",
-            "userContainer"
+            'https://jsonplaceholder.typicode.com/users',
+            'userContainer'
           );
         });
 
@@ -269,17 +269,17 @@ async function fetchWithRetry(
           })
           .then((users) => {
             // 清空表格内容
-            element.innerHTML = "";
+            element.innerHTML = '';
 
             // 创建表格
-            const table = document.createElement("table");
+            const table = document.createElement('table');
 
             // 添加表头
-            const thead = document.createElement("thead");
-            const headerRow = document.createElement("tr");
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
 
-            ["ID", "姓名", "电子邮件", "电话"].forEach((text) => {
-              const th = document.createElement("th");
+            ['ID', '姓名', '电子邮件', '电话'].forEach((text) => {
+              const th = document.createElement('th');
               th.textContent = text;
               headerRow.appendChild(th);
             });
@@ -288,28 +288,28 @@ async function fetchWithRetry(
             table.appendChild(thead);
 
             // 添加表体
-            const tbody = document.createElement("tbody");
+            const tbody = document.createElement('tbody');
 
             users.forEach((user) => {
-              const row = document.createElement("tr");
+              const row = document.createElement('tr');
 
               // ID 单元格
-              const idCell = document.createElement("td");
+              const idCell = document.createElement('td');
               idCell.textContent = user.id;
               row.appendChild(idCell);
 
               // 姓名单元格
-              const nameCell = document.createElement("td");
+              const nameCell = document.createElement('td');
               nameCell.textContent = user.name;
               row.appendChild(nameCell);
 
               // 邮件单元格
-              const emailCell = document.createElement("td");
+              const emailCell = document.createElement('td');
               emailCell.textContent = user.email;
               row.appendChild(emailCell);
 
               // 电话单元格
-              const phoneCell = document.createElement("td");
+              const phoneCell = document.createElement('td');
               phoneCell.textContent = user.phone;
               row.appendChild(phoneCell);
 
@@ -386,6 +386,10 @@ axios
   });
 
 // POST 请求
+axios.post(url[, data[, config]])
+// url (String): 请求的目标 URL。
+// data (Object): 要发送的数据（可选，通常用于 POST 请求体）。
+// config (Object): 请求配置（可选，如 headers、timeout 等）。
 axios
   .post("https://api.example.com/submit", {
     name: "John",
@@ -404,11 +408,11 @@ axios
 ```javascript
 async function getData() {
   try {
-    const response = await axios.get("https://api.example.com/data");
+    const response = await axios.get('https://api.example.com/data');
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error("获取数据出错:", error.message);
+    console.error('获取数据出错:', error.message);
     throw error;
   }
 }
@@ -419,11 +423,11 @@ async function getData() {
 ```javascript
 // 创建自定义实例
 const api = axios.create({
-  baseURL: "https://api.example.com", // 基础URL
+  baseURL: 'https://api.example.com', // 基础URL
   timeout: 10000, // 10秒超时
   headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
   },
 });
 
@@ -450,7 +454,7 @@ api.interceptors.response.use(
 );
 
 // 使用自定义实例
-api.get("/users").then((response) => console.log(response.data));
+api.get('/users').then((response) => console.log(response.data));
 ```
 
 ### jQuery AJAX
@@ -460,30 +464,30 @@ api.get("/users").then((response) => console.log(response.data));
 ```javascript
 // GET 请求
 $.ajax({
-  url: "https://api.example.com/data",
-  method: "GET",
+  url: 'https://api.example.com/data',
+  method: 'GET',
   success: function (response) {
-    console.log("数据:", response);
+    console.log('数据:', response);
   },
   error: function (xhr, status, error) {
-    console.error("错误:", error);
+    console.error('错误:', error);
   },
 });
 
 // POST 请求
 $.ajax({
-  url: "https://api.example.com/submit",
-  method: "POST",
+  url: 'https://api.example.com/submit',
+  method: 'POST',
   data: JSON.stringify({
-    name: "John",
-    email: "john@example.com",
+    name: 'John',
+    email: 'john@example.com',
   }),
-  contentType: "application/json",
+  contentType: 'application/json',
   success: function (response) {
-    console.log("提交成功:", response);
+    console.log('提交成功:', response);
   },
   error: function (xhr, status, error) {
-    console.error("提交错误:", error);
+    console.error('提交错误:', error);
   },
 });
 ```

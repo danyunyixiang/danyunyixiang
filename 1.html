@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [1, 2, 3, 4, 5, 6];
+      const result = arr.map((i) => {
+        if (i % 2 === 0) {
+          return i;
+        }
+      }); //自动创建空返回值
+      const fliterrResult = arr.filter((i) => {
+        if (i % 2 === 0) {
+          return i;
+        }
+      });
+
+      console.log(result);
+      console.log(fliterrResult);
+      console.log(result.some((i) => i >= 6));
+
+      console.log(result.concat(fliterrResult), '合并数组1');
+      result.push(fliterrResult);
+      console.log(result.flat(), '合并数组的方式2');
+
+      const obj = {
+        a: 1,
+        b: 2,
+      };
+      obj.a = [3, 3];
+      console.log(obj.a, obj.b);
+    </script>
+  </body>
+</html>

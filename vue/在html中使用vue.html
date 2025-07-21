@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>在html中使用vue</title>
+  </head>
+  <style>
+    .pcolor {
+      color: violet;
+      cursor: pointer;
+    }
+  </style>
+  <!-- 引入vue，此处为全局引入 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <body>
+    <div id="vue">
+      <p class="pcolor">{{ msg }}</p>
+      <button @click="reverseMsg">点击反转文字</button>
+    </div>
+
+    <script>
+      // 从Vue对象中解构需要的API
+      const { createApp, ref } = Vue;
+
+      createApp({
+        // 组合式API的入口函数
+        setup() {
+          const msg = ref('在html中使用vue');
+          const reverseMsg = () => {
+            msg.value = msg.value.split('').reverse().join('');
+          };
+
+          // 通过return暴露setup内部属性
+          return {
+            msg,
+            reverseMsg,
+          };
+        },
+      }).mount('#vue');
+      // 将createApp挂载到#vue的DOM元素上
+    </script>
+  </body>
+</html>
