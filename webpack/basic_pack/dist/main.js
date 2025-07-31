@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log("模块化 + webpack")})();
