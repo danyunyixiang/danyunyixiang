@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frontend</title>
+    <!-- 验证使用Cors -->
+
+    <!-- 
+    当使用本地调试时，由于本地html运行使用files协议与
+    nodeServer的http协议不同，造成跨域资源访问的情况
+    在nodeServer(experess)中使用cros中间件来自动配置http请求头，实现跨域资源共享。
+
+    访问nodeServer返回的html内容以及启动本地html开发服务器(live Server)无影响
+    -->
+  </head>
+  <style>
+    #render ul {
+      margin: 0;
+      padding: 0;
+      background-color: #eee;
+      display: flex;
+      list-style: none;
+      max-width: 770px;
+      text-align: center;
+    }
+    #render ul li {
+      flex: 1;
+      max-width: 100px;
+      border-left: 1px double #000;
+      border-bottom: 2px solid #ff00008e;
+    }
+    #render ul li:nth-child(4) {
+      max-width: none;
+    }
+  </style>
+  <body>
+    <div id="render">
+      <ul style="background-color: rgba(127, 255, 212, 0.5)">
+        <li><strong>name</strong></li>
+        <li><strong>birthday</strong></li>
+        <li><strong>group</strong></li>
+        <li><strong>positon</strong></li>
+      </ul>
+    </div>
+  </body>
+  <script>
+    const BASE_URL = 'http://127.0.0.1:3001/';
+
+    const renderData = (data) => {
+      document.getElementById('render').innerHTML += data
+        .map(
+          ({ name, birthday, group, position }) => `
+            <ul>
+              <li>${name}</li>
+              <li>${birthday}</li>
+              <li>${group}</li>
+              <li>${position}</li>
+            </ul>
+            `
+        )
+        .join('');
+    };
+
+    // window.onload = function(){}
+    document.addEventListener('DOMContentLoaded', async () => {
+      const dataStr = await fetch(BASE_URL + 'data');
+      // const data = await dataStr.json();
+
+      renderData(await dataStr.json());
+    });
+  </script>
+</html>

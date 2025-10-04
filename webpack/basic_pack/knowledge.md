@@ -9,7 +9,7 @@
   }
 ```
 
-dev代表开发环境，
+dev代表开发环境，（Terminal中install时加上 --save-dev ）
 
 ```json
   "scripts": {
@@ -35,6 +35,14 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
+  },
+  module: {
+      rules: [{ test: /\.txt$/, use: 'raw-loader' }]
   }
 ```
 
+1. 入口：Entry：'文件路径'
+2. 输出：outpot：{filename:‘输出名称’ , path:'输出路径'}
+3. 模式：mode：development/production/none（默认为production）
+4. 转换：module.rules：[{ test: '转换文件规则,  use: '转换时使用的loader' }]
+5. 

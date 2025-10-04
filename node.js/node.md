@@ -10,7 +10,7 @@
 ES模块在导入时都是异步的/common js(不用)则为同步的。
 
 ```js
+//导入示例
 import * as fs from 'node:fs'
 import * as fs from 'node:fs/promises'
 ```
-
