@@ -1,5 +1,5 @@
 import express from 'express';
-import {} from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import cors from 'cors';
 
 // "type": "module"情况下处理__dirname的方式
@@ -9,9 +9,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-// app.use(cors());
+app.use(cors());
 
 app.get('/', (req, res) => {
+  // _req 除未使用提示/待定
   return res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -26,7 +27,18 @@ app.get('/:Routing', (req, res) => {
   }
 });
 
-const PORT = 3001;
+app.get('/todos/:todoId', async (req, res) => {
+  const todoId = Number(req.params.todoId);
+  if (typeof todoId !== 'number') {
+    return;
+  }
+
+  const todoData = await readFile(path.join(__dirname, 'Date.json'));
+  const todo = JSON.parse(todoData);
+  res.send(todo[todoId - 1]);
+});
+
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`运行在 http://127.0.0.1:${PORT} 上`);
 });

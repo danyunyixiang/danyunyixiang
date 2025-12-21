@@ -38,41 +38,9 @@ export default {
     ],
   },
   optimization: {
-    moduleIds: 'deterministic',
-    chunkIds: 'deterministic',
-    // 提取公共模块
-    splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        // 提取utils工具类为单独文件
-        utils: {
-          test: /[\\/]utils[\\/]/,
-          name: 'utils',
-          chunks: 'all',
-          priority: 10,
-        },
-        // 提取其他公共模块
-        commons: {
-          name: 'commons',
-          minChunks: 2,
-          priority: 5,
-          reuseExistingChunk: true,
-        },
-      },
-    },
     minimizer: [
-      ...new CssMinimizerPlugin({
-        parallel: true, // 开启多进程并行压缩
-        minimizerOptions: {
-          preset: [
-            'default',
-            {
-              discardComments: { removeAll: true }, // 移除所有注释
-              normalizeWhitespace: true,
-            },
-          ],
-        },
-      }),
+      '...', // 保留默认的JS压缩
+      new CssMinimizerPlugin(),
     ],
   },
   plugins: [
