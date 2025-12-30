@@ -1,87 +1,67 @@
-# 个人学习导航 👋
+# 📚 My Web Development Learning Path
 
-## 🎯 关于我
+欢迎来到我的学习代码仓库！这里记录了我从基础到进阶的学习过程，包含了前端开发、后端 Node.js、数据库以及工程化构建的各种练习代码和笔记。
 
-- 👨‍💻 我是一名热爱编程的开发者
-- 🌱 正在不断学习和成长中
-- 💡 热衷于分享技术经验和学习心得
+## 📂 仓库结构概览
 
-## 📚 学习内容导航
+本项目共包含 **155** 个文件，近 **30,000** 行代码，涵盖了以下主要领域：
 
-### 前端开发
+### 1. 🖥️ 前端开发 (Frontend)
 
-- **HTML/CSS/JavaScript 基础知识**:
-  - `./.html` 文件夹: 包含 HTML 基础学习笔记和示例代码，涵盖基本元素、结构、语义化标签、链接、图片及页面控制。
-  - `./.CSS` 文件夹: 包含 CSS 样式学习笔记和示例，涵盖引入方式、各类选择器（ID, class, 通配符, 伪类）、基础样式属性及文件组织。
-  - `./.js` 文件夹: 包含 JavaScript 核心编程学习笔记和示例，涵盖基本语法、数据类型、变量作用域、数组方法、函数（含箭头函数）、对象、事件处理、DOM 操作及数据存储。
-- **常用 Web API**:
-  - `./api` 文件夹: 存放重要的 Web API 学习笔记，侧重于 DOM 操作、选择器、元素内容/属性/样式操作、`classList` 使用以及定时器（`setTimeout`, `setInterval`）的应用方法。
-- **AJAX**:
-  - `./ajax` 文件夹: 深入学习 AJAX 技术。
-    - `ajax.md`: 核心概念和 XMLHttpRequest (XHR) 的笔记。
-    - `ajax_modern.js`: 包含使用 Fetch API 和 Promise 的现代 AJAX 实现示例。
-    - `json/`: 处理和解析 JSON 数据的示例。
-    - `mockNode/`: 使用 Node.js 搭建 Mock 服务器进行接口模拟的实践。
-    - `uploads/`: 文件上传功能的实现示例。
-    - `url/`: 处理 URL 参数和查询字符串的示例。
-    - `example/`: 其他综合性 AJAX 应用示例。
-- **JavaScript 语法糖**:
-  - `./fronted_normal/js语法糖.js`: 专门记录和练习 ES6+ 的语法糖，如解构赋值、模板字符串、Promise、async/await 等，以提高代码简洁性和可读性。
-- **数据可视化**:
-  - `./fronted_normal/echarts/`: 学习和实践使用 Apache Echarts 库进行数据可视化的示例代码和项目。
-- React/Vue 等主流框架学习 (规划中)
-- 响应式设计和用户体验 (规划中)
-- 前端性能优化 (规划中)
+- **基础三剑客 (HTML/CSS/JS)**:
+  - 包含 HTML5 结构、CSS3 样式（及 Less/PostCSS 预处理）。
+  - JavaScript 基础与进阶（闭包、原型链、ES6+ 语法）。
+  - ECharts 数据可视化图表练习。
+- **Vue.js 生态**:
+  - 基于 **Vite** 构建的 Vue 3 项目 (`frontend/vue/creat-for-debug`).
+  - Vue 官方互动教程实践：涵盖侦听器 (Watchers)、Props、Emit 插槽、生命周期、计算属性及条件/列表渲染。
+- **构建工具**:
+  - **Webpack**: 基础打包配置与实战，理解模块化开发流程。
 
-### 后端开发
+### 2. 🌐 网络与异步编程 (Network & Async)
 
-- **Node.js 开发**:
-  - `./node.js` 文件夹: 系统学习 Node.js 后端技术。
-    - `fs/`: 包含文件系统（`fs` 模块）操作的详细示例，如读写文件、目录操作等。
-    - `http/`: 包含使用 `http` 模块创建基础 HTTP 服务器的示例代码。
-    - `stream/`: 包含 Node.js 流（Stream）的学习笔记和示例，涵盖可读流、可写流、管道和转换流。
-    - `path/`: (虽然未列出，但通常与 fs 一起使用) 包含路径（`path` 模块）处理的示例。
-    - `1.js`, `2.js`: 包含一些基础的 Node.js 脚本练习。
-    - `要点.md`: Node.js 学习过程中的关键知识点摘要。
-    - `fortext/`, `files/`: 可能包含用于测试脚本的文本文件或其他资源文件。
-- 数据库设计和优化 (规划中)
-- API 设计和开发 (规划中)
-- 服务器部署和运维 (规划中)
+- **AJAX & HTTP**:
+  - 深入理解 `XMLHttpRequest` vs `Fetch` API。
+  - **Promise** 与异步函数 (Async/Await) 详解。
+  - 实战项目：图书管理系统 (CURD)、个人信息设置、Mock 数据模拟。
+  - 封装工具：自定义 `request.js`、表单序列化 (`form-serialize`)。
 
-### 计算机基础
+### 3. 🔙 后端与 Node.js (Backend)
 
-- 数据结构与算法
-- 计算机网络
-- 操作系统
-- 设计模式
+- **Node.js 核心模块**:
+  - 文件系统 (`fs`)、HTTP 服务器 (`http`)、流处理 (`stream/Transform`)。
+  - 简单的加密算法实现（如凯撒加密）。
+- **Web 框架**:
+  - **Express**: 服务器搭建与路由处理。
+  - 事件循环 (Event Loop) 原理分析。
 
-### 工具和效率
+### 4. 🗄️ 数据库 (Database)
 
-- Git 版本控制
-- Docker 容器化
-- CI/CD 持续集成
-- 开发工具使用技巧
+- **Prisma ORM**:
+  - 结合 TypeScript 使用 Prisma 进行数据库建模。
+  - 数据库迁移 (Migrations) 与数据种子填充 (Seed)。
+  - `express` 集成 Prisma 的实战案例。
 
-## 🚀 项目展示
+## 🛠️ 技术栈清单
 
-_即将更新..._
+- **Languages**: JavaScript, TypeScript, HTML, CSS, Less, SQL
+- **Frameworks/Libs**: Vue 3, Express, ECharts
+- **Tools**: Vite, Webpack, PostCSS, pnpm
+- **Database**: Prisma (MS SQL based migrations)
 
-## 📖 学习资源
+## 📝 笔记与总结
 
-- 技术博客：[即将更新]
-- 视频教程：[即将更新]
-- 开源项目：[即将更新]
+除了代码实现，本仓库还包含大量 Markdown 笔记，记录了：
 
-## 🤝 联系方式
-
-- 📧 Email：[待添加]
-- 💬 微信：[待添加]
-- 🌐 个人网站：[待添加]
-
-## 📈 GitHub 统计
-
-![Your GitHub stats](https://github-readme-stats.vercel.app/api?username=danyunyixiang&show_icons=true&theme=radical)
+- AJAX 现代用法与 URL 处理
+- Node.js 服务器开发系统认识
+- VSCode 高效开发快捷键
+- 常见面试题与概念解析（如 Promise 详解）
 
 ---
 
-> 持续学习，不断进步！欢迎交流和分享经验。
+### 🌟 About Me
+
+感谢访问我的学习记录！如果你对我的学习内容感兴趣，或者想了解更多，欢迎访问我的个人网站：
+
+👉 **[emt.danyunyixiang.site](http://emt.danyunyixiang.site)**
