@@ -1,0 +1,89 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+.ForClick {
+  width: 400px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+.ClickButton {
+  width: 300px;
+  height: 30px;
+  background-color: rgba(238, 130, 238, 0.5);
+  border: none;
+  border-radius: 10px;
+}
+.ClickButton:hover {
+  width: 400px;
+  height: 40px;
+  transition: 1s;
+}
+#render ul {
+  margin: 0;
+  padding: 0;
+  background-color: #eee;
+  display: flex;
+  list-style: none;
+  max-width: 770px;
+  text-align: center;
+}
+#render ul li {
+  flex: 1;
+  max-width: 100px;
+  border-left: 1px double #000;
+  border-bottom: 2px solid #ff00008e;
+}
+#render ul li:nth-child(4) {
+  max-width: none;
+}
+
+#PostForm {
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 400px;
+  animation: fadeIn 0.3s ease-out;
+}
+#PostForm header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+#PostForm header h3 {
+  margin: 0;
+}
+#PostForm .input-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+#PostForm .input-group input {
+  width: 80%;
+  margin: 8px 0;
+  padding: 8px;
+  font-size: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+}
+#PostForm .submitBtn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #3b82f6;
+  color: #fff;
+  cursor: pointer;
+}

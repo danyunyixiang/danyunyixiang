@@ -1,5 +1,3 @@
-
-
 [Visual Studio Code - Hotkey Cheatsheet](https://hotkeycheatsheet.com/zh/hotkey-cheatsheet/vscode)
 
 # 脱离鼠标使用VScode（使手敲速度跟上思路/肌肉记忆）
@@ -9,6 +7,10 @@
 ### Ctrl + Page（Up/Down）
 
 - 按顺序切换页面
+
+### Ctrl + Tab
+
+- 在当前组内切换页面
 
 ### Ctrl + (Up/Down)Arrow
 

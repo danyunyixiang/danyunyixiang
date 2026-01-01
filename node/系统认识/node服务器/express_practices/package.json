@@ -1,17 +1,17 @@
 {
-  "name": "express",
+  "name": "express_practices",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
+  "description": "the best express structure",
   "main": "index.js",
   "scripts": {
-    "dev": "dotenvx run -- nodemon server.js",
-    "dev-node": "node --env-file=.env --watch server.js"
+    "dev": "dotenvx run -- nodemon src/server.js",
+    "dev-node": "node --env-file=.env --watch src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.18.0",
+  "packageManager": "pnpm@10.27.0",
   "dependencies": {
     "@dotenvx/dotenvx": "^1.51.4",
     "cors": "^2.8.5",

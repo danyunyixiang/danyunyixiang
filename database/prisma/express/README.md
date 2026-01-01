@@ -1,5 +1,3 @@
-test from https://github.com/prisma/prisma-examples/tree/latest/orm/express
-
 # REST API Example with Express & Prisma Postgres
 
 This example shows how to implement a **REST API with TypeScript** using [Express](https://expressjs.com/), Prisma ORM and a [Prisma Postgres](https://www.prisma.io/postgres) database.
@@ -48,7 +46,6 @@ npx prisma init --db
 If you don't have a [Prisma Data Platform](https://console.prisma.io/) account yet, or if you are not logged in, the command will prompt you to log in using one of the available authentication providers. A browser window will open so you can log in or create an account. Return to the CLI after you have completed this step.
 
 Once logged in (or if you were already logged in), the CLI will prompt you to:
-
 1. Select a **region** (e.g. `us-east-1`)
 1. Enter a **project name**
 
@@ -70,20 +67,15 @@ We found an existing schema.prisma file in your current project directory.
 
 Connect Prisma ORM to your Prisma Postgres database with this URL:
 
-prisma+postgres://accelerate.prisma-data.net/?api_key=ey...
+postgresql://user:password@host:port/database
 
 --- Next steps ---
 
 Go to https://pris.ly/ppg-init for detailed instructions.
 
-1. Install and use the Prisma Accelerate extension
-Prisma Postgres requires the Prisma Accelerate extension for querying. If you haven't already installed it, install it in your project:
-npm install @prisma/extension-accelerate
-
-...and add it to your Prisma Client instance:
-import { withAccelerate } from "@prisma/extension-accelerate"
-
-const prisma = new PrismaClient().$extends(withAccelerate())
+1. Install the PostgreSQL adapter
+This example uses the PostgreSQL driver adapter. If you haven't already installed it, install it in your project:
+npm install @prisma/adapter-pg
 
 2. Apply migrations
 Run the following command to create and apply a migration:
@@ -115,13 +107,25 @@ Now, paste the URL into it as a value for the `DATABASE_URL` environment variabl
 
 ```bash
 # .env
-DATABASE_URL=prisma+postgres://accelerate.prisma-data.net/?api_key=ey...
+DATABASE_URL=postgresql://user:password@host:port/database
 ```
 
 Run the following command to create tables in your database. This creates the `User` and `Post` tables that are defined in [`prisma/schema.prisma`](./prisma/schema.prisma):
 
 ```terminal
 npx prisma migrate dev --name init
+```
+
+### 2.1. Configure Prisma Client with the adapter
+
+This example uses the PostgreSQL driver adapter. The Prisma Client is configured in [`src/index.ts`](./src/index.ts):
+
+```ts
+import { PrismaClient } from '../prisma/generated/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+
+const pool = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
+const prisma = new PrismaClient({ adapter: pool })
 ```
 
 Execute the seed file in [`prisma/seed.ts`](./prisma/seed.ts) to populate your database with some sample data, by running:
@@ -175,7 +179,6 @@ curl -X GET http://localhost:3000/users
 #### `POST`
 
 ##### Create a new post
-
 ```sh
 curl -X POST http://localhost:3000/post \
      -H "Content-Type: application/json" \
@@ -327,22 +330,22 @@ Update your `index.ts` file by adding a new endpoint to your API:
 
 ```ts
 app.post('/user/:id/profile', async (req, res) => {
-  const { id } = req.params;
-  const { bio } = req.body;
+  const { id } = req.params
+  const { bio } = req.body
 
   const profile = await prisma.profile.create({
     data: {
       bio,
       user: {
         connect: {
-          id: Number(id),
-        },
-      },
-    },
-  });
+          id: Number(id)
+        }
+      }
+    }
+  })
 
-  res.json(profile);
-});
+  res.json(profile)
+})
 ```
 
 #### 2.2 Testing out your new endpoint
@@ -354,6 +357,7 @@ Restart your application server and test out your new endpoint.
 - `/user/:id/profile`: Create a new profile based on the user id
   - Body:
     - `bio: String` : The bio of the user
+
 
 <details><summary>Expand to view more sample Prisma Client queries on <code>Profile</code></summary>
 
@@ -369,7 +373,7 @@ const profile = await prisma.profile.create({
       connect: { email: 'alice@prisma.io' },
     },
   },
-});
+})
 ```
 
 ##### Create a new user with a new profile
@@ -385,7 +389,7 @@ const user = await prisma.user.create({
       },
     },
   },
-});
+})
 ```
 
 ##### Update the profile of an existing user
@@ -400,7 +404,7 @@ const userWithUpdatedProfile = await prisma.user.update({
       },
     },
   },
-});
+})
 ```
 
 </details>
@@ -413,24 +417,9 @@ Learn more about the different connection configurations in the [docs](https://w
 
 <details><summary>Expand for an overview of example configurations with different databases</summary>
 
-### Remove the Prisma Client extension
-
-Before you proceed to use your own database, you should remove the Prisma client extension required for Prisma Postgres:
-
-```terminal
-npm uninstall @prisma/extension-accelerate
-```
-
-Remove the client extension from your `PrismaClient` instance:
-
-```diff
-- const prisma = new PrismaClient().$extends(withAccelerate())
-+ const prisma = new PrismaClient()
-```
-
 ### Your own PostgreSQL database
 
-To use your own PostgreSQL database remove the `@prisma/extension-accelerate` package and remove the Prisma Client extension.
+This example already uses a standard PostgreSQL connection with the `@prisma/adapter-pg` adapter. You can connect to any PostgreSQL database using a standard connection string.
 
 ### SQLite
 

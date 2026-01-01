@@ -13,7 +13,7 @@
   - JavaScript 基础与进阶（闭包、原型链、ES6+ 语法）。
   - ECharts 数据可视化图表练习。
 - **Vue.js 生态**:
-  - 基于 **Vite** 构建的 Vue 3 项目 (`frontend/vue/creat-for-debug`).
+  - 基于 **Vite** 构建的 Vue 3 项目.
   - Vue 官方互动教程实践：涵盖侦听器 (Watchers)、Props、Emit 插槽、生命周期、计算属性及条件/列表渲染。
 - **构建工具**:
   - **Webpack**: 基础打包配置与实战，理解模块化开发流程。
@@ -44,10 +44,10 @@
 
 ## 🛠️ 技术栈清单
 
-- **Languages**: JavaScript, TypeScript, HTML, CSS, Less, SQL
+- **Languages**: JavaScript, TypeScript, HTML, CSS, Less
 - **Frameworks/Libs**: Vue 3, Express, ECharts
-- **Tools**: Vite, Webpack, PostCSS, pnpm
-- **Database**: Prisma (MS SQL based migrations)
+- **Tools**: Vite, Webpack, pnpm
+- **Database**: Prisma
 
 ## 📝 笔记与总结
 
@@ -56,7 +56,6 @@
 - AJAX 现代用法与 URL 处理
 - Node.js 服务器开发系统认识
 - VSCode 高效开发快捷键
-- 常见面试题与概念解析（如 Promise 详解）
 
 ---
 

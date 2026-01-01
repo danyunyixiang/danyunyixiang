@@ -1,5 +1,5 @@
 import express from 'express';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import cors from 'cors';
 
 // "type": "module"情况下处理__dirname的方式
@@ -8,7 +8,13 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || 'http://127.0.0.1';
+const DATA_PATH = process.env.DATA_PATH || 'data.json';
+const dataFilePath = path.join(__dirname, DATA_PATH);
+
 const app = express();
+app.use(express.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
@@ -23,22 +29,40 @@ app.get('/', (req, res) => {
 app.get('/:Routing', (req, res) => {
   const Routing = req.params.Routing;
   if (Routing === 'data') {
-    return res.sendFile(path.join(__dirname, 'data.json'));
+    return res.sendFile(dataFilePath);
   }
 });
 
-app.get('/todos/:todoId', async (req, res) => {
-  const todoId = Number(req.params.todoId);
-  if (typeof todoId !== 'number') {
+// app.get('/todos/:todoId', async (req, res) => {
+//   const todoId = Number(req.params.todoId);
+//   if (typeof todoId !== 'number') {
+//     return;
+//   }
+
+//   const todoData = await readFile(path.join(__dirname, 'Date.json'));
+//   const todo = JSON.parse(todoData);
+//   res.send(todo[todoId - 1]);
+// });
+
+// POST
+// GET请求通过URL传递参数，而浏览器对URL长度有限制
+// POST通过请求体传递参数，没有内容大小限制
+// POST能够传输媒体资源等复杂数据类型
+app.post('/data', async (req, res) => {
+  const Date = req.body;
+  // console.log('收到的数据:', Date);
+
+  if (Date && Date.name) {
+    res.json({ message: '数据已成功接收', Date });
+    const existingData = await readFile(dataFilePath, 'utf-8');
+    const ResultData = JSON.parse(existingData);
+    ResultData.push(Date);
+    await writeFile(dataFilePath, JSON.stringify(ResultData, null, 2));
     return;
   }
-
-  const todoData = await readFile(path.join(__dirname, 'Date.json'));
-  const todo = JSON.parse(todoData);
-  res.send(todo[todoId - 1]);
+  return res.status(400).json({ message: '无效数据' });
 });
 
-const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`运行在 http://127.0.0.1:${PORT} 上`);
+  console.log(`运行在 ${HOST}:${PORT} 上`);
 });

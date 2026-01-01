@@ -15,6 +15,34 @@
     -->
   </head>
   <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .ForClick {
+      width: 400px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+    }
+    .ClickButton {
+      width: 300px;
+      height: 30px;
+      background-color: rgba(238, 130, 238, 0.5);
+      border: none;
+      border-radius: 10px;
+    }
+    .ClickButton:hover {
+      width: 400px;
+      height: 40px;
+      transition: 1s;
+    }
     #render ul {
       margin: 0;
       padding: 0;
@@ -33,8 +61,54 @@
     #render ul li:nth-child(4) {
       max-width: none;
     }
+
+    #PostForm {
+      padding: 0;
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      width: 90%;
+      max-width: 400px;
+      animation: fadeIn 0.3s ease-out;
+    }
+    #PostForm header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+    }
+    #PostForm header h3 {
+      margin: 0;
+    }
+    #PostForm .input-group {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #PostForm .input-group input {
+      width: 80%;
+      margin: 8px 0;
+      padding: 8px;
+      font-size: 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+    }
+    #PostForm .submitBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #3b82f6;
+      color: #fff;
+      cursor: pointer;
+    }
   </style>
   <body>
+    <div class="ForClick">
+      <button class="ClickButton">This Is Button</button>
+    </div>
     <div id="render">
       <ul style="background-color: rgba(127, 255, 212, 0.5)">
         <li><strong>name</strong></li>
@@ -43,12 +117,54 @@
         <li><strong>positon</strong></li>
       </ul>
     </div>
+
+    <dialog id="PostForm">
+      <header>
+        <h3>谁是你的推</h3>
+        <button
+          class="close-btn"
+          onclick="document.getElementById('PostForm').close()">
+          &times;
+        </button>
+      </header>
+      <body>
+        <form method="dialog" style="padding: 20px; text-align: center">
+          <div class="input-group">
+            <input type="text" name="name" placeholder="Name" required />
+            <input
+              type="date"
+              name="birthday"
+              placeholder="Birthday"
+              required />
+            <input type="text" name="group" placeholder="Group" required />
+            <input
+              type="text"
+              name="position"
+              placeholder="Position"
+              required />
+          </div>
+          <div style="margin-top: 20px">
+            <button type="submit" class="submitBtn">Submit</button>
+          </div>
+        </form>
+      </body>
+    </dialog>
   </body>
   <script>
+    // 单html无法使用env配置内容（本地调试）
     const BASE_URL = 'http://127.0.0.1:3000/';
 
+    const clickButton = document.querySelector('.ClickButton');
+    const postForm = document.getElementById('PostForm');
+    const submitBtn = document.querySelector('.submitBtn');
+    const render = document.getElementById('render');
+
+    clickButton.addEventListener('click', () => {
+      postForm.showModal();
+    });
+
     const renderData = (data) => {
-      document.getElementById('render').innerHTML += data
+      render.innerHTML += data
         .map(
           ({ name, birthday, group, position }) => `
             <ul>
@@ -61,6 +177,46 @@
         )
         .join('');
     };
+
+    submitBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+
+      const form = postForm.querySelector('form');
+      const formData = new FormData(form);
+      const postData = Object.fromEntries(formData.entries());
+
+      if (
+        !postData.name ||
+        !postData.birthday ||
+        !postData.group ||
+        !postData.position
+      ) {
+        alert('请填写完整信息！');
+        return;
+      }
+
+      await fetch(BASE_URL + 'data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+
+      // 重新获取数据并渲染
+      render.innerHTML = `
+      <ul style="background-color: rgba(127, 255, 212, 0.5)">
+        <li><strong>name</strong></li>
+        <li><strong>birthday</strong></li>
+        <li><strong>group</strong></li>
+        <li><strong>positon</strong></li>
+      </ul>
+      `;
+      const newDataStr = await fetch(BASE_URL + 'data');
+      renderData(await newDataStr.json());
+
+      postForm.close();
+    });
 
     // window.onload = function(){}
     document.addEventListener('DOMContentLoaded', async () => {

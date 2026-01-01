@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frontend</title>
+  </head>
+  <!-- INJECT_STYLE -->
+  <body>
+    <div class="ForClick">
+      <button class="ClickButton">This Is Button</button>
+    </div>
+    <div id="render">
+      <ul style="background-color: rgba(127, 255, 212, 0.5)">
+        <li><strong>name</strong></li>
+        <li><strong>birthday</strong></li>
+        <li><strong>group</strong></li>
+        <li><strong>positon</strong></li>
+      </ul>
+    </div>
+
+    <dialog id="PostForm">
+      <header>
+        <h3>谁是你的推</h3>
+        <button
+          class="close-btn"
+          onclick="document.getElementById('PostForm').close()">
+          &times;
+        </button>
+      </header>
+      <body>
+        <form method="dialog" style="padding: 20px; text-align: center">
+          <div class="input-group">
+            <input type="text" name="name" placeholder="Name" required />
+            <input
+              type="date"
+              name="birthday"
+              placeholder="Birthday"
+              required />
+            <input type="text" name="group" placeholder="Group" required />
+            <input
+              type="text"
+              name="position"
+              placeholder="Position"
+              required />
+          </div>
+          <div style="margin-top: 20px">
+            <button type="submit" class="submitBtn">Submit</button>
+          </div>
+        </form>
+      </body>
+    </dialog>
+  </body>
+  <!-- INJECT_SCRIPT -->
+</html>
