@@ -2,7 +2,7 @@ import express from 'express';
 import {
   renderHtml,
   Routing,
-  DataPost,
+  dataPost,
 } from '../controllers/data_controllers.js';
 
 const router = express.Router();
@@ -10,8 +10,8 @@ const router = express.Router();
 router.get('/', renderHtml);
 
 // https://express.js.cn/en/api.html#router.route
-// router.route('/data').get(Routing).post(DataPost);
+// router.route('/data').get(Routing).post(dataPost);
 router.get('/:Routing', Routing);
-router.post('/data', DataPost);
+router.post('/data', dataPost);
 
 export default router;

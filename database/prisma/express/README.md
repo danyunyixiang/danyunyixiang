@@ -46,6 +46,7 @@ npx prisma init --db
 If you don't have a [Prisma Data Platform](https://console.prisma.io/) account yet, or if you are not logged in, the command will prompt you to log in using one of the available authentication providers. A browser window will open so you can log in or create an account. Return to the CLI after you have completed this step.
 
 Once logged in (or if you were already logged in), the CLI will prompt you to:
+
 1. Select a **region** (e.g. `us-east-1`)
 1. Enter a **project name**
 
@@ -121,11 +122,11 @@ npx prisma migrate dev --name init
 This example uses the PostgreSQL driver adapter. The Prisma Client is configured in [`src/index.ts`](./src/index.ts):
 
 ```ts
-import { PrismaClient } from '../prisma/generated/client'
-import { PrismaPg } from '@prisma/adapter-pg'
+import { PrismaClient } from '../prisma/generated/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-const pool = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
-const prisma = new PrismaClient({ adapter: pool })
+const pool = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter: pool });
 ```
 
 Execute the seed file in [`prisma/seed.ts`](./prisma/seed.ts) to populate your database with some sample data, by running:
@@ -179,6 +180,7 @@ curl -X GET http://localhost:3000/users
 #### `POST`
 
 ##### Create a new post
+
 ```sh
 curl -X POST http://localhost:3000/post \
      -H "Content-Type: application/json" \
@@ -330,22 +332,22 @@ Update your `index.ts` file by adding a new endpoint to your API:
 
 ```ts
 app.post('/user/:id/profile', async (req, res) => {
-  const { id } = req.params
-  const { bio } = req.body
+  const { id } = req.params;
+  const { bio } = req.body;
 
   const profile = await prisma.profile.create({
     data: {
       bio,
       user: {
         connect: {
-          id: Number(id)
-        }
-      }
-    }
-  })
+          id: Number(id),
+        },
+      },
+    },
+  });
 
-  res.json(profile)
-})
+  res.json(profile);
+});
 ```
 
 #### 2.2 Testing out your new endpoint
@@ -357,7 +359,6 @@ Restart your application server and test out your new endpoint.
 - `/user/:id/profile`: Create a new profile based on the user id
   - Body:
     - `bio: String` : The bio of the user
-
 
 <details><summary>Expand to view more sample Prisma Client queries on <code>Profile</code></summary>
 
@@ -373,7 +374,7 @@ const profile = await prisma.profile.create({
       connect: { email: 'alice@prisma.io' },
     },
   },
-})
+});
 ```
 
 ##### Create a new user with a new profile
@@ -389,7 +390,7 @@ const user = await prisma.user.create({
       },
     },
   },
-})
+});
 ```
 
 ##### Update the profile of an existing user
@@ -404,7 +405,7 @@ const userWithUpdatedProfile = await prisma.user.update({
       },
     },
   },
-})
+});
 ```
 
 </details>
