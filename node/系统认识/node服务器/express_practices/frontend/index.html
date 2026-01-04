@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -15,18 +15,26 @@
         <li><strong>name</strong></li>
         <li><strong>birthday</strong></li>
         <li><strong>group</strong></li>
-        <li><strong>positon</strong></li>
+        <li><strong>position</strong></li>
+        <li><strong>edit</strong></li>
+        <li><strong>delete</strong></li>
       </ul>
+    </div>
+    <div id="pagination">
+      <button class="prevBtn" disabled>Prev</button>
+      <span class="pageNumbers">
+        <button class="pageBtn active">1</button>
+        <button class="pageBtn">2</button>
+        <button class="pageBtn">3</button>
+        <!-- 可动态添加更多页码 -->
+      </span>
+      <button class="nextBtn">Next</button>
     </div>
 
     <dialog id="PostForm">
       <header>
         <h3>谁是你的推</h3>
-        <button
-          class="close-btn"
-          onclick="document.getElementById('PostForm').close()">
-          &times;
-        </button>
+        <button class="close-btn" onclick="closeBtn()">&times;</button>
       </header>
       <body>
         <form method="dialog" style="padding: 20px; text-align: center">
@@ -45,7 +53,10 @@
               required />
           </div>
           <div style="margin-top: 20px">
-            <button type="submit" class="submitBtn">Submit</button>
+            <button type="submit" onclick="submitBtn()" class="submitBtn">
+              Submit
+            </button>
+            <button type="submit" class="updataBtn">Updata</button>
           </div>
         </form>
       </body>

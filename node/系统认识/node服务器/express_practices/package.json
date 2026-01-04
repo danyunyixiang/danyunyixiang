@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "dotenvx run -- nodemon src/server.js",
+    "seed": "dotenvx run -- node src/data/seed.js",
     "schema-update": "npx prisma generate",
     "dev-node": "node --env-file=.env --watch src/server.js"
   },
