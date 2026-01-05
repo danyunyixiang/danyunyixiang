@@ -6,9 +6,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "dotenvx run -- nodemon src/server.js",
+    "dev-node": "node --env-file=.env --watch src/server.js",
     "seed": "dotenvx run -- node src/data/seed.js",
     "schema-update": "npx prisma generate",
-    "dev-node": "node --env-file=.env --watch src/server.js"
+    "init-database": "dotenvx run -- npx prisma migrate dev --name init"
   },
   "keywords": [],
   "author": "",

@@ -77,7 +77,7 @@ clickButton.addEventListener('click', () => {
 });
 
 const deleteUser = async (id) => {
-  // OVER: 后端根据id删除数据
+  // FINISH: 后端根据id删除数据
   // 更新路径router -> controller -> server -> prisma
   const response = await fetch(BASE_URL + `data/${id}`, {
     method: 'DELETE',
@@ -122,7 +122,7 @@ const updataBtn = async (id) => {
   updataEventListenerId = async (e) => {
     const postData = beforeBtn(e);
 
-    // OVER: 后端根据id更新数据
+    // FINISH: 后端根据id更新数据
     await fetch(BASE_URL + `data/${id}`, {
       method: 'POST',
       headers: {
@@ -139,7 +139,6 @@ const updataBtn = async (id) => {
 
 // 统一一下提交前的操作
 const beforeBtn = (e) => {
-  e.preventDefault();
   postForm.close();
 
   const formData = new FormData(form);
@@ -165,7 +164,7 @@ const submitBtn = async (e) => {
 
 const reRender = async (currentPage) => {
   const [dataCountStr, newDataStr] = await Promise.all([
-    // TODO: 后端新增获取数据条数接口和更改/data get路由参数
+    // FINISH: 后端新增获取数据条数接口和更改/data get路由参数
     // dataCount = {dataCount: number, per_page: number}
     fetch(BASE_URL + 'data/count'),
     fetch(BASE_URL + `data?page=${currentPage}`),
